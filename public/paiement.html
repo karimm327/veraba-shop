@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vigoblue - Paiement Sécurisé</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="paiement.css" />
+    
+</head>
+<body>
+
+<section id="checkout-section" class="py-5 d-flex align-items-center min-vh-100">
+  <div class="container" style="max-width: 550px;" id="main-container">
+    
+    <!-- En-tête -->
+    <div class="text-center mb-4">
+      <h2 class="fw-bold text-dark tracking-tight mb-1">Paiement sécurisé</h2>
+      <p class="text-muted small mb-0">Compte : <span id="userEmail" class="fw-medium text-dark">Chargement...</span></p>
+    </div>
+
+    <!-- Carte principale du formulaire -->
+    <div class="card border-0 shadow-sm p-4 p-md-5 rounded-4">
+      
+      <form id="paymentForm">
+        
+        <!-- Ligne Prénom & Nom -->
+        <div class="row g-3 mb-3">
+          <div class="col-6">
+            <label for="prenom" class="form-label small text-secondary fw-medium">Prénom</label>
+            <input type="text" id="prenom" class="form-control py-2 px-3 small" placeholder="Jean" required>
+          </div>
+          <div class="col-6">
+            <label for="nom" class="form-label small text-secondary fw-medium">Nom</label>
+            <input type="text" id="nom" class="form-control py-2 px-3 small" placeholder="Dupont" required>
+          </div>
+        </div>
+
+        <!-- Input caché alimenté par le JS pour Stripe -->
+        <input type="hidden" id="cardholder">
+
+        <!-- Numéro de carte / Visa / Mastercard (Géré par Stripe) -->
+        <div class="mb-4">
+          <div class="d-flex justify-content-between align-items-center mb-1">
+            <label class="form-label small text-secondary fw-medium mb-0">Carte bancaire</label>
+            <div class="d-flex gap-1 text-muted" style="font-size: 0.75rem; font-weight: 600;">
+              <span>VISA</span>
+              <span>•</span>
+              <span>MC</span>
+            </div>
+          </div>
+          <div id="card-element" class="p-3 rounded-3">
+            <!-- Stripe injectera l'iframe sécurisée ici -->
+          </div>
+        </div>
+
+        <!-- Affichage élégant du montant du panier -->
+        <div class="d-flex justify-content-between align-items-center mb-3 px-1">
+          <span class="text-secondary small fw-medium">Total à régler :</span>
+          <span class="text-dark fw-bold fs-5" id="displayAmount">0.00€</span>
+        </div>
+
+        <!-- Montant de la commande (dynamique, géré en JS) -->
+        <input type="hidden" id="amount" value="0">
+
+        <!-- Bouton de paiement -->
+        <button type="submit" id="checkout-btn" class="btn btn-dark w-100 py-3 rounded-pill fw-medium small shadow-none transition-all">
+          Payer maintenant
+        </button>
+
+      </form>
+
+    <!-- Historique des paiements mis en commentaire -->
+      <!--
+      <div class="mt-4 pt-3 border-top border-light">
+        <h6 class="fw-bold text-dark fs-6 mb-3" style="font-size: 0.8rem !important;">Moyens de paiement enregistrés</h6>
+        <ul id="paiementsList" class="list-unstyled small text-secondary ps-0 mb-0">
+          <li>Chargement...</li>
+        </ul>
+      </div>
+      -->
+
+    </div>
+  </div>
+</section>
+
+<!-- Scripts Stripe et Logique JS -->
+<script src="https://js.stripe.com/v3/"></script>
+<script>
+document.addEventListener("DOMContentLoaded", async () => {
+  const stripe = Stripe("pk_test_51S6yGqPuI7pn7UOVAuI1UOrgRoFDeJOrLwCBpMJsavXKnLAAcNaVYFSMXGqi8WAcB5v3b3PVN2VKPnHOH7h0aykp00NdB9ob2Z");
+  const elements = stripe.elements();
+  
+  const cardElementContainer = document.getElementById("card-element");
+  let cardElement = null;
+  if (cardElementContainer) {
+    cardElement = elements.create("card", {
+      style: {
+        base: {
+          color: '#2c2c2c',
+          fontFamily: 'inherit',
+          fontSize: '14px',
+          '::placeholder': { color: '#aab7c4' }
+        },
+        invalid: { color: '#fa755a' }
+      }
+    });
+    cardElement.mount("#card-element");
+  }
+
+  const userEmailEl = document.getElementById("userEmail");
+  const paiementsList = document.getElementById("paiementsList");
+  const paymentForm = document.getElementById("paymentForm");
+  const amountInput = document.getElementById("amount");
+  const displayAmountEl = document.getElementById("displayAmount");
+
+  // 1. Récupération dynamique du montant du panier
+  async function loadCartAmount() {
+    let cartTotal = 0;
+
+    // Même calcul que la page panier : panier local (userCart) - 5 % - code promo + livraison
+    const cart = JSON.parse(localStorage.getItem("userCart")) || [];
+    const subtotal = cart.reduce((sum, p) => sum + (Number(p.price) || 0) * (Number(p.quantity) || 0), 0);
+    if (subtotal > 0) {
+      const promo = Number(localStorage.getItem("vigoblue_promo")) || 0;
+      const discount = Math.min(subtotal * 0.05 + promo, subtotal);
+      const afterDiscount = subtotal - discount;
+      const shipping = afterDiscount >= 25 ? 0 : 5;
+      cartTotal = afterDiscount + shipping;
+    }
+
+    // Mise à jour du champ caché et du texte à l'écran
+    if (amountInput) amountInput.value = cartTotal.toFixed(2);
+    if (displayAmountEl) displayAmountEl.textContent = `${cartTotal.toFixed(2)}€`;
+  }
+
+  // Utilisateur connecté
+  async function fetchUser() {
+    try {
+      const res = await fetch("/user/me");
+      const data = await res.json();
+      if (data.success && userEmailEl) {
+        userEmailEl.textContent = data.user.email;
+      } else if (userEmailEl) {
+        userEmailEl.textContent = "Non connecté";
+      }
+    } catch (err) {
+      console.error("Erreur fetchUser:", err);
+      if (userEmailEl) userEmailEl.textContent = "Non connecté";
+    }
+  }
+
+  // Afficher les moyens de paiement enregistrés
+  async function fetchPaiements() {
+    if (!paiementsList) return;
+    try {
+      const res = await fetch("/paiements");
+      const data = await res.json();
+      if (data.success && data.paiements && data.paiements.length > 0) {
+        paiementsList.innerHTML = data.paiements.map(p => `
+          <li>
+            <span><i class="fa-regular fa-credit-card me-2 text-dark"></i>${p.brand.toUpperCase()} ****${p.last4}</span>
+            <span class="fw-bold text-dark">${(p.montant/100).toFixed(2)}€</span>
+          </li>
+        `).join("");
+      } else {
+        paiementsList.innerHTML = "<li class='text-center py-2'>Aucun moyen de paiement enregistré</li>";
+      }
+    } catch (err) {
+      console.error("Erreur fetchPaiements:", err);
+      paiementsList.innerHTML = "<li class='text-center text-danger'>Erreur de chargement</li>";
+    }
+  }
+
+  // Soumission du formulaire
+  if (paymentForm) {
+    paymentForm.addEventListener("submit", async (e) => {
+      e.preventDefault();
+
+      const prenom = document.getElementById("prenom").value.trim();
+      const nom = document.getElementById("nom").value.trim();
+      const cardholderName = `${prenom} ${nom}`;
+      
+      // Calcul du montant exact en centimes pour Stripe
+      const currentAmount = parseFloat(amountInput.value) || 0;
+      if (currentAmount <= 0) {
+        return alert("Le montant du panier est invalide.");
+      }
+      const amountInCents = Math.round(currentAmount * 100);
+
+      const resPM = await stripe.createPaymentMethod({
+        type: "card",
+        card: cardElement,
+        billing_details: { name: cardholderName }
+      });
+
+      if (resPM.error) {
+        console.error("Erreur Stripe:", resPM.error.message);
+        return alert(resPM.error.message);
+      }
+
+      try {
+        const res = await fetch("/pay", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ paymentMethodId: resPM.paymentMethod.id, amount: amountInCents })
+        });
+        const result = await res.json();
+        
+        if (result.success) {
+          // Vider la valeur du panier sauvegardée
+          localStorage.removeItem("vigoblue_cart_total");
+          localStorage.removeItem("userCart");       // commande payée : on vide le panier
+          localStorage.removeItem("vigoblue_promo");
+
+          const container = document.getElementById("main-container");
+          container.innerHTML = `
+            <div class="card border-0 shadow-sm p-5 rounded-4 text-center">
+              <div class="mb-3">
+                <span class="bg-success bg-opacity-10 text-success p-3 rounded-circle d-inline-flex align-items-center justify-content-center" style="width: 60px; height: 60px;">
+                  <i class="fas fa-check fs-4"></i>
+                </span>
+              </div>
+              <h3 class="fw-bold text-dark mb-2">Merci pour votre commande !</h3>
+              <p class="text-muted small mb-4">Votre paiement de ${currentAmount.toFixed(2)}€ a été validé avec succès. Nous préparons votre commande VigoBlue avec soin.</p>
+              <a href="/site.html" class="btn btn-dark py-3 rounded-pill fw-medium small text-decoration-none">Retour vers le site</a>
+            </div>
+          `;
+        } else {
+          alert(result.message || "Erreur lors du paiement");
+        }
+      } catch (err) {
+        console.error("Erreur réseau backend /pay:", err);
+        alert("Impossible de joindre le serveur de paiement.");
+      }
+    });
+  }
+
+  // Initialisation des données au chargement
+  await loadCartAmount();
+  fetchUser();
+  fetchPaiements();
+});
+</script>
+
+</body>
+</html>

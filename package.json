@@ -1,0 +1,22 @@
+{
+  "name": "vigoblue",
+  "version": "1.0.0",
+  "description": "Boutique en ligne VigoBlue / Veraba (projet local)",
+  "type": "module",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "bcrypt": "^6.0.0",
+    "dotenv": "^17.2.3",
+    "express": "^5.1.0",
+    "express-mysql-session": "^3.0.3",
+    "express-session": "^1.18.1",
+    "mysql2": "^3.14.4",
+    "stripe": "^19.1.0"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guide de Tailles — VB MMBRS | Vigoblue</title>
+    <link rel="icon" type="image/png" href="aaa.png">
+    
+    <link rel="stylesheet" href="index.css" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Sans&family=Oswald&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <style>
+        :root {
+            --vigo-black: #050505;
+            --vigo-navy: #0b1329;
+            --vigo-gray: #f4f4f5;
+        }
+        body {
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+            color: var(--vigo-black);
+            background-color: #fff;
+            overflow-x: hidden;
+        }
+        
+        /* Hero Mini pour les pages secondaires */
+        .hero-page {
+            background-color: var(--vigo-black);
+            color: #fff;
+            padding: 80px 0;
+        }
+
+        /* Tableaux personnalisés style e-commerce minimaliste */
+        .table-custom th {
+            background-color: var(--vigo-navy);
+            color: white;
+            text-transform: uppercase;
+            font-size: 0.8rem;
+            letter-spacing: 1px;
+            padding: 15px;
+            border: none;
+        }
+        
+        .table-custom td {
+            padding: 18px 15px;
+            vertical-align: middle;
+            font-size: 0.95rem;
+            color: #333;
+        }
+
+        /* Bouton Global E-commerce */
+        .btn-vigo {
+            background-color: var(--vigo-navy);
+            color: #fff;
+            border-radius: 0;
+            padding: 1rem 2.5rem;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            font-size: 0.85rem;
+            transition: all 0.3s ease;
+        }
+        .btn-vigo:hover {
+            background-color: #1c2a4f;
+            color: #fff;
+        }
+
+        p { color: grey; }
+
+        .social-icon {
+            width: 35px; height: 35px; line-height: 35px;
+            border-radius: 50%; text-align: center; color: #fff;
+            display: inline-block; margin: 0 8px; transition: all 0.3s ease;
+        }
+        .social-icon:hover { transform: translateY(-3px); color: #fff; }
+
+        .footer-style {
+            background: white; color: #111;
+            font-family: Arial, sans-serif; font-size: 0.9rem;
+            padding: 40px 20px 20px; border-top: 1px solid #eaeaea;
+        }
+        .footer-style .container {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 30px;
+        }
+        .footer-style .footer-title {
+            font-size: 1rem; font-weight: bold; margin-bottom: 15px; color: #111; text-transform: uppercase;
+        }
+        .footer-style .footer-links { list-style: none; padding: 0; margin: 0; }
+        .footer-style .footer-links li { margin-bottom: 8px; }
+        .footer-style .footer-links a { text-decoration: none; color: #333; transition: color 0.3s; }
+        .footer-style .footer-links a:hover { color: #00aaff; }
+        .footer-off { color: #888; font-size: 0.8rem; }
+        .footer-bottom { border-top: 1px solid #ddd; margin-top: 30px; padding-top: 15px; text-align: center; font-size: 0.8rem; color: #666; }
+    </style>
+</head>
+<body>
+
+
+
+    <!-- SECTION TABLEAU DE CORRESPONDANCE -->
+    <section class="py-5 bg-light">
+        <div class="container py-lg-4">
+            <div class="text-center mb-5" style="max-width: 700px; margin: 0 auto;">
+                <span class="text-uppercase text-muted small d-block mb-2" style="letter-spacing: 3px;">Spécificités & Styles</span>
+                <h2 class="display-5 fw-bold text-uppercase" style="letter-spacing: 1px;">Aperçu des Coupes par Univers</h2>
+                <p class="text-muted mt-2">Référez-vous aux détails de fabrication et aux recommandations d'usage ci-dessous.</p>
+            </div>
+
+            <div class="table-responsive shadow-sm bg-white p-3">
+                <table class="table table-custom mb-0">
+                    <thead>
+                        <tr>
+                            <th>Univers</th>
+                            <th>Rendu</th>
+                            <th>Détails fréquents</th>
+                            <th>À porter pour</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="fw-bold text-dark">Baskets</td>
+                            <td>Sport, rétro, lifestyle</td>
+                            <td>Bandes latérales, renfort talon, semelle caoutchouc</td>
+                            <td>Look urbain quotidien</td>
+                        </tr>
+                        <tr>
+                            <td class="fw-bold text-dark">T-shirts</td>
+                            <td>Essentiel et graphique</td>
+                            <td>Col rond, logo brodé, bandes manches</td>
+                            <td>Base streetwear simple</td>
+                        </tr>
+                        <tr>
+                            <td class="fw-bold text-dark">Joggings</td>
+                            <td>Confort sportswear</td>
+                            <td>Taille élastiquée, cordon, poches</td>
+                            <td>Ville, détente, training</td>
+                        </tr>
+                        <tr>
+                            <td class="fw-bold text-dark">Ensembles</td>
+                            <td>Coordonné et impactant</td>
+                            <td>Veste zippée, pantalon, bandes</td>
+                            <td>Total look assumé</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="text-center mt-5">
+                <p class="text-muted small mb-3">Besoin d'aide supplémentaire pour choisir votre pointure ou votre taille de vêtement ?</p>
+                <a href="#aide" class="btn btn-vigo text-decoration-none">Contacter le support client</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <section id="aide">
+        <footer class="footer-style">
+          <div class="container">
+
+            <!-- Bloc Besoin d'aide -->
+            <div class="footer-section">
+              <h3 class="footer-title">Besoin d'aide ?</h3>
+              <ul class="footer-links">
+                <li><strong>Commencer chat</strong><br><span class="footer-off">Hors service</span><br>De lundi à vendredi de 10:00 à 16:00.</li>
+                <li><strong>Appeler 0144323334</strong><br><span class="footer-off">Hors service</span><br>De lundi à vendredi de 09:00 à 18:00.<br><small>Appel non surtaxé, hors coût éventuel selon votre opérateur.</small></li>
+              </ul>
+            </div>
+
+            <!-- Bloc Aide -->
+            <div class="footer-section">
+              <h3 class="footer-title">Aide</h3>
+              <ul class="footer-links">
+                <li><a href="#">Acheter en ligne</a></li>
+                <li><a href="#">Paiements</a></li>
+                <li><a href="#">Livraisons & suivi</a></li>
+                <li><a href="#">Retours</a></li>
+                <li><a href="#">Retour invité</a></li>
+                <li><a href="#">Carte cadeau</a></li>
+                <li><a href="#">Ticket cadeau</a></li>
+                <li><a href="#">Rechercher un ticket</a></li>
+                <li><a href="#">Achat invité</a></li>
+                <li><a href="#">Ticket électronique</a></li>
+              </ul>
+            </div>
+
+            <!-- Bloc VigoBlue MMBRS -->
+            <div class="footer-section">
+              <h3 class="footer-title">VigoBlue MMBRS</h3>
+              <ul class="footer-links">
+                <li><a href="#">Me désabonner</a></li>
+                <li><a href="#">Nous sommes VigoBlue</a></li>
+                <li><a href="#">Durabilité</a></li>
+                <li><a href="#">Travaille avec nous</a></li>
+                <li><a href="#">Nos magasins</a></li>
+                <li><a href="#">Infos légales</a></li>
+              </ul>
+            </div>
+
+            <!-- Bloc Cela peut t'intéresser -->
+            <div class="footer-section">
+              <h3 class="footer-title">Cela peut t’intéresser</h3>
+              <ul class="footer-links">
+                <li><a href="#">Vestes</a></li>
+                <li><a href="#">T-shirts</a></li>
+                <li><a href="#">Pantalons</a></li>
+                <li><a href="#">Sweats</a></li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- Bas du footer -->
+          <div class="footer-bottom">
+            <div class="container">
+                <div class="social-links">
+                    <a href="#" class="social-icon bg-info"><i class="fab fa-twitter"></i></a>
+                    <a href="#" class="social-icon bg-danger"><i class="fab fa-instagram"></i></a>
+                    <a href="#" class="social-icon bg-primary"><i class="fab fa-linkedin-in"></i></a>
+                </div>
+            </div>
+          </div>
+          <div class="footer-bottom">
+            <div class="container">
+              <p>&copy; 2025 VigoBlue. Tous droits réservés.</p>
+            </div>
+          </div>
+        </footer>
+    </section>
+
+    <!-- Bootstrap 5 JS Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

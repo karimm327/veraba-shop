@@ -1,0 +1,4 @@
+.env
+mail.env
+node_modules/
+*Zone.Identifier

@@ -1,0 +1,63 @@
+body {
+    overflow-x: hidden;
+    background-color: #0b0b0c;
+}
+
+/* Section de paiement avec l'image a.png et un voile lumineux subtil */
+#checkout-section {
+    background-color:whitesmoke;
+    background-size: cover !important;
+    background-position: center !important;
+    background-repeat: no-repeat !important;
+    font-family: inherit;
+    min-height: 100vh;
+}
+
+#checkout-section h2 {
+    letter-spacing: -0.03em;
+    color: #ffffff;
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+}
+
+/* Carte principale : Effet Verre Lumineux (Glassmorphism) */
+#checkout-section .card {
+    background: rgba(255, 255, 255, 0.92) !important;
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.4) !important;
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.35), 0 0 0 1px rgba(255, 255, 255, 0.2) inset !important;
+}
+
+/* Champs de texte élégants et lumineux */
+#checkout-section .form-control,
+#checkout-section #card-element {
+    background-color: #ffffff !important;
+    border: 1px solid #e2e8f0 !important;
+    border-radius: 12px !important;
+    padding: 12px 16px !important;
+    transition: all 0.25s ease;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
+}
+
+#checkout-section .form-control:focus,
+#checkout-section #card-element.StripeElement--focus {
+    background-color: #ffffff !important;
+    border-color: #000000 !important;
+    box-shadow: 0 0 0 4px rgba(0, 0, 0, 0.06) !important;
+}
+
+/* Bouton de paiement moderne, chic et accrocheur */
+#checkout-btn {
+    background: linear-gradient(135deg, #111111 0%, #2d2d2d 100%);
+    border: none;
+    letter-spacing: 0.03em;
+    font-weight: 600;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+    transition: all 0.3s ease;
+}
+
+#checkout-btn:hover {
+    background: linear-gradient(135deg, #000000 0%, #1a1a1a 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 15px 25px rgba(0, 0, 0, 0.25);
+}

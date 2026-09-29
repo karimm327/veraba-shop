@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Login</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+<style>
+    /* body { background-image: url("a."); }  image introuvable */
+    
+    #inscription {text-decoration: none; color:black;}
+       body { margin-top : 90px; }
+    .card, #registerForm {
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+}
+
+
+.form-control {
+    border: 1px solid #000 !important;   /* contour noir */
+    border-radius: 7px;                   /* coins légèrement arrondis */
+    background: transparent !important;   /* pas de fond */
+    box-shadow: none !important;          /* pas de halo */
+    outline: none !important;             /* supprime halo focus */
+    padding: 6px 10px;                    /* padding réduit */
+    height:43px;
+    font-size: 0.9rem;                    /* texte plus petit */
+    transition: border-color 0.3s;
+}
+
+/* Focus : garde le contour noir */
+.form-control:focus {
+    border-color: #000 !important;
+}
+
+/* Optionnel : accentuer le contour au focus */
+.form-control:focus {
+    border-color: #000 !important;        /* garde contour noir */
+}
+
+  
+</style>
+</head>
+<body>
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card">
+                <h3 class="text-center mb-4">S'identifier</h3>
+                <form id="loginForm">
+                    <div class="mb-3">
+                        <label for="loginEmail" class="form-label">
+Saisis ton adresse e-mail pour nous rejoindre ou te connecter.</label>
+             <input type="email" class="form-control" id="loginEmail" placeholder="E-mail*" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="loginPassword" class="form-label">Mot de passe</label>
+                        <input type="password" class="form-control" id="loginPassword" required>
+                        <div class="text-end mt-1">
+                        <p style="text-align:left; color:gray;">En continuant, j'accepte la <a href="">Politique 
+                        de confidentialité</a> et <br>aux <a href="">Conditions d'utilisation</a> de VigoBlue.</p>
+                            <a href="#" class="text-decoration-none" id="forgotPassword">Mot de passe oublié ?</a>
+                          
+                        </div>
+                    </div>
+                    <div class="d-grid mb-3">
+                        <button type="submit" class="btn btn-dark">Se connecter</button>
+                        <p style="text-align:center; color:black; margin-top:11px;">Tu n'as pas de compte ? <a id="inscription" href="signup.html">Inscris-toi</a></p>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+// ---------- Login ----------
+document.getElementById("loginForm").addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const email = document.getElementById("loginEmail").value;
+    const password = document.getElementById("loginPassword").value;
+
+    const res = await fetch("/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password })
+    });
+    const result = await res.json();
+    if (result.success && result.redirect) window.location.href = result.redirect;
+    else alert(result.message);
+});
+
+// ---------- Mot de passe oublié ----------
+document.getElementById("forgotPassword").addEventListener("click", async () => {
+    const email = document.getElementById("loginEmail").value;
+    if (!email) return alert("Veuillez entrer votre email avant de continuer.");
+
+    try {
+        const res = await fetch("/send-reset-mail", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ email })
+        });
+        const text = await res.text();
+        alert(text);
+    } catch (err) {
+        console.error(err);
+        alert("Erreur lors de l'envoi de l'email");
+    }
+});
+
+
+document.getElementById("forgotPassword").addEventListener("click", function(event) {
+    const emailInput = document.getElementById("loginEmail");
+
+    if (!emailInput.value) {
+        event.preventDefault();
+        emailInput.reportValidity(); // Montre le message "Veuillez renseigner ce champ"
+    }
+});
+</script>
+</body>
+</html>
+

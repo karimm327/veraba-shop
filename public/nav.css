@@ -1,0 +1,58 @@
+.navbar-fixed-bottom {
+    position: fixed;
+    bottom: 0; 
+    left: 0;
+    width: 100%;
+    background-color: black;
+    color: white;
+    z-index: 9999;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    padding: 10px 0; 
+    box-sizing: border-box;
+}
+
+.navbar .d-flex.flex-wrap.gap-3 {
+    margin-bottom: 10px; 
+    align-items: center; 
+}
+
+.navbar-nav {
+    margin-bottom: 10px; 
+}
+
+.tab-navigation {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 2rem;
+    flex-wrap: wrap;
+}
+
+.search-compact {
+    overflow: hidden;
+    border: 1px solid black;
+    width: 200px; 
+    margin-top: 1px;
+    margin: 6px;
+}
+
+.search-compact input:focus,
+.search-compact button:focus {
+    outline: none;
+    box-shadow: none; 
+}
+
+.search-compact input:focus {
+    border-color: black;
+}
+
+.search-compact i {
+    font-size: 16px;
+    color: black;
+}
+
+.scrollLeft,
+.scrollRight {
+    z-index: 1000 !important; 
+}

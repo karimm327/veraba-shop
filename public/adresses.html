@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mes Adresses - VigoBlue</title>
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Helvetica Neue', Arial, sans-serif;
+      background-color: #f8f9fa;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- En-tête simple pour revenir au site -->
+  <header class="bg-black text-white py-3">
+    <div class="container d-flex align-items-center">
+      <a href="/site.html" class="text-white text-decoration-none fw-bold me-4">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" class="me-1"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+        Retour
+      </a>
+      <h1 class="h5 m-0 fw-bold text-uppercase tracking-wide" style="letter-spacing: 2px;">VigoBlue</h1>
+    </div>
+  </header>
+
+  <div class="container py-5" style="font-family: 'Helvetica Neue', Arial, sans-serif; max-width: 900px;">
+    <h2 class="fw-bold text-uppercase mb-4" style="letter-spacing: 1px; font-size: 1.5rem;">Adresses enregistrées</h2>
+    
+    <!-- Message d'alerte -->
+    <div id="alertMessage" class="alert d-none rounded-0 mb-4" role="alert"></div>
+
+    <!-- Conteneur de l'adresse (affiché dynamiquement) -->
+    <div class="row g-4" id="addressCardContainer">
+      <!-- Rempli par JavaScript -->
+    </div>
+
+    <!-- Formulaire de modification / ajout (caché par défaut) -->
+    <div class="card border-0 shadow-sm rounded-0 p-4 p-md-5 mt-4 d-none" id="addressFormCard" style="background-color: #fcfcfc;">
+      <h4 class="fw-bold text-uppercase mb-4" id="formTitle" style="font-size: 1.1rem; letter-spacing: 1px;">Modifier mon adresse</h4>
+      
+      <form id="addressForm">
+        <div class="mb-3">
+          <label class="form-label text-muted" style="font-size: 0.85rem;">Adresse (Numéro et rue)</label>
+          <input type="text" id="inputAdresse" class="form-control rounded-0 border-0 py-2" style="background-color: #eee;" placeholder="Ex: 12 Rue de la Mode" required>
+        </div>
+
+        <div class="row g-3 mb-3">
+          <div class="col-md-6">
+            <label class="form-label text-muted" style="font-size: 0.85rem;">Code postal</label>
+            <input type="text" id="inputCodePostal" class="form-control rounded-0 border-0 py-2" style="background-color: #eee;" placeholder="Ex: 75001" required>
+          </div>
+          <div class="col-md-6">
+            <label class="form-label text-muted" style="font-size: 0.85rem;">Ville</label>
+            <input type="text" id="inputVille" class="form-control rounded-0 border-0 py-2" style="background-color: #eee;" placeholder="Ex: Paris" required>
+          </div>
+        </div>
+
+        <div class="row g-3 mb-4">
+          <div class="col-md-6">
+            <label class="form-label text-muted" style="font-size: 0.85rem;">Pays</label>
+            <input type="text" id="inputPays" class="form-control rounded-0 border-0 py-2" style="background-color: #eee;" value="France" required>
+          </div>
+          <div class="col-md-6">
+            <label class="form-label text-muted" style="font-size: 0.85rem;">Numéro de téléphone</label>
+            <input type="tel" id="inputTelephone" class="form-control rounded-0 border-0 py-2" style="background-color: #eee;" placeholder="Ex: 06 12 34 56 78" required>
+          </div>
+        </div>
+
+        <div class="d-flex gap-2">
+          <button type="submit" class="btn btn-dark rounded-0 px-4 py-2 text-uppercase fw-bold text-white" style="font-size: 0.8rem; letter-spacing: 1px;">Enregistrer</button>
+          <button type="button" id="btnCancel" class="btn btn-outline-secondary rounded-0 px-4 py-2 text-uppercase fw-bold" style="font-size: 0.8rem;">Annuler</button>
+        </div>
+      </form>
+    </div>
+
+    <!-- Bouton Ajouter (affiché si aucune adresse n'est présente) -->
+    <div class="mt-4" id="addActionContainer">
+      <button id="btnAddAddress" class="btn btn-dark rounded-0 px-4 py-3 text-uppercase fw-bold text-white" style="font-size: 0.85rem; letter-spacing: 1px;">+ Ajouter une nouvelle adresse</button>
+    </div>
+  </div>
+
+  <script>
+    let userName = "";
+
+    document.addEventListener("DOMContentLoaded", async () => {
+      try {
+        const userRes = await fetch('/user/me');
+        const userData = await userRes.json();
+        if (userData.success) {
+          userName = `${userData.user.prenom || ''} ${userData.user.nom || ''}`.trim();
+        }
+        loadAddress();
+      } catch (error) {
+        console.error("Erreur de chargement :", error);
+      }
+    });
+
+    async function loadAddress() {
+      try {
+        const response = await fetch('/user/address');
+        const data = await response.json();
+
+        const container = document.getElementById('addressCardContainer');
+        const addBtnContainer = document.getElementById('addActionContainer');
+
+        if (data.success && data.address && data.address.adresse && data.address.adresse.trim() !== "") {
+          container.innerHTML = `
+            <div class="col-md-6">
+              <div class="card border-0 shadow-sm rounded-0 p-4 h-100 position-relative" style="background-color: #fcfcfc;">
+                <span class="badge bg-black text-white rounded-0 text-uppercase mb-3 align-self-start px-2 py-1" style="font-size: 0.65rem; letter-spacing: 1px;">Principal</span>
+                <h6 class="fw-bold mb-1">${userName || 'Mon Compte'}</h6>
+                <p class="text-muted mb-3" style="font-size: 0.9rem; line-height: 1.5;">
+                  ${data.address.adresse}<br>
+                  ${data.address.code_postal} ${data.address.ville}, ${data.address.pays || 'France'}<br>
+                  Tél : ${data.address.telephone || 'Non renseigné'}
+                </p>
+                <div class="mt-auto d-flex gap-2">
+                  <button onclick="openEditForm('${data.address.adresse}', '${data.address.code_postal}', '${data.address.ville}', '${data.address.pays || 'France'}', '${data.address.telephone || ''}')" class="btn btn-sm btn-outline-dark rounded-0 text-uppercase fw-bold" style="font-size: 0.75rem;">Modifier</button>
+                  <button onclick="deleteAddress()" class="btn btn-sm btn-outline-danger rounded-0 text-uppercase fw-bold" style="font-size: 0.75rem;">Supprimer</button>
+                </div>
+              </div>
+            </div>
+          `;
+          addBtnContainer.classList.add('d-none');
+        } else {
+          container.innerHTML = `<p class="text-muted">Aucune adresse enregistrée pour le moment.</p>`;
+          addBtnContainer.classList.remove('d-none');
+        }
+      } catch (error) {
+        console.error("Erreur chargement adresse :", error);
+      }
+    }
+
+    function openEditForm(adresse, cp, ville, pays, tel) {
+      document.getElementById('inputAdresse').value = adresse;
+      document.getElementById('inputCodePostal').value = cp;
+      document.getElementById('inputVille').value = ville;
+      document.getElementById('inputPays').value = pays;
+      document.getElementById('inputTelephone').value = tel;
+      
+      document.getElementById('addressFormCard').classList.remove('d-none');
+      document.getElementById('addActionContainer').classList.add('d-none');
+    }
+
+    document.getElementById('btnAddAddress').addEventListener('click', () => {
+      document.getElementById('addressForm').reset();
+      document.getElementById('addressFormCard').classList.remove('d-none');
+      document.getElementById('addActionContainer').classList.add('d-none');
+    });
+
+    document.getElementById('btnCancel').addEventListener('click', () => {
+      document.getElementById('addressFormCard').classList.add('d-none');
+      loadAddress();
+    });
+
+    document.getElementById('addressForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const adresse = document.getElementById('inputAdresse').value;
+      const code_postal = document.getElementById('inputCodePostal').value;
+      const ville = document.getElementById('inputVille').value;
+      const pays = document.getElementById('inputPays').value;
+      const telephone = document.getElementById('inputTelephone').value;
+
+      const alertBox = document.getElementById('alertMessage');
+
+      try {
+        const response = await fetch('/user/address/save', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ adresse, code_postal, ville, pays, telephone })
+        });
+
+        const result = await response.json();
+        alertBox.classList.remove('d-none');
+
+        if (result.success) {
+          alertBox.className = "alert alert-success rounded-0 mb-4";
+          alertBox.textContent = result.message;
+          document.getElementById('addressFormCard').classList.add('d-none');
+          loadAddress();
+        } else {
+          alertBox.className = "alert alert-danger rounded-0 mb-4";
+          alertBox.textContent = result.message || "Erreur lors de l'enregistrement.";
+        }
+      } catch (error) {
+        console.error("Erreur :", error);
+      }
+    });
+
+    async function deleteAddress() {
+      if (!confirm("Voulez-vous vraiment supprimer cette adresse ?")) return;
+
+      try {
+        const response = await fetch('/user/address/update', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ adresse: '', code_postal: '', ville: '', pays: '', telephone: '' })
+        });
+
+        const result = await response.json();
+        if (result.success) {
+          loadAddress();
+        }
+      } catch (error) {
+        console.error("Erreur suppression :", error);
+      }
+    }
+    
+  </script>
+</body>
+</html>

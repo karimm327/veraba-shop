@@ -1,0 +1,647 @@
+/* ==============================
+   Base
+============================== */
+body {
+  margin: 0;
+  padding: 0;
+  top: 0;
+  overflow-x: hidden;
+  background-color: #fff;
+  font-family: Arial, sans-serif;
+  color: #333;
+}
+/* ==========================================
+   MÉGA-MENU 100% BLANC PUR & STATIQUE (Vigoblue)
+   [CONSERVÉ INTACT SELON VOTRE DEMANDE]
+========================================== */
+
+.nav-item-dropdown {
+    position: static !important;
+}
+
+.nav-item-dropdown .mega-menu {
+    display: block !important; 
+    position: fixed !important;
+    top: 109px !important;
+    left: 0 !important;
+    right: 0 !important;
+    width: 100vw !important;
+    background-color: #ffffff !important;
+    
+    padding-top: 1rem !important;
+    padding-bottom: 1rem !important;
+    
+    border: none !important;
+    border-top: none !important;
+    border-bottom: none !important;
+    box-shadow: none !important;
+    
+    opacity: 0 !important;
+    visibility: hidden !important;
+    pointer-events: none !important;
+    transition: opacity 0.25s ease, visibility 0.25s ease !important;
+    z-index: 9999 !important;
+}
+
+.nav-item-dropdown .mega-menu.show-mega {
+    opacity: 1 !important;
+    visibility: visible !important;
+    pointer-events: auto !important;
+}
+
+.navbar .menu-link,
+.nav-item-dropdown > a {
+    position: relative;
+    display: inline-block;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+.navbar .menu-link::after,
+.nav-item-dropdown > a::after {
+    content: '';
+    position: absolute;
+    bottom: 0px;
+    left: 50%;
+    width: 0;
+    height: 2px;
+    background-color: #000000;
+    transition: width 0.3s ease, left 0.3s ease;
+}
+
+.navbar .menu-link:hover::after,
+.navbar .menu-link.active::after,
+.nav-item-dropdown > a:hover::after,
+.nav-item-dropdown > a.active::after {
+    width: 100%;
+    left: 0;
+}
+
+.nav-item-dropdown:hover .mega-menu {
+    opacity: 1 !important;
+    visibility: visible !important;
+    pointer-events: auto !important;
+}
+
+.mega-menu h6 {
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    color: #000000 !important;
+    margin-bottom: 1rem !important;
+}
+
+.mega-menu ul.list-unstyled li a {
+    font-size: 0.85rem;
+    color: #666666 !important;
+    transition: color 0.2s ease !important;
+    display: inline-block;
+}
+
+.mega-menu ul.list-unstyled li a:hover {
+    color: #000000 !important;
+    transform: none !important;
+}
+
+.navbar .navbar-brand.h5,
+.h5 {
+  font-size: 1.05rem !important;
+}
+
+/* ==============================
+   Navbar & Recherche (INTACT)
+============================== */
+.search-wrapper {
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.search-box {
+    position: relative;
+    background: white;
+    border-radius: 30px;
+}
+
+.cta-btn {
+    background-color: white !important;
+    color: #000 !important;               
+    border: 1px solid black !important;   
+    padding: 6px 15px;                    
+    font-size: 12px;                      
+    transition: all 0.3s ease;           
+}
+
+.cta-btn:hover {
+    background-color: #000 !important;    
+    color: #fff !important;               
+    text-decoration: none;
+}
+
+.search-box:focus-within {
+    outline: none !important;
+    box-shadow: none !important;
+}
+
+.search-input:focus {
+    border-color: #eee !important; 
+    outline: none !important;
+    box-shadow: none !important;
+}
+
+.search-box:focus-within .search-icon {
+    outline: none !important;
+    box-shadow: none !important;
+}
+
+.search-input {
+    border: 2px solid #eee;
+    border-radius: 30px;
+    padding: 15px 25px;
+    padding-right: 50px;
+    width: 100%;
+    transition: all 0.3s ease;
+}
+
+.container {
+    background-color: white;
+}
+
+.search-icon {
+    position: absolute;
+    right: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #666;
+    transition: all 0.3s ease;
+}
+
+.suggestions {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: white;
+    border-radius: 15px;
+    margin-top: 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+    opacity: 0;
+    transform: translateY(-10px);
+    transition: all 0.3s ease;
+    z-index: 1000;
+}
+
+.search-box:focus-within .suggestions {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.suggestion-item {
+    padding: 12px 20px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.suggestion-item i {
+    margin-right: 10px;
+}
+
+.recent-searches {
+    color: #666;
+    font-size: 0.8rem;
+    padding: 10px 20px;
+    background: #f8f9fa;
+    border-radius: 15px 15px 0 0;
+}
+    
+.tab-navigation {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 2rem;
+    flex-wrap: wrap;
+}
+
+.search-compact input:focus,
+.search-compact button:focus {
+    outline: none;
+    box-shadow: none;    
+}
+
+.search-compact input:focus {
+    border-color: black;
+}
+
+.navbar-fixed-bottom {
+    position: fixed;
+    bottom: 0; 
+    left: 0;
+    width: 100%;
+    background-color: black;
+    color: white;
+    z-index: 9999;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    padding: 10px 0; 
+    box-sizing: border-box;
+}
+
+.navbar .d-flex.flex-wrap.gap-3 {
+    margin-bottom: 10px; 
+    align-items: center; 
+}
+
+.navbar-nav {
+    margin-top: 0px; 
+    top: 0;
+    padding: 0;
+}
+
+/* ==============================
+   Footer & Réseaux sociaux
+============================== */
+.social-icon {
+  width: 35px;
+  height: 35px;
+  line-height: 35px;
+  border-radius: 50%;
+  text-align: center;
+  color: #fff;
+  display: inline-block;
+  margin: 0 8px;
+  transition: all 0.3s ease;
+}
+
+.social-icon:hover {
+  transform: translateY(-3px);
+  color: #fff;
+}
+
+.footer-style {
+  background: whitesmoke;
+  color: #111;
+  font-family: Arial, sans-serif;
+  font-size: 0.9rem;
+  padding: 40px 20px 20px;
+}
+
+.footer-style .container {
+  padding-top:13px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 30px;
+}
+
+.footer-style .footer-title {
+  font-size: 1rem;
+  font-weight: bold;
+  margin-bottom: 15px;
+  color: #111;
+  text-transform: uppercase;
+}
+
+.footer-style .footer-links {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.footer-style .footer-links li {
+  margin-bottom: 8px;
+}
+
+.footer-style .footer-links a {
+  text-decoration: none;
+  color: #333;
+  transition: color 0.3s;
+}
+
+.footer-style .footer-links a:hover {
+  color: #00aaff;
+}
+
+.footer-off {
+  color: #888;
+  font-size: 0.8rem;
+}
+
+.footer-bottom {
+  border-top: 1px solid #ddd;
+  margin-top: 30px;
+  padding-top: 15px;
+  text-align: center;
+  font-size: 0.8rem;
+  color: #666;
+}
+
+/* ==============================
+   Carrousel & Galerie Produit (Vigoblue Pro)
+============================== */
+
+   .btn-favorite.active svg {
+  fill: #dc3545;
+  stroke: #dc3545;
+}
+
+s
+.carousel-inner img {
+  border-radius: 12px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.15);
+  transition: transform 0.5s ease;
+}
+
+.carousel-inner img:hover {
+  transform: scale(1.03);
+}
+
+/* Miniatures en colonne verticale (Style Nike/Zalando) */
+#thumbnail-container .thumbnail {
+  width: 100%;
+  height: 90px;
+  object-fit: cover;
+  cursor: pointer;
+  border: 1px solid #e5e5e5 !important;
+  border-radius: 0 !important;
+  opacity: 0.5;
+  transition: opacity 0.2s ease, border-color 0.2s ease;
+}
+
+#thumbnail-container .thumbnail:hover,
+#thumbnail-container .thumbnail.active {
+  opacity: 1;
+  border-color: #111111 !important;
+  transform: none;
+}
+
+/* ==============================
+   Section Produit & Boutons Modernes
+============================== */
+h2 {
+  font-family: 'Oswald', sans-serif;
+  font-weight: bold;
+  margin-bottom: 1rem;
+}
+
+p.text-muted {
+  font-size: 0.9rem;
+}
+
+.h4 {
+  color: #28a745;
+  font-weight: bold;
+}
+
+.bi-star-fill,
+.bi-star-half {
+  transition: transform 0.3s ease;
+}
+
+.bi-star-fill:hover,
+.bi-star-half:hover {
+  transform: scale(1.2);
+  color: #ffbf00 !important;
+}
+
+/* Fond whitesmoke unifié */
+.bg-whitesmoke {
+    background-color: #f7f7f7 !important;
+}
+
+/* Boutons de tailles carrés modernes */
+.btn-size-modern {
+    background-color: #ffffff;
+    color: #111111;
+    border: 1px solid #ddd;
+    width: 42px;
+    height: 42px;
+    border-radius: 0 !important;
+    font-weight: 500;
+    font-size: 0.85rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+}
+
+.btn-size-modern:hover {
+    border-color: #111111;
+    background-color: #fafafa;
+}
+
+.btn-size-modern.active {
+    background-color: #111111 !important;
+    color: #ffffff !important;
+    border-color: #111111 !important;
+    box-shadow: none;
+}
+
+/* Style pour les boutons de taille indisponibles (grisé + croix diagonale Nike) */
+.btn-size-modern.disabled, 
+.btn-size-modern:disabled {
+  background-color: #f3f4f6 !important;
+  color: #9ca3af !important;
+  border-color: #e5e7eb !important;
+  cursor: not-allowed;
+  position: relative;
+  opacity: 0.6;
+}
+
+.btn-size-modern.disabled::after, 
+.btn-size-modern:disabled::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(to top right, transparent calc(50% - 0.5px), #9ca3af calc(50% - 0.5px), #9ca3af calc(50% + 0.5px), transparent calc(50% + 0.5px));
+}
+
+
+
+/* Bouton principal Ajouter au panier */
+.btn-modern-cart {
+    border-radius: 0 !important;
+    background-color: #111;
+    color: #fff;
+    border: none;
+    font-size: 0.95rem;
+    transition: all 0.2s ease;
+}
+
+.btn-modern-cart:hover {
+    background-color: #333 !important;
+}
+
+/* Bouton Favoris carré */
+.btn-modern-wishlist {
+    background-color: #ffffff;
+    color: #111;
+    border: 1px solid #ddd;
+    border-radius: 0 !important;
+    width: 50px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+}
+
+.btn-modern-wishlist:hover {
+    background-color: #111 !important;
+    color: #fff !important;
+    border-color: #111 !important;
+}
+
+/* Style net pour l'accordéon */
+.custom-accordion .accordion-button:not(.collapsed) {
+    color: #111;
+    background-color: transparent;
+    box-shadow: none;
+}
+
+.custom-accordion .accordion-button:focus {
+    box-shadow: none;
+    border-color: transparent;
+}
+
+.custom-accordion .accordion-button::after {
+    background-size: 0.65rem;
+}
+
+
+/* ==========================================
+   8. PAGINATION & SCROLLBARS
+   ========================================== */
+.overflow-x-auto::-webkit-scrollbar,
+.d-flex::-webkit-scrollbar {
+  display: none;
+}
+.overflow-x-auto {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.tab-navigation {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 2rem;
+  flex-wrap: wrap;
+}
+
+.pagination-minimal {
+  color: white;
+  background: whitesmoke;
+}
+
+.pagination-minimal .page-link {
+  border: none;
+  color: #6c757d;
+  font-weight: 620;
+  transition: all 0.2s ease;
+  position: relative;
+  margin: 3px;
+  font-size: 11px;
+  background: black;
+}
+
+.pagination-minimal .page-item.active .page-link {
+  background: whitesmoke;
+  color: black;
+}
+
+.pagination-minimal:hover .page-link:hover {
+  background: none;
+  color: grey;
+}
+
+.pagination-minimal .page-link:focus {
+  box-shadow: none;
+}
+
+.logo {
+  font-size: 1rem;
+  font-weight: bold;
+}
+
+.scrollLeft,
+.scrollRight {
+  z-index: 1000 !important;
+}
+
+/* ==========================================
+   9. FOOTER & COOKIE ALERT
+   ========================================== */
+.social-icon {
+  width: 35px;
+  height: 35px;
+  line-height: 35px;
+  border-radius: 50%;
+  text-align: center;
+  color: #fff;
+  display: inline-block;
+  margin: 0 8px;
+  transition: all 0.3s ease;
+}
+
+.social-icon:hover {
+  transform: translateY(-3px);
+  color: #fff;
+}
+
+.footer-style {
+  background-color: whitesmoke !important;
+  color: #111;
+  font-family: Arial, sans-serif;
+  font-size: 0.9rem;
+  padding: 40px 20px 20px;
+}
+
+.footer-style .container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 30px;
+    background-color: whitesmoke !important;
+}
+
+.footer-style .footer-title {
+  font-size: 1rem;
+  font-weight: bold;
+  margin-bottom: 15px;
+  color: #111;
+  text-transform: uppercase;
+}
+
+.footer-style .footer-links {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.footer-style .footer-links li {
+  margin-bottom: 8px;
+}
+
+.footer-style .footer-links a {
+  text-decoration: none;
+  color: #333;
+  transition: color 0.3s;
+}
+
+.footer-style .footer-links a:hover {
+  color: #00aaff;
+}
+
+.footer-off {
+  color: #888;
+  font-size: 0.8rem;
+}
+
+.footer-bottom {
+  border-top: 1px solid #ddd;
+  margin-top: 30px;
+  padding-top: 15px;
+  text-align: center;
+  font-size: 0.8rem;
+  color: #666;
+}
+
