@@ -4,9 +4,33 @@
 <meta charset="UTF-8">
 <link rel="stylesheet" href="signup.css" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Inscription - VigoBlue</title>
+<title>Inscription</title>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+  <link rel="icon" type="image/png" href="aaa.png">
+<style>
+  /* ===== Consentements (style grandes marques) ===== */
+  .consentements { margin: 6px 0 18px; display: grid; gap: 12px; }
+  .case { display: flex; align-items: flex-start; gap: 12px; cursor: pointer; font-size: .85rem; line-height: 1.45; color: #333; user-select: none; }
+  .case input { position: absolute; opacity: 0; width: 1px; height: 1px; }
+  .case-boite { flex-shrink: 0; width: 20px; height: 20px; margin-top: 1px; border: 1.5px solid #8a8a8a; border-radius: 4px; background: #fff;
+    display: inline-flex; align-items: center; justify-content: center; transition: background .15s, border-color .15s, box-shadow .15s; }
+  .case-boite svg { width: 12px; height: 12px; stroke: #fff; opacity: 0; transform: scale(.6); transition: opacity .15s, transform .15s; }
+  .case input:checked + .case-boite { background: #111; border-color: #111; }
+  .case input:checked + .case-boite svg { opacity: 1; transform: none; }
+  .case input:focus-visible + .case-boite { box-shadow: 0 0 0 3px rgba(15,61,46,.25); }
+  .case:hover .case-boite { border-color: #111; }
+  .case a { color: #111; font-weight: 600; text-decoration: underline; text-underline-offset: 2px; }
+  .case a:hover { color: #0f3d2e; }
+  .case .oblig { color: #b3261e; }
+  .case.erreur .case-boite { border-color: #b3261e; box-shadow: 0 0 0 3px rgba(179,38,30,.12); }
+  .case.erreur { animation: secoue .35s; }
+  @keyframes secoue { 25% { transform: translateX(-4px); } 75% { transform: translateX(4px); } }
+  .mention { font-size: .75rem; color: #6b6b6b; line-height: 1.5; margin: 0 0 16px; }
+  .mention a { color: #6b6b6b; }
+  #btnInscription.inactif { background: #bdbdbd; border-color: #bdbdbd; }
+  #btnInscription:disabled { opacity: .7; }
+</style>
 </head>
 <body>
 <div class="container">
@@ -17,7 +41,7 @@
           <img src="logop.png" alt="BrandName" width="150" height="150" class="me-1">
         </a>
         <h3 class="text-center mb-4">Faisons de toi un membre Vigoblue.</h3>
-        <form id="registerForm">
+        <form id="registerForm" novalidate>
           <div class="mb-3">
             <label for="registerEmail" class="form-label"></label>
             <input type="email" id="registerEmail" class="form-control" placeholder="Email*" required>
@@ -44,15 +68,35 @@
             <input type="password" id="registerPassword" class="form-control" required>
             <i id="togglePassword" class="bi bi-eye-fill toggle-eye"></i>
             <ul class="password-rules mt-2" style="padding-left:0;">
-              <li id="ruleLength" style="color:red;">• Minimum 8 caractères</li>
-              <li id="ruleUpper" style="color:red;">• Au moins 1 majuscule</li>
-              <li id="ruleDigits" style="color:red;">• Au moins 3 chiffres</li>
-              <li id="ruleSymbol" style="color:red;">• Au moins 1 symbole (!@#$%^&*.)</li>
+              <li id="ruleLength" style="color:orange;">  Minimum 8 caractères</li>
+              <li id="ruleUpper" style="color:red;"> Au moins 1 majuscule</li>
+              <li id="ruleDigits" style="color:red;"> Au moins 3 chiffres</li>
+              <li id="ruleSymbol" style="color:red;"> Au moins 1 symbole (!@#$%^&*.)</li>
             </ul>
           </div>
 
+          <!-- ===== Consentements ===== -->
+          <div class="consentements">
+            <label class="case" id="caseCgu">
+              <input type="checkbox" id="cgu" required>
+              <span class="case-boite"><svg viewBox="0 0 12 12" fill="none" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M2.5 6.2l2.3 2.3 4.7-4.9"/></svg></span>
+              <span>J'accepte les <a href="cgu.html" target="_blank" rel="noopener">Conditions générales d'utilisation et de vente</a> et j'ai lu la <a href="confidentialite.html" target="_blank" rel="noopener">Politique de confidentialité</a>. <span class="oblig">*</span></span>
+            </label>
+
+            <label class="case">
+              <input type="checkbox" id="newsletter">
+              <span class="case-boite"><svg viewBox="0 0 12 12" fill="none" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M2.5 6.2l2.3 2.3 4.7-4.9"/></svg></span>
+              <span>Je souhaite recevoir par e-mail les nouveautés, offres exclusives et codes promo VigoBlue. <span class="text-muted">(facultatif — désinscription possible à tout moment)</span></span>
+            </label>
+          </div>
+
+          <p class="mention">
+            Tes données (e-mail, nom, prénom, date de naissance) sont utilisées uniquement pour créer ton compte, gérer tes commandes et, si tu l'acceptes, t'envoyer nos offres.
+            Tu peux y accéder, les modifier ou les supprimer à tout moment. En savoir plus : <a href="confidentialite.html" target="_blank" rel="noopener">Politique de confidentialité</a>.
+          </p>
+
           <div class="d-grid mb-3">
-            <button type="submit" class="btn btn-dark">S'inscrire</button>
+            <button type="submit" id="btnInscription" class="btn btn-dark inactif" aria-disabled="true">S'inscrire</button>
           </div>
         </form>
       </div>
@@ -75,6 +119,25 @@ const ruleUpper = document.getElementById("ruleUpper");
 const ruleDigits = document.getElementById("ruleDigits");
 const ruleSymbol = document.getElementById("ruleSymbol");
 const emailInput = document.getElementById("registerEmail");
+const caseCgu = document.getElementById("cgu");
+const btnInscription = document.getElementById("btnInscription");
+
+/* -------------------- CONSENTEMENT : bouton actif seulement si les CGU sont cochées -------------------- */
+function majBouton() {
+  btnInscription.classList.toggle("inactif", !caseCgu.checked);
+  btnInscription.setAttribute("aria-disabled", !caseCgu.checked);
+}
+caseCgu.addEventListener("change", () => {
+  majBouton();
+  document.getElementById("caseCgu").classList.remove("erreur");
+});
+// Montre la case obligatoire (tremblement + contour rouge)
+function signalerCgu() {
+  const c = document.getElementById("caseCgu");
+  c.classList.remove("erreur"); void c.offsetWidth; c.classList.add("erreur");
+  c.scrollIntoView({ behavior: "smooth", block: "center" });
+  notif("Coche la case pour accepter les Conditions générales et la Politique de confidentialité.", "erreur", "Une dernière étape");
+}
 
 /* -------------------- TOGGLE PASSWORD -------------------- */
 togglePassword.addEventListener("click", () => {
@@ -107,6 +170,15 @@ registerForm.addEventListener("submit", async (e) => {
   const jour = document.getElementById("jour").value.trim();
   const mois = document.getElementById("mois").value.trim();
   const annee = document.getElementById("annee").value.trim();
+  const cgu = caseCgu.checked;
+  const newsletter = document.getElementById("newsletter").checked;
+
+  if (!cgu) { signalerCgu(); return; }
+
+  if (!email || !password || !prenom || !nom || !jour || !mois || !annee) {
+    notif("Tous les champs sont requis", "erreur");
+    return;
+  }
 
   const validPassword = password.length >= 8 &&
                         /[A-Z]/.test(password) &&
@@ -118,23 +190,21 @@ registerForm.addEventListener("submit", async (e) => {
     return;
   }
 
-  if (!email || !password || !prenom || !nom || !jour || !mois || !annee) {
-    notif("Tous les champs sont requis", "erreur");
-    return;
-  }
-
+  btnInscription.disabled = true;
   try {
     const res = await fetch(`${API_URL}/register`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email, password, prenom, nom, jour, mois, annee })
+      body: JSON.stringify({ email, password, prenom, nom, jour, mois, annee, cgu, newsletter })
     });
     const data = await res.json();
     notif(data.message, data.success ? "succes" : "erreur", data.success ? "Bienvenue chez VigoBlue" : undefined);
     if (data.success && data.redirect) setTimeout(() => window.location.href = data.redirect, 1800);
+    else btnInscription.disabled = false;
   } catch (err) {
     console.error(err);
     notif("Erreur serveur, réessaie dans un instant.", "erreur");
+    btnInscription.disabled = false;
   }
 });
 </script>

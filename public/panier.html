@@ -678,96 +678,175 @@ footer .container-fluid {
 </style>
 
 
+
 <section id="page1" class="vbp">
   <style>
-    .vbp { --noir: #111; --gris: #707072; --trait: #e5e5e5; --vert: #0f3d2e; background: #fff; padding: 40px 0 72px; font-family: 'Helvetica Neue', Arial, sans-serif; color: var(--noir); }
-    .vbp-in { max-width: 1100px; margin: 0 auto; padding: 0 20px; display: grid; grid-template-columns: minmax(0, 1fr) 350px; gap: 56px; align-items: start; }
-    @media (max-width: 991px) { .vbp-in { grid-template-columns: 1fr; gap: 32px; } }
+    /* ================= PANIER — style Zalando épuré ================= */
+    .vbp { --noir: #111; --gris: #6f6f6f; --trait: #e6e6e6; --fond: #f6f6f6; --vert: #0f3d2e;
+      background: #fff; padding: 36px 0 80px; font-family: 'Helvetica Neue', Arial, sans-serif; color: var(--noir); }
+    .vbp *, .vbp *::before, .vbp *::after { box-sizing: border-box; }
+    .vbp-in { max-width: 1180px; margin: 0 auto; padding: 0 24px; display: grid; grid-template-columns: minmax(0, 1fr) 380px; gap: 48px; align-items: start; }
 
-    /* Bandeau livraison offerte */
-    .vbp-livraison { background: #f5f5f5; padding: 14px 16px; margin-bottom: 26px; font-size: .88rem; }
+    /* ---------- En-tête ---------- */
+    .vbp-tete { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; flex-wrap: wrap; margin-bottom: 18px; }
+    .vbp-titre { font-size: 1.75rem; font-weight: 600; letter-spacing: -.3px; margin: 0; }
+    .vbp-titre small { font-size: 1rem; font-weight: 400; color: var(--gris); margin-left: 6px; }
+    .vbp-continuer { font-size: .88rem; color: var(--noir); text-decoration: underline; text-underline-offset: 3px; white-space: nowrap; }
+    .vbp-continuer:hover { color: var(--vert); }
+    .vbp-sous { display: none; }
+
+    /* ---------- Bandeau livraison offerte ---------- */
+    .vbp-livraison { background: var(--fond); padding: 14px 16px; margin-bottom: 8px; font-size: .88rem; display: flex; gap: 12px; align-items: center; }
+    .vbp-livraison svg { flex-shrink: 0; color: var(--vert); }
+    .vbp-livraison-corps { flex: 1; min-width: 0; }
     .vbp-livraison-txt strong { color: var(--vert); }
-    .vbp-barre { height: 4px; background: #ddd; border-radius: 2px; margin-top: 10px; overflow: hidden; }
+    .vbp-barre { height: 4px; background: #dedede; border-radius: 2px; margin-top: 8px; overflow: hidden; }
     .vbp-barre span { display: block; height: 100%; width: 0; background: var(--vert); border-radius: 2px; transition: width .5s ease; }
 
-    /* Titre */
-    .vbp-titre { font-size: 1.5rem; font-weight: 500; margin: 0 0 4px; }
-    .vbp-sous { color: var(--gris); font-size: .95rem; margin: 0 0 8px; }
+    /* ---------- Articles ---------- */
+    .vbp #cart-items { display: flex; flex-direction: column; }
+    .vbp #cart-items > p { padding: 48px 0 !important; }
+    .vbp .vbp-item { display: grid; grid-template-columns: 140px minmax(0, 1fr); gap: 20px; padding: 24px 0; border-bottom: 1px solid var(--trait); }
+    .vbp .vbp-item-img { width: 140px; aspect-ratio: 1; background: var(--fond); overflow: hidden; }
+    .vbp .vbp-item-img img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .vbp .vbp-item-corps { display: flex; flex-direction: column; justify-content: space-between; gap: 14px; min-width: 0; }
+    .vbp .vbp-item-haut { display: flex; justify-content: space-between; align-items: flex-start; gap: 14px; }
+    .vbp .vbp-item-infos { min-width: 0; }
+    .vbp .vbp-item-nom { font-size: 1rem; font-weight: 500; line-height: 1.3; margin: 0 0 4px; overflow-wrap: anywhere; }
+    .vbp .vbp-item-meta, .vbp .vbp-item-unite { font-size: .88rem; color: var(--gris); margin: 0; line-height: 1.45; }
+    .vbp .vbp-item-prix { font-size: 1rem; font-weight: 600; white-space: nowrap; }
+    .vbp .vbp-item-bas { display: flex; justify-content: space-between; align-items: center; gap: 12px; }
+    .vbp .vbp-qte { display: inline-flex; align-items: center; border: 1px solid var(--trait); border-radius: 999px; padding: 3px; }
+    .vbp .vbp-qte button { width: 34px; height: 34px; border: 0; border-radius: 50%; background: none; color: var(--noir); display: inline-flex; align-items: center; justify-content: center; font-size: 1.15rem; line-height: 1; cursor: pointer; transition: background .15s, color .15s; }
+    .vbp .vbp-qte button:hover { background: #f0f0f0; }
+    .vbp .vbp-qte .remove-btn:hover { color: #c0392b; }
+    .vbp .vbp-qte .quantity-input { min-width: 30px; text-align: center; font-weight: 600; font-size: .95rem; }
+    .vbp .vbp-suppr { border: 0; background: none; padding: 6px 0; color: var(--gris); font-size: .85rem; display: inline-flex; align-items: center; gap: 6px; cursor: pointer; }
+    .vbp .vbp-suppr span { text-decoration: underline; text-underline-offset: 3px; }
+    .vbp .vbp-suppr:hover { color: var(--noir); }
 
-    /* Articles (générés par le script du panier) */
-    .vbp #cart-items { gap: 0 !important; }
-    .vbp .cart-item-card { background: transparent !important; border: 0 !important; border-bottom: 1px solid var(--trait) !important; border-radius: 0 !important; box-shadow: none !important; padding: 24px 0 !important; margin: 0 !important; }
-    .vbp .cart-item-card img { width: 150px !important; height: 150px !important; object-fit: cover !important; background: #f5f5f5; }
-    .vbp .cart-item-card > .row { flex-wrap: nowrap; align-items: flex-start !important; }
-    .vbp .cart-item-card > .row > div { width: auto; flex: 0 0 auto; }
-    .vbp .cart-item-card > .row > div:nth-child(1) { text-align: left !important; }
-    .vbp .cart-item-card > .row > div:nth-child(2) { flex: 1 1 auto; min-width: 0; }
-    .vbp .cart-item-card > .row > div:nth-child(4) { flex-direction: column; align-items: flex-end !important; justify-content: flex-start !important; gap: 10px !important; }
-    @media (max-width: 767px) {
-      .vbp .cart-item-card > .row { flex-wrap: wrap; }
-      .vbp .cart-item-card > .row > div:nth-child(2) { flex: 1 1 calc(100% - 130px); }
-      .vbp .cart-item-card > .row > div:nth-child(3) { margin-left: 112px; }
-      .vbp .cart-item-card > .row > div:nth-child(4) { flex-direction: row; align-items: center !important; margin-left: auto; }
-    }
-    .vbp .cart-item-card h6 { font-size: 1rem !important; font-weight: 500 !important; }
-    .vbp .cart-item-card .badge { background: none !important; border: 0 !important; padding: 0 !important; color: var(--gris) !important; font-size: .95rem !important; font-weight: 400 !important; border-radius: 0 !important; display: block; text-align: left; }
-    .vbp .cart-item-card .my-2 { flex-direction: column; gap: 2px !important; }
-    .vbp .cart-item-card .d-inline-flex.rounded-pill { background: #fff !important; border: 1px solid var(--trait) !important; }
-    .vbp .cart-item-card .quantity-btn { width: 30px; height: 30px; border-radius: 50%; }
-    .vbp .cart-item-card .quantity-btn:hover { background: #f5f5f5; }
-    .vbp .cart-item-card .product-total { font-weight: 500 !important; font-size: 1rem !important; }
-    .vbp .cart-item-card .remove-btn { width: 36px; height: 36px; border-radius: 50%; display: inline-flex !important; align-items: center; justify-content: center; }
-    .vbp .cart-item-card .remove-btn:hover { background: #f5f5f5; color: var(--noir) !important; }
-    @media (max-width: 767px) { .vbp .cart-item-card img { width: 96px !important; height: 96px !important; } }
-
-    /* Récapitulatif */
-    .vbp-recap { position: sticky; top: 90px; }
-    .vbp-recap h2 { font-size: 1.5rem; font-weight: 500; margin: 0 0 22px; }
-    .vbp-ligne { display: flex; justify-content: space-between; font-size: .95rem; margin-bottom: 12px; }
+    /* ---------- Récapitulatif ---------- */
+    .vbp-recap { position: sticky; top: 96px; background: var(--fond); padding: 28px 26px; }
+    .vbp-recap h2 { font-size: 1.25rem; font-weight: 600; margin: 0 0 20px; }
+    .vbp-ligne { display: flex; justify-content: space-between; gap: 12px; font-size: .93rem; margin-bottom: 12px; }
     .vbp-ligne #summary-discount { color: var(--vert) !important; }
-    .vbp-total { display: flex; justify-content: space-between; align-items: center; border-top: 1px solid var(--trait); border-bottom: 1px solid var(--trait); padding: 16px 0; margin: 18px 0 22px; font-size: 1rem; font-weight: 500; }
-    .vbp-total #summary-total { font-size: 1rem !important; font-weight: 500 !important; }
-    .vbp-promo { margin: 4px 0 16px; }
-    .vbp-promo summary { list-style: none; cursor: pointer; display: flex; justify-content: space-between; align-items: center; font-size: .95rem; }
+    .vbp-promo { border-top: 1px solid #dcdcdc; padding-top: 14px; margin: 16px 0 0; }
+    .vbp-promo summary { list-style: none; cursor: pointer; display: flex; justify-content: space-between; align-items: center; font-size: .93rem; }
     .vbp-promo summary::-webkit-details-marker { display: none; }
     .vbp-promo summary::after { content: "+"; font-size: 1.3rem; font-weight: 300; transition: transform .2s; }
     .vbp-promo[open] summary::after { transform: rotate(45deg); }
     .vbp-promo-form { display: flex; gap: 8px; margin-top: 12px; }
-    .vbp-promo-form input { flex: 1; border: 1px solid #ccc; border-radius: 8px; padding: 11px 14px; font-size: .9rem; outline: none; }
+    .vbp-promo-form input { flex: 1; min-width: 0; border: 1px solid #ccc; background: #fff; padding: 11px 12px; font-size: .9rem; outline: none; }
     .vbp-promo-form input:focus { border-color: var(--noir); }
-    .vbp-promo-form button { border: 1px solid var(--noir); background: #fff; border-radius: 999px; padding: 0 18px; font-size: .85rem; font-weight: 500; }
+    .vbp-promo-form button { border: 1px solid var(--noir); background: #fff; padding: 0 16px; font-size: .85rem; font-weight: 600; }
     .vbp-promo-form button:hover { background: var(--noir); color: #fff; }
     #promo-message { font-size: .8rem; margin-top: 6px; }
-    .vbp-btn { display: block; width: 100%; text-align: center; background: var(--noir); color: #fff !important; border-radius: 999px; padding: 18px; font-size: 1rem; font-weight: 500; text-decoration: none; transition: background .2s; }
-    .vbp-btn:hover { background: #3a3a3a; }
-    .vbp-btn.disabled { background: #ccc; }
-    .vbp-rassurance { margin-top: 22px; display: grid; gap: 10px; font-size: .82rem; color: var(--gris); }
+    .vbp-total { display: flex; justify-content: space-between; align-items: baseline; border-top: 1px solid #dcdcdc; padding: 16px 0 0; margin: 16px 0 20px; font-weight: 600; }
+    .vbp-total #summary-total { font-size: 1.2rem !important; font-weight: 700 !important; }
+    .vbp-total small { display: block; font-size: .72rem; font-weight: 400; color: var(--gris); }
+    .vbp-btn { display: block; width: 100%; text-align: center; background: var(--noir); color: #fff !important; padding: 16px; font-size: .95rem; font-weight: 600; letter-spacing: .3px; text-decoration: none; transition: background .2s; }
+    .vbp-btn:hover { background: var(--vert); }
+    .vbp-btn.disabled { background: #bbb; }
+    .vbp-rassurance { margin-top: 20px; display: grid; gap: 10px; font-size: .8rem; color: var(--gris); }
     .vbp-rassurance div { display: flex; align-items: center; gap: 10px; }
     .vbp-rassurance svg { flex-shrink: 0; color: var(--noir); }
-    @media (max-width: 991px) { .vbp-recap { position: static; } }
+
+    /* ---------- Barre fixe mobile ---------- */
+    .vbp-barre-fixe { display: none; }
+
+    /* ================= Responsive ================= */
+    /* Petit PC / tablette paysage */
+    @media (max-width: 1100px) {
+      .vbp-in { grid-template-columns: minmax(0, 1fr) 330px; gap: 32px; }
+      .vbp .vbp-item { grid-template-columns: 120px minmax(0, 1fr); }
+      .vbp .vbp-item-img { width: 120px; }
+    }
+    /* Tablette portrait : toujours 2 colonnes, récap plus étroit */
+    @media (max-width: 900px) {
+      .vbp-in { grid-template-columns: minmax(0, 1fr) 290px; gap: 24px; padding: 0 20px; }
+      .vbp-recap { padding: 22px 18px; }
+      .vbp .vbp-item { grid-template-columns: 100px minmax(0, 1fr); gap: 14px; }
+      .vbp .vbp-item-img { width: 100px; }
+      .vbp .vbp-item-meta, .vbp .vbp-item-unite { font-size: .8rem; }
+      .vbp .vbp-qte button { width: 30px; height: 30px; }
+      .vbp .vbp-suppr span { display: none; }
+    }
+    /* Mobile : 1 colonne + barre fixe en bas */
+    @media (max-width: 767px) {
+      .vbp { padding: 22px 0 40px; }
+      .vbp-in { grid-template-columns: 1fr; gap: 28px; padding: 0 16px; }
+      .vbp-titre { font-size: 1.45rem; }
+      .vbp-recap { position: static; padding: 22px 18px; }
+      .vbp .vbp-item { grid-template-columns: 96px minmax(0, 1fr); padding: 18px 0; }
+      .vbp .vbp-item-img { width: 96px; }
+      .vbp .vbp-suppr span { display: inline; }
+      .vbp-barre-fixe { display: flex; position: fixed; left: 0; right: 0; bottom: 0; z-index: 1030; align-items: center; justify-content: space-between; gap: 14px;
+        background: #fff; border-top: 1px solid var(--trait); padding: 10px 16px calc(10px + env(safe-area-inset-bottom)); box-shadow: 0 -6px 20px rgba(0,0,0,.06);
+        transform: translateY(0); transition: transform .3s ease; }
+      .vbp-barre-fixe.cachee { transform: translateY(110%); }
+      .vbp-barre-fixe .lib { font-size: .72rem; color: var(--gris); display: block; }
+      .vbp-barre-fixe .val { font-size: 1.1rem; font-weight: 700; }
+      .vbp-barre-fixe a { background: var(--noir); color: #fff; text-decoration: none; font-weight: 600; font-size: .92rem; padding: 13px 26px; white-space: nowrap; }
+      .vbp-barre-fixe a.disabled { background: #bbb; pointer-events: none; }
+      body.vbp-avec-barre { padding-bottom: 72px; }
+    }
+    /* Petits téléphones (340-400px) */
+    @media (max-width: 400px) {
+      .vbp-in { padding: 0 12px; }
+      .vbp-titre { font-size: 1.3rem; }
+      .vbp-titre small { font-size: .88rem; }
+      .vbp-livraison { font-size: .8rem; padding: 12px; }
+      .vbp .vbp-item { grid-template-columns: 82px minmax(0, 1fr); gap: 12px; padding: 16px 0; }
+      .vbp .vbp-item-img { width: 82px; }
+      .vbp .vbp-item-corps { gap: 10px; }
+      .vbp .vbp-item-haut { gap: 8px; }
+      .vbp .vbp-item-nom { font-size: .88rem; }
+      .vbp .vbp-item-meta, .vbp .vbp-item-unite { font-size: .74rem; }
+      .vbp .vbp-item-prix { font-size: .88rem; }
+      .vbp .vbp-qte { padding: 2px; }
+      .vbp .vbp-qte button { width: 28px; height: 28px; font-size: 1rem; }
+      .vbp .vbp-qte .quantity-input { min-width: 24px; font-size: .85rem; }
+      .vbp .vbp-suppr { font-size: .78rem; gap: 4px; }
+      .vbp-recap { padding: 20px 14px; }
+      .vbp-barre-fixe { padding-left: 12px; padding-right: 12px; }
+      .vbp-barre-fixe a { padding: 12px 20px; }
+    }
+    @media (max-width: 350px) { .vbp .vbp-suppr span { display: none; } }
   </style>
 
   <div class="vbp-in">
-    <!-- Articles -->
+
+    <!-- ===== Colonne gauche : articles ===== -->
     <div>
-      <div class="vbp-livraison">
-        <div class="vbp-livraison-txt"><span id="free-shipping-remaining">Ajoutez des articles</span> pour profiter de la <span class="fw-bold text-success">livraison offerte</span>.</div>
-        <div class="vbp-barre"><span id="barreLivraison"></span></div>
+      <div class="vbp-tete">
+        <h1 class="vbp-titre">Panier <small id="vbpNb"></small></h1>
+        <a href="site.html" class="vbp-continuer">Continuer mes achats</a>
       </div>
-      <h1 class="vbp-titre">Panier</h1>
       <p class="vbp-sous" id="cart-count-subtitle">0 article</p>
-      <div id="cart-items" class="d-flex flex-column"></div>
+
+      <div class="vbp-livraison">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 7h11v9H3zM14 10h4l3 3v3h-7z"/><circle cx="7" cy="18" r="1.6"/><circle cx="17" cy="18" r="1.6"/></svg>
+        <div class="vbp-livraison-corps">
+          <div class="vbp-livraison-txt"><span id="free-shipping-remaining">Ajoutez des articles</span> pour profiter de la <span class="fw-bold text-success">livraison offerte</span>.</div>
+          <div class="vbp-barre"><span id="barreLivraison"></span></div>
+        </div>
+      </div>
+
+      <div id="cart-items">
+        <!-- Articles ajoutés par le script du panier -->
+      </div>
     </div>
 
-    <!-- Récapitulatif -->
+    <!-- ===== Colonne droite : récapitulatif ===== -->
     <aside class="vbp-recap">
       <h2>Récapitulatif</h2>
+
       <div class="vbp-ligne"><span>Sous-total</span><span id="summary-subtotal">0.00€</span></div>
       <div class="vbp-ligne"><span>Réduction</span><span id="summary-discount">-0.00€</span></div>
-      <div class="vbp-ligne"><span>Livraison estimée</span><span id="summary-shipping">5.00€</span></div>
+      <div class="vbp-ligne"><span>Livraison</span><span id="summary-shipping">5.00€</span></div>
 
       <details class="vbp-promo">
-        <summary>Tu as un code promo ?</summary>
+        <summary>Ajouter un code promo</summary>
         <div class="vbp-promo-form">
           <input type="text" id="promo-input" placeholder="Code promo" aria-label="Code promo">
           <button type="button" id="apply-promo-btn">Appliquer</button>
@@ -775,8 +854,12 @@ footer .container-fluid {
         <div id="promo-message"></div>
       </details>
 
-      <div class="vbp-total"><span>Total</span><span id="summary-total">0.00€</span></div>
-      <a href="paiement.html" id="checkout-btn" class="vbp-btn">Paiement</a>
+      <div class="vbp-total">
+        <span>Total<small>TVA incluse</small></span>
+        <span id="summary-total">0.00€</span>
+      </div>
+
+      <a href="paiement.html" id="checkout-btn" class="vbp-btn">Passer la commande</a>
 
       <div class="vbp-rassurance">
         <div><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="11" width="14" height="10" rx="1"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>Paiement sécurisé par Stripe</div>
@@ -786,27 +869,55 @@ footer .container-fluid {
     </aside>
   </div>
 
+  <!-- ===== Barre fixe (mobile uniquement) ===== -->
+  <div class="vbp-barre-fixe cachee" id="vbpBarreFixe">
+    <div><span class="lib">Total TVA incluse</span><span class="val" id="vbpTotalFixe">0.00€</span></div>
+    <a href="paiement.html" id="vbpPayerFixe">Passer la commande</a>
+  </div>
+
   <script>
-    // Barre "livraison offerte" : même calcul que le panier (-5 %, code promo, gratuite dès 25 €)
+    // Barre "livraison offerte", nombre d'articles et barre fixe mobile
     (function () {
-      function majBarre() {
+      const total = document.getElementById("summary-total");
+      const barreFixe = document.getElementById("vbpBarreFixe");
+      const boutonRecap = document.getElementById("checkout-btn");
+      let boutonVisible = false;
+
+      function maj() {
         let panier = [];
         try { panier = JSON.parse(localStorage.getItem("userCart")) || []; } catch (e) {}
+        const nb = panier.reduce((s, p) => s + (Number(p.quantity) || 0), 0);
         const sousTotal = panier.reduce((s, p) => s + (Number(p.price) || 0) * (Number(p.quantity) || 0), 0);
         const promo = Number(localStorage.getItem("vigoblue_promo")) || 0;
         const apresRemise = Math.max(0, sousTotal - Math.min(sousTotal * 0.05 + promo, sousTotal));
+
+        document.getElementById("vbpNb").textContent = nb ? `(${nb} article${nb > 1 ? "s" : ""})` : "";
         document.getElementById("barreLivraison").style.width = Math.min(100, (apresRemise / 25) * 100) + "%";
         const txt = document.querySelector(".vbp-livraison-txt");
-        if (sousTotal === 0) txt.innerHTML = 'Ajoute des articles pour profiter de la <strong>livraison offerte</strong> dès 25 €.';
+        if (sousTotal === 0) txt.innerHTML = 'Livraison <strong>offerte</strong> dès 25 € d\'achat.';
         else if (apresRemise >= 25) txt.innerHTML = '✓ Tu bénéficies de la <strong>livraison offerte</strong>.';
-        else txt.innerHTML = `Plus que <strong>${(25 - apresRemise).toFixed(2).replace(".", ",")} €</strong> pour profiter de la <strong>livraison offerte</strong>.`;
+        else txt.innerHTML = `Plus que <strong>${(25 - apresRemise).toFixed(2).replace(".", ",")} €</strong> pour la <strong>livraison offerte</strong>.`;
+
+        document.getElementById("vbpTotalFixe").textContent = total.textContent;
+        document.getElementById("vbpPayerFixe").classList.toggle("disabled", nb === 0);
+        const afficher = nb > 0 && !boutonVisible;
+        barreFixe.classList.toggle("cachee", !afficher);
+        document.body.classList.toggle("vbp-avec-barre", nb > 0);
       }
-      new MutationObserver(majBarre).observe(document.getElementById("summary-total"), { childList: true, characterData: true, subtree: true });
-      document.addEventListener("DOMContentLoaded", majBarre);
-      majBarre();
+
+      // Cache la barre fixe quand le vrai bouton "Passer la commande" est à l'écran
+      if ("IntersectionObserver" in window) {
+        new IntersectionObserver(e => { boutonVisible = e[0].isIntersecting; maj(); }).observe(boutonRecap);
+      }
+      new MutationObserver(maj).observe(total, { childList: true, characterData: true, subtree: true });
+      document.addEventListener("DOMContentLoaded", maj);
+      maj();
     })();
   </script>
 </section>
+
+
+
 
 
 <script>
@@ -837,40 +948,32 @@ function loadCart() {
         subtotal += totalProduct;
 
         const card = document.createElement('div');
-        card.className = 'cart-item-card p-3 bg-white rounded-4 shadow-sm border-0 mb-3 transition-all';
+        card.className = 'cart-item-card vbp-item';
+        const poubelle = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h16M10 11v6M14 11v6M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2l1-12M9 7V4h6v3"/></svg>';
         card.innerHTML = `
-        <div class="row align-items-center g-3">
-            <div class="col-4 col-md-2 text-center">
-                <img src="${product.image || 'vigo1.png'}" class="object-fit-contain" alt="${product.ref || 'Article'}" style="width: 95px; height: 95px;">
+            <div class="vbp-item-img">
+                <img src="${product.image || 'vigo1.png'}" alt="${product.ref || 'Article'}" loading="lazy">
             </div>
-
-            <div class="col-8 col-md-4">
-                <h6 class="fw-bold mb-1 text-dark fs-6">${product.ref || 'T-shirt Veraba'}</h6>
-                <div class="my-2 d-flex flex-wrap gap-2">
-                    <span class="badge bg-light text-secondary border fw-normal px-2 py-1 rounded-pill" style="font-size: 0.72rem;">
-                        Couleur : ${product.color || 'Standard'}
-                    </span>
-                    <span class="badge bg-light text-secondary border fw-normal px-2 py-1 rounded-pill" style="font-size: 0.72rem;">
-                        Taille : ${product.size || 'S'}
-                    </span>
+            <div class="vbp-item-corps">
+                <div class="vbp-item-haut">
+                    <div class="vbp-item-infos">
+                        <h3 class="vbp-item-nom">${product.ref || 'T-shirt Veraba'}</h3>
+                        <p class="vbp-item-meta">${product.color || 'Standard'} · Taille ${product.size || 'S'}</p>
+                        ${quantity > 1 ? `<p class="vbp-item-unite">${price.toFixed(2)}€ / pièce</p>` : ''}
+                    </div>
+                    <span class="product-total vbp-item-prix">${totalProduct.toFixed(2)}€</span>
+                </div>
+                <div class="vbp-item-bas">
+                    <div class="vbp-qte">
+                        ${quantity > 1
+                            ? `<button type="button" class="quantity-btn minus" data-id="${product.id}" aria-label="Retirer un article">−</button>`
+                            : `<button type="button" class="remove-btn" data-id="${product.id}" aria-label="Supprimer l'article">${poubelle}</button>`}
+                        <span class="quantity-input">${quantity}</span>
+                        <button type="button" class="quantity-btn plus" data-id="${product.id}" aria-label="Ajouter un article">+</button>
+                    </div>
+                    <button type="button" class="remove-btn vbp-suppr" data-id="${product.id}">${poubelle}<span>Supprimer</span></button>
                 </div>
             </div>
-
-            <div class="col-6 col-md-3">
-                <div class="d-inline-flex align-items-center bg-light rounded-pill p-1 border">
-                    <button class="quantity-btn minus btn btn-sm btn-link text-dark text-decoration-none px-2 py-0 shadow-none" data-id="${product.id}" style="font-size: 1rem;">−</button>
-                    <input type="text" class="quantity-input form-control form-control-sm text-center border-0 bg-transparent fw-semibold text-dark p-0" value="${quantity}" readonly style="width: 30px;">
-                    <button class="quantity-btn plus btn btn-sm btn-link text-dark text-decoration-none px-2 py-0 shadow-none" data-id="${product.id}" style="font-size: 1rem;">+</button>
-                </div>
-            </div>
-
-            <div class="col-6 col-md-3 d-flex align-items-center justify-content-between justify-content-md-end gap-3">
-                <span class="product-total fw-bold text-dark fs-6">${totalProduct.toFixed(2)}€</span>
-                <button class="btn btn-link text-muted p-0 remove-btn hover-danger transition-all" data-id="${product.id}" title="Supprimer">
-                    <i class="fas fa-trash-can" style="font-size: 1rem;"></i>
-                </button>
-            </div>
-        </div>
         `;
         cartItems.appendChild(card);
     });
@@ -2088,13 +2191,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
       <!-- Bloc VigoBlue MMBRS -->
       <div class="col-12 col-md-6 col-lg-3 footer-section">
-        <h3 class="footer-title fs-6 fw-bold text-uppercase mb-2" style="letter-spacing: 0.5px;">VigoBlue MMBRS</h3>
+        <h3 class="footer-title fs-6 fw-bold text-uppercase mb-2" style="letter-spacing: 0.5px;">Veraba MMBRS</h3>
         <ul class="footer-links list-unstyled small" style="font-size: 0.85rem;">
           <li class="mb-1"><a href="#" class="text-decoration-none text-muted">Me désabonner</a></li>
-          <li class="mb-1"><a href="#" class="text-decoration-none text-muted">Nous sommes VigoBlue</a></li>
+          <li class="mb-1"><a href="#" class="text-decoration-none text-muted">Nous sommes Veraba</a></li>
           <li class="mb-1"><a href="#" class="text-decoration-none text-muted">Durabilité</a></li>
           <li class="mb-1"><a href="#" class="text-decoration-none text-muted">Travaille avec nous</a></li>
-          <li class="mb-1"><a href="#" class="text-decoration-none text-muted">Nos magasins</a></li>
+          <li class="mb-1"><a href="\localisation.html" class="text-decoration-none text-muted">Nos magasins</a></li>
           <li class="mb-1"><a href="#" class="text-decoration-none text-muted">Infos légales</a></li>
         </ul>
       </div>
@@ -2127,7 +2230,7 @@ document.addEventListener("DOMContentLoaded", () => {
   </div>
    <div class="footer-bottom">
     <div class="container">
-      <p>&copy; 2025 VigoBlue. Tous droits réservés.</p>
+      <p>&copy; 2025 Veraba. Tous droits réservés.</p>
     </div>
   </div>
 </footer>

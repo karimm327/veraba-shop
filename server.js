@@ -1,3 +1,250 @@
+
+ASUS, Connecté
+Claude a terminé sa réponse.
+
+Exécuté 8 commandes, lire 2 fichiers, fichiers partagés
+
+
+Exécuté 8 commandes, lire 2 fichiers, fichiers partagés
+Voici commandes.html complet, à remplacer dans ton dossier public/. Je l'ai testé à 340, 393, 768 et 1280px : rien ne dépasse sur le côté.
+
+Enlevé : les 3 blocs du haut (nombre de commandes, en cours de livraison, total et articles achetés).
+Filtres : des onglets soulignés comme sur Zalando, « Toutes 3 · En cours 2 · Livrées 1 ». L'onglet actif est en noir avec un trait dessous, et la ligne défile au doigt sur les petits écrans.
+Trier : une pastille arrondie avec une icône, « Trier · Plus récentes ▾ ». Sur PC elle est à droite des onglets, sur mobile elle passe en dessous, alignée à droite.
+Couleurs :
+« Payée » est en vert (étiquette et trait à gauche de la carte) ;
+« En préparation », « Expédiée » et « Livrée » sont en noir et blanc ;
+« Annulée » est en gris clair ;
+la barre de suivi est en noir.
+Adresse de livraison : le fond bleu est remplacé par un gris clair, avec l'icône en noir.
+Ensuite fais Ctrl+F5, puis :
+
+bash
+git add -A && git commit -m "Commandes: filtres + couleurs" && git push
+
+Commandes
+Code·HTML 
+Image téléchargée
+regarde sa le fais mal
+
+C'est la liste native du navigateur (fond bleu Windows), on ne peut pas la styliser. Je la remplace par un menu déroulant fait maison.
+
+
+Exécuté 5 commandes, lu un fichier, fichiers partagés · 1 note
+
+Exécuté 5 commandes, lu un fichier, fichiers partagés · 1 note
+J'ai remplacé la liste bleue de Windows par un menu fait maison, qui s'affiche pareil partout : PC, téléphone et tablette.
+
+Le menu est une carte blanche arrondie avec une ombre douce, qui s'ouvre sous le bouton « Trier ».
+L'option choisie est en gras avec une coche verte, et une ligne se grise quand tu passes dessus.
+Il se ferme quand tu cliques ailleurs, et il marche aussi au clavier (flèches, Entrée, Échap).
+Je l'ai testé à 340, 360 et 1280px, et le tri « Montant le plus élevé » remet bien les commandes dans le bon ordre. Je n'ai pas pu vérifier « Plus anciennes » : mes commandes de test avaient toutes la même date, donc l'ordre ne pouvait pas changer. Regarde si ça marche avec tes vraies commandes.
+
+Remplace public/commandes.html par ce fichier, fais Ctrl+F5, puis :
+
+bash
+git add -A && git commit -m "Commandes: menu trier" && git push
+
+Commandes
+Code·HTML 
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<link rel="stylesheet" href="signup.css" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Inscription - VigoBlue</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+</head>
+<body>
+<div class="container">
+  <div class="row justify-content-center">
+    <div class="col-md-6">
+      <div class="card mt-5 p-4 shadow-sm">
+        <a class="navbar-brand logo" href="index.html">
+          <img src="logop.png" alt="BrandName" width="150" height="150" class="me-1">
+        </a>
+        <h3 class="text-center mb-4">Faisons de toi un membre Vigoblue.</h3>
+        <form id="registerForm">
+          <div class="mb-3">
+            <label for="registerEmail" class="form-label"></label>
+            <input type="email" id="registerEmail" class="form-control" placeholder="Email*" required>
+          </div>
+
+          <div class="mb-3">
+            <label for="nom" class="form-label"></label>
+            <input type="text" id="nom" class="form-control" placeholder="Nom*" required>
+          </div>
+
+          <div class="mb-3">
+            <label for="prenom" class="form-label"></label>
+            <input type="text" id="prenom" class="form-control" placeholder="Prénom*" required>
+          </div>
+
+          <div class="mb-3 d-flex gap-2">
+            <input type="number" id="jour" class="form-control" placeholder="Jour*" min="1" max="31" required>
+            <input type="number" id="mois" class="form-control" placeholder="Mois*" min="1" max="12" required>
+            <input type="number" id="annee" class="form-control" placeholder="Année*" min="1900" max="2025" required>
+          </div>
+
+          <div class="mb-3 position-relative">
+            <label for="registerPassword" class="form-label">Créer un mot de passe</label>
+            <input type="password" id="registerPassword" class="form-control" required>
+            <i id="togglePassword" class="bi bi-eye-fill toggle-eye"></i>
+            <ul class="password-rules mt-2" style="padding-left:0;">
+              <li id="ruleLength" style="color:red;">• Minimum 8 caractères</li>
+              <li id="ruleUpper" style="color:red;">• Au moins 1 majuscule</li>
+              <li id="ruleDigits" style="color:red;">• Au moins 3 chiffres</li>
+              <li id="ruleSymbol" style="color:red;">• Au moins 1 symbole (!@#$%^&*.)</li>
+            </ul>
+          </div>
+
+          <div class="d-grid mb-3">
+            <button type="submit" class="btn btn-dark">S'inscrire</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="notif.js"></script>
+<script>
+/* -------------------- CONFIGURATION -------------------- */
+// Vide = même serveur que la page (http://localhost:3000)
+const API_URL = "";
+
+/* -------------------- ELEMENTS -------------------- */
+const registerForm = document.getElementById("registerForm");
+const passwordInput = document.getElementById("registerPassword");
+const togglePassword = document.getElementById("togglePassword");
+const ruleLength = document.getElementById("ruleLength");
+const ruleUpper = document.getElementById("ruleUpper");
+const ruleDigits = document.getElementById("ruleDigits");
+const ruleSymbol = document.getElementById("ruleSymbol");
+const emailInput = document.getElementById("registerEmail");
+
+/* -------------------- TOGGLE PASSWORD -------------------- */
+togglePassword.addEventListener("click", () => {
+  if (passwordInput.type === "password") {
+    passwordInput.type = "text";
+    togglePassword.classList.replace("bi-eye-fill","bi-eye-slash-fill");
+  } else {
+    passwordInput.type = "password";
+    togglePassword.classList.replace("bi-eye-slash-fill","bi-eye-fill");
+  }
+});
+
+/* -------------------- CHECK PASSWORD RULES -------------------- */
+passwordInput.addEventListener("input", () => {
+  const val = passwordInput.value;
+  ruleLength.style.color = val.length >= 8 ? "green" : "red";
+  ruleUpper.style.color = /[A-Z]/.test(val) ? "green" : "red";
+  ruleDigits.style.color = (val.match(/\d/g) || []).length >= 3 ? "green" : "red";
+  ruleSymbol.style.color = /[!@#$%^&*\.]/.test(val) ? "green" : "red";
+});
+
+/* -------------------- REGISTER -------------------- */
+registerForm.addEventListener("submit", async (e) => {
+  e.preventDefault();
+
+  const email = emailInput.value.trim();
+  const password = passwordInput.value;
+  const prenom = document.getElementById("prenom").value.trim();
+  const nom = document.getElementById("nom").value.trim();
+  const jour = document.getElementById("jour").value.trim();
+  const mois = document.getElementById("mois").value.trim();
+  const annee = document.getElementById("annee").value.trim();
+
+  const validPassword = password.length >= 8 &&
+                        /[A-Z]/.test(password) &&
+                        (password.match(/\d/g) || []).length >= 3 &&
+                        /[!@#$%^&*\.]/.test(password);
+
+  if (!validPassword) {
+    notif("Mot de passe invalide : respectez les règles affichées.", "erreur");
+    return;
+  }
+
+  if (!email || !password || !prenom || !nom || !jour || !mois || !annee) {
+    notif("Tous les champs sont requis", "erreur");
+    return;
+  }
+
+  try {
+    const res = await fetch(${API_URL}/register, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email, password, prenom, nom, jour, mois, annee })
+    });
+    const data = await res.json();
+    notif(data.message, data.success ? "succes" : "erreur", data.success ? "Bienvenue chez VigoBlue" : undefined);
+    if (data.success && data.redirect) setTimeout(() => window.location.href = data.redirect, 1800);
+  } catch (err) {
+    console.error(err);
+    notif("Erreur serveur, réessaie dans un instant.", "erreur");
+  }
+});
+</script>
+</body>
+</html> je veux que avant il sinscrie il appuie sur les case par de tout ce qui et donnée etc comme les grandes mette
+
+Je vais ajouter les cases à cocher comme sur les grands sites :
+
+Obligatoire : « J'accepte les Conditions générales et la Politique de confidentialité ». Sans elle, le bouton S'inscrire reste bloqué.
+Facultative : les offres et nouveautés par e-mail, décochée par défaut comme l'exige le RGPD.
+Côté serveur : l'acceptation est aussi vérifiée et enregistrée avec la date.
+Je regarde d'abord la route d'inscription.
+
+
+Exécuté 3 commandes, fichier créé · 1 note
+Exécuté 3 commandes, fichier créé · 1 note
+Un bouton vraiment désactivé ne réagit plus aux clics dans certains navigateurs. Je le grise seulement visuellement, pour pouvoir quand même montrer la case à cocher quand on clique dessus.
+
+
+Exécuté 8 commandes, lu un fichier, fichiers partagés · 2 notes
+
+Exécuté 8 commandes, lu un fichier, fichiers partagés · 2 notes
+L'inscription a maintenant les cases à cocher, comme sur les grands sites. Je l'ai testée sur mobile (360px) et sur PC.
+
+Sur la page d'inscription :
+
+Case obligatoire : « J'accepte les Conditions générales d'utilisation et de vente et j'ai lu la Politique de confidentialité ». Les deux liens s'ouvrent dans un nouvel onglet.
+Case facultative : « Je souhaite recevoir les nouveautés, offres exclusives et codes promo ». Elle est décochée par défaut, comme l'exige la loi.
+Petit texte d'info : il explique à quoi servent les données de l'utilisateur.
+Bouton S'inscrire : il reste gris tant que la case obligatoire n'est pas cochée. Si on clique quand même, la case tremble et devient rouge, avec une notification « Une dernière étape ».
+Côté serveur (server.js) :
+
+L'inscription est refusée si les CGU ne sont pas acceptées, même en contournant la page.
+La date d'acceptation et le choix newsletter sont enregistrés dans la base. Les 2 colonnes se créent toutes seules au démarrage, sur Aiven aussi, rien à faire à la main.
+Nouvelles pages : cgu.html et confidentialite.html, avec le même en-tête noir et vert. J'ai surligné en jaune ce que tu dois remplir toi-même : ton nom ou ta société, ton adresse, ton SIRET, ton e-mail de contact, tes hébergeurs et un médiateur de la consommation. Ces textes sont un modèle de base, je ne suis pas juriste : si le site devient un vrai commerce, fais-les relire par un professionnel.
+
+Pour installer :
+
+Mets signup.html, cgu.html et confidentialite.html dans public/, et server.js à la racine du projet. Mon server.js part de la dernière version que je t'ai envoyée : si tu l'as modifié toi-même depuis, dis-le-moi avant de le remplacer.
+Relance le serveur en local et teste une inscription.
+Mets en ligne :
+bash
+git add -A && git commit -m "Inscription: consentements CGU + newsletter" && git push
+
+Signup
+Code·HTML 
+
+Cgu
+Code·HTML 
+
+Confidentialite
+Code·HTML 
+
+Server
+JS 
+
+
+Vous avez utilisé 75 % de votre limite hebdomadaire.
+
+
+Server · JS
 import express from "express"; // express + node.js pour créer le serveur
 import session from "express-session";
 import MySQLStoreFactory from "express-mysql-session"; // sessions enregistrées dans MySQL
@@ -9,12 +256,12 @@ import Stripe from "stripe"; // moyen de paiement
 import bcrypt from "bcryptjs"; // hachage des mots de passe (100 % JavaScript, rien à compiler)
 import dotenv from "dotenv";
 // import nodemailer from "nodemailer"; // envoi d'emails : désactivé (projet local, pas de domaine)
-
+ 
 dotenv.config(); // lit le fichier .env (toutes les clés secrètes sont là-bas)
-
+ 
 const app = express();
 const port = process.env.PORT || 3000; // port sur lequel écoute le serveur
-
+ 
 // ---------------------- Connexion MySQL ---------------------- //
 // Un "pool" rouvre tout seul les connexions coupées (indispensable une fois hébergé)
 const db = mysql.createPool({
@@ -31,12 +278,12 @@ const db = mysql.createPool({
     ? (process.env.DB_CA_CERT ? { ca: process.env.DB_CA_CERT.replace(/\\n/g, "\n") } : { rejectUnauthorized: false })
     : undefined,
 });
-
+ 
 db.getConnection((err, conn) => {
   if (err) return console.error("❌ MySQL:", err.message);
   console.log("✅ Connecté à MySQL");
   conn.release();
-
+ 
   // Table des commandes : créée automatiquement si elle n'existe pas encore
   db.query(`CREATE TABLE IF NOT EXISTS commandes (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
@@ -56,7 +303,15 @@ db.getConnection((err, conn) => {
       if (e2 && e2.errno !== 1060) console.error("❌ Colonne livraison :", e2.message);
     });
   });
-
+ 
+  // Consentements RGPD : date d'acceptation des CGU + choix newsletter (erreur 1060 = colonne déjà là)
+  db.query("ALTER TABLE users ADD COLUMN cgu_acceptees_le DATETIME NULL", e => {
+    if (e && e.errno !== 1060) console.error("❌ Colonne cgu_acceptees_le :", e.message);
+  });
+  db.query("ALTER TABLE users ADD COLUMN newsletter TINYINT(1) NOT NULL DEFAULT 0", e => {
+    if (e && e.errno !== 1060) console.error("❌ Colonne newsletter :", e.message);
+  });
+ 
   // Cartes que le client a CHOISI d'enregistrer dans son portefeuille
   db.query(`CREATE TABLE IF NOT EXISTS cartes_enregistrees (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
@@ -65,7 +320,7 @@ db.getConnection((err, conn) => {
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     INDEX idx_cartes_user (user_id)
   )`, e => { if (e) console.error("❌ Table cartes_enregistrees :", e.message); });
-
+ 
   // Table des messages envoyés depuis la page Aide
   db.query(`CREATE TABLE IF NOT EXISTS messages_support (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
@@ -78,7 +333,7 @@ db.getConnection((err, conn) => {
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
   )`, e => { if (e) console.error("❌ Table messages_support :", e.message); });
 });
-
+ 
 // Vérifie et nettoie l'adresse de livraison envoyée par la page paiement
 function nettoyerLivraison(l) {
   if (!l || typeof l !== "object") return null;
@@ -91,7 +346,7 @@ function nettoyerLivraison(l) {
   if (a.pays === "France" && !/^\d{5}$/.test(a.code_postal)) return null;
   return a;
 }
-
+ 
 // Nettoie la liste d'articles envoyée par la page paiement avant de l'enregistrer
 function nettoyerArticles(items) {
   if (!Array.isArray(items)) return [];
@@ -109,22 +364,22 @@ function nettoyerArticles(items) {
     };
   });
 }
-
+ 
 // ---------------------- Stripe (clé secrète dans .env) ---------------------- //
 const stripe = process.env.STRIPE_SECRET ? new Stripe(process.env.STRIPE_SECRET) : null;
 if (!stripe) console.warn("⚠️  STRIPE_SECRET absent du .env : le paiement est désactivé.");
-
+ 
 // ---------------------- Middlewares ---------------------- //
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 // En ligne (Render), le site est derrière un proxy HTTPS
 const EN_LIGNE = process.env.NODE_ENV === "production";
 if (EN_LIGNE) app.set("trust proxy", 1);
-
+ 
 // Les sessions sont gardées dans MySQL : les clients restent connectés même si le serveur redémarre
 const MySQLStore = MySQLStoreFactory(session);
 const sessionStore = new MySQLStore({ clearExpired: true }, db);
-
+ 
 app.use(session({
   secret: process.env.SESSION_SECRET || "change-moi-dans-le-fichier-env",
   store: sessionStore,
@@ -137,65 +392,68 @@ app.use(session({
     maxAge: 1000 * 60 * 60 * 24 // session valable 24 h
   }
 }));
-
+ 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const PUBLIC_DIR = path.join(__dirname, "public");
-
+ 
 // ---------------------- Fonctions utilitaires ---------------------- //
 function validatePassword(password) {
   const regex = /^(?=.*[A-Z])(?=(?:.*\d){3,})(?=.*[!@#$%^&*()_+=[\]{};':"\\|,.<>/?]).{8,}$/;
   return regex.test(password);
 }
-
+ 
 function isValidEmail(email) {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 }
-
+ 
 // Nom de la page demandée, sans "/" ni ".html"  ("/site.html" et "/site" -> "site")
 function pageName(urlPath) {
   return urlPath.replace(/^\/+/, "").replace(/\.html$/, "").toLowerCase();
 }
-
+ 
 // ---------------------- Protection des pages ---------------------- //
 // Pages réservées aux membres connectés
 const PAGES_MEMBRES = ["site", "compte", "adresses", "commandes", "paiement", "paie", "portefeuille"];
 // Pages inutiles quand on est déjà connecté (on renvoie vers l'espace membre)
 const PAGES_VISITEURS = ["", "index", "login", "signup"];
-
+ 
 app.use((req, res, next) => {
   if (req.method !== "GET") return next();
   const page = pageName(req.path);
   const connecte = Boolean(req.session.userId);
-
+ 
   if (PAGES_MEMBRES.includes(page) && !connecte) return res.redirect("/login.html");
   if (PAGES_VISITEURS.includes(page) && connecte) return res.redirect("/site.html");
   next();
 });
-
+ 
 // ---------------------- Pages ---------------------- //
 app.get("/", (req, res) => res.sendFile(path.join(PUBLIC_DIR, "index.html")));
-
+ 
 // Page de "réveil" : un service de ping l'appelle toutes les 10 min pour éviter la mise en veille
 // (elle interroge aussi la base, ce qui garde Aiven actif)
 app.get("/health", (req, res) => {
   db.query("SELECT 1", err => res.status(err ? 500 : 200).send(err ? "db error" : "ok"));
 });
-
+ 
 // Le bouton "Voir la boutique" pointe vers shop.html, qui n'existe pas : on renvoie vers l'accueil
 app.get(["/shop", "/shop.html"], (req, res) => {
   res.redirect(req.session.userId ? "/site.html" : "/index.html");
 });
-
+ 
 // Fichiers du site (HTML, CSS, images...). "/site" fonctionne comme "/site.html".
 app.use(express.static(PUBLIC_DIR, { index: false, extensions: ["html"] }));
-
+ 
 // ---------------------- Inscription (sans code de vérification) ---------------------- //
 app.post("/register", async (req, res) => {
-  const { email, password, nom, prenom, jour, mois, annee } = req.body;
-
+  const { email, password, nom, prenom, jour, mois, annee, cgu, newsletter } = req.body;
+ 
   if (!email || !password || !nom || !prenom) {
     return res.status(400).json({ success: false, message: "Tous les champs sont requis" });
+  }
+  if (cgu !== true) {
+    return res.status(400).json({ success: false, message: "Tu dois accepter les Conditions générales et la Politique de confidentialité." });
   }
   if (!isValidEmail(email)) {
     return res.status(400).json({ success: false, message: "Adresse email invalide" });
@@ -203,11 +461,11 @@ app.post("/register", async (req, res) => {
   if (!validatePassword(password)) {
     return res.status(400).json({ success: false, message: "Mot de passe invalide : minimum 8 caractères, 1 majuscule, 3 chiffres, 1 symbole" });
   }
-
+ 
   try {
     const [existing] = await db.promise().query("SELECT id FROM users WHERE email = ?", [email]);
     if (existing.length > 0) return res.status(400).json({ success: false, message: "Email déjà utilisé" });
-
+ 
     // Client Stripe (facultatif : si Stripe ne répond pas, l'inscription fonctionne quand même)
     let stripeCustomerId = null;
     if (stripe) {
@@ -218,14 +476,14 @@ app.post("/register", async (req, res) => {
         console.warn("⚠️  Client Stripe non créé :", e.message);
       }
     }
-
+ 
     const hashedPassword = await bcrypt.hash(password, 10);
-
+ 
     await db.promise().query(
-      "INSERT INTO users (email, password, nom, prenom, jour_naissance, mois_naissance, annee_naissance, stripe_customer_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
-      [email, hashedPassword, nom, prenom, parseInt(jour) || null, parseInt(mois) || null, parseInt(annee) || null, stripeCustomerId]
+      "INSERT INTO users (email, password, nom, prenom, jour_naissance, mois_naissance, annee_naissance, stripe_customer_id, cgu_acceptees_le, newsletter) VALUES (?, ?, ?, ?, ?, ?, ?, ?, NOW(), ?)",
+      [email, hashedPassword, nom, prenom, parseInt(jour) || null, parseInt(mois) || null, parseInt(annee) || null, stripeCustomerId, newsletter === true ? 1 : 0]
     );
-
+ 
     // --- Email de bienvenue : désactivé (projet local, pas de domaine) ---
     // Pour le réactiver : npm install nodemailer, décommenter l'import en haut du fichier
     // et ce bloc, puis ajouter EMAIL_USER et EMAIL_PASS dans le fichier .env
@@ -244,51 +502,51 @@ app.post("/register", async (req, res) => {
     //     <p>Vous pouvez maintenant continuer votre shopping.</p>
     //   </div>`
     // });
-
+ 
     res.json({ success: true, message: "Inscription réussie ! Vous pouvez vous connecter.", redirect: "/login.html" });
   } catch (err) {
     console.error("Erreur /register :", err);
     res.status(500).json({ success: false, message: "Erreur serveur : " + err.message });
   }
 });
-
+ 
 // ---------------------- Connexion / Déconnexion ---------------------- //
 app.post("/login", (req, res) => {
   const { email, password } = req.body;
   if (!email || !password) return res.status(400).json({ success: false, message: "Email et mot de passe requis" });
-
+ 
   db.query("SELECT * FROM users WHERE email = ?", [email], async (err, results) => {
     if (err) return res.status(500).json({ success: false, message: "Erreur serveur" });
-
+ 
     const user = results[0];
     const match = user ? await bcrypt.compare(password, user.password) : false;
     if (!match) return res.status(401).json({ success: false, message: "Email ou mot de passe incorrect" });
-
+ 
     req.session.userId = user.id;
     res.json({ success: true, redirect: "/site.html" });
   });
 });
-
+ 
 app.get("/logout", (req, res) => {
   req.session.destroy(() => {
     res.clearCookie("connect.sid");
     res.redirect("/index.html");
   });
 });
-
+ 
 // ---------------------- Mot de passe oublié (mode local : pas d'email) ---------------------- //
 // Le lien de réinitialisation est affiché dans le terminal du serveur au lieu d'être envoyé par mail.
 app.post("/send-reset-mail", async (req, res) => {
   const { email } = req.body;
   if (!email) return res.status(400).send("Email requis");
-
+ 
   try {
     const [users] = await db.promise().query("SELECT id FROM users WHERE email = ?", [email]);
     if (users.length > 0) {
       const token = crypto.randomBytes(32).toString("hex");
       const expire = Date.now() + 15 * 60 * 1000; // 15 minutes
       await db.promise().query("UPDATE users SET reset_token = ?, reset_token_exp = ? WHERE id = ?", [token, expire, users[0].id]);
-
+ 
       const lien = `${process.env.SITE_URL || process.env.RENDER_EXTERNAL_URL || `http://localhost:${port}`}/reset-password.html?token=${token}&email=${encodeURIComponent(email)}`;
       console.log(`🔑 Lien de réinitialisation pour ${email} :\n   ${lien}`);
     }
@@ -299,21 +557,21 @@ app.post("/send-reset-mail", async (req, res) => {
     res.status(500).send("Erreur serveur");
   }
 });
-
+ 
 app.post("/reset-password", async (req, res) => {
   const { email, token, newPassword } = req.body;
   if (!email || !token || !newPassword) return res.status(400).json({ success: false, message: "Lien invalide" });
   if (!validatePassword(newPassword)) {
     return res.status(400).json({ success: false, message: "Mot de passe invalide : minimum 8 caractères, 1 majuscule, 3 chiffres, 1 symbole" });
   }
-
+ 
   try {
     const [users] = await db.promise().query(
       "SELECT id FROM users WHERE email = ? AND reset_token = ? AND reset_token_exp > ?",
       [email, token, Date.now()]
     );
     if (users.length === 0) return res.status(400).json({ success: false, message: "Lien invalide ou expiré" });
-
+ 
     const hashedPassword = await bcrypt.hash(newPassword, 10);
     await db.promise().query(
       "UPDATE users SET password = ?, reset_token = NULL, reset_token_exp = NULL WHERE id = ?",
@@ -325,11 +583,11 @@ app.post("/reset-password", async (req, res) => {
     res.status(500).json({ success: false, message: "Erreur serveur" });
   }
 });
-
+ 
 // ---------------------- Utilisateur connecté ---------------------- //
 app.get("/user/me", (req, res) => {
   if (!req.session.userId) return res.status(401).json({ success: false, message: "Non connecté" });
-
+ 
   db.query(
     "SELECT id, email, nom, prenom, jour_naissance, mois_naissance, annee_naissance, stripe_customer_id FROM users WHERE id = ?",
     [req.session.userId],
@@ -340,14 +598,14 @@ app.get("/user/me", (req, res) => {
     }
   );
 });
-
+ 
 // ---------------------- Adresses ---------------------- //
 function saveAddress(req, res) {
   if (!req.session.userId) return res.status(401).json({ success: false, message: "Non connecté" });
-
+ 
   const { adresse, code_postal, ville, pays, telephone } = req.body;
   const userId = req.session.userId;
-
+ 
   // Tous les champs vides = suppression de l'adresse (bouton "Supprimer")
   const vide = [adresse, code_postal, ville, pays, telephone].every(v => !v || !String(v).trim());
   if (vide) {
@@ -357,10 +615,10 @@ function saveAddress(req, res) {
     });
     return;
   }
-
+ 
   db.query("SELECT id FROM adresses WHERE user_id = ?", [userId], (err, results) => {
     if (err) return res.status(500).json({ success: false, message: err.message });
-
+ 
     if (results.length > 0) {
       db.query(
         "UPDATE adresses SET adresse = ?, code_postal = ?, ville = ?, pays = ?, telephone = ? WHERE user_id = ?",
@@ -384,16 +642,16 @@ function saveAddress(req, res) {
 }
 app.post("/user/address/save", saveAddress);
 app.post("/user/address/update", saveAddress);
-
+ 
 app.get("/user/address", (req, res) => {
   if (!req.session.userId) return res.status(401).json({ success: false, message: "Non connecté" });
-
+ 
   db.query("SELECT * FROM adresses WHERE user_id = ? LIMIT 1", [req.session.userId], (err, results) => {
     if (err) return res.status(500).json({ success: false, message: err.message });
     res.json({ success: true, address: results[0] || null });
   });
 });
-
+ 
 // ---------------------- Produits ---------------------- //
 app.get("/products", (req, res) => {
   db.query("SELECT * FROM products", (err, results) => {
@@ -401,48 +659,48 @@ app.get("/products", (req, res) => {
     res.json({ success: true, products: results });
   });
 });
-
+ 
 app.get("/products/:id", (req, res) => {
   const productId = req.params.id;
-
+ 
   db.query("SELECT * FROM products WHERE id = ?", [productId], (err, products) => {
     if (err) return res.status(500).json({ success: false, message: "Erreur MySQL" });
     if (products.length === 0) return res.status(404).json({ success: false, message: "Produit introuvable" });
-
+ 
     db.query("SELECT * FROM product_variants WHERE product_id = ?", [productId], (err2, variants) => {
       if (err2) return res.status(500).json({ success: false, message: "Erreur variantes" });
       res.json({ success: true, product: products[0], variants });
     });
   });
 });
-
+ 
 // ---------------------- Panier (côté serveur) ---------------------- //
 app.get("/cart", (req, res) => {
   const userId = req.session.userId;
   if (!userId) return res.status(401).json({ success: false, message: "Non connecté" });
-
+ 
   db.query("SELECT * FROM cart_items WHERE user_id = ?", [userId], (err, results) => {
     if (err) return res.status(500).json({ success: false, message: err.message });
     res.json({ success: true, cart: results });
   });
 });
-
+ 
 app.post("/cart/add", (req, res) => {
   const userId = req.session.userId;
   if (!userId) return res.status(401).json({ success: false, message: "Non connecté" });
-
+ 
   const { ref, color, size, taille, price, quantity, image } = req.body;
   const productSize = size || taille || "Non spécifiée";
   const productColor = color || "Non spécifiée";
-
+ 
   if (!ref || !price || !quantity) return res.status(400).json({ success: false, message: "Données manquantes" });
-
+ 
   db.query(
     "SELECT id, quantity FROM cart_items WHERE user_id = ? AND ref = ? AND color = ? AND taille = ?",
     [userId, ref, productColor, productSize],
     (err, results) => {
       if (err) return res.status(500).json({ success: false, message: err.message });
-
+ 
       if (results.length > 0) {
         const newQty = results[0].quantity + Number(quantity);
         db.query("UPDATE cart_items SET quantity = ? WHERE id = ?", [newQty, results[0].id], err2 => {
@@ -462,29 +720,29 @@ app.post("/cart/add", (req, res) => {
     }
   );
 });
-
+ 
 app.post("/cart/update", (req, res) => {
   const userId = req.session.userId;
   if (!userId) return res.status(401).json({ success: false, message: "Non connecté" });
-
+ 
   const { id, quantity } = req.body;
   db.query("UPDATE cart_items SET quantity = ? WHERE id = ? AND user_id = ?", [quantity, id, userId], err => {
     if (err) return res.status(500).json({ success: false, message: err.message });
     res.json({ success: true, message: "Quantité mise à jour" });
   });
 });
-
+ 
 app.post("/cart/remove", (req, res) => {
   const userId = req.session.userId;
   if (!userId) return res.status(401).json({ success: false, message: "Non connecté" });
-
+ 
   const { id } = req.body;
   db.query("DELETE FROM cart_items WHERE id = ? AND user_id = ?", [id, userId], err => {
     if (err) return res.status(500).json({ success: false, message: err.message });
     res.json({ success: true, message: "Produit supprimé" });
   });
 });
-
+ 
 // ---------------------- Paiement Stripe & historique ---------------------- //
 // ---------------------- Portefeuille (cartes enregistrées) ---------------------- //
 // Renvoie l'identifiant client Stripe de l'utilisateur (le crée s'il n'existe pas encore)
@@ -496,14 +754,14 @@ async function clientStripe(userId) {
   await db.promise().query("UPDATE users SET stripe_customer_id = ? WHERE id = ?", [customer.id, userId]);
   return customer.id;
 }
-
+ 
 // Vérifie qu'une carte appartient bien au client connecté
 async function carteDuClient(pmId, customerId) {
   const pm = await stripe.paymentMethods.retrieve(String(pmId));
   if (pm.customer !== customerId) throw Object.assign(new Error("Carte introuvable"), { statut: 404 });
   return pm;
 }
-
+ 
 // Supprime les cartes en double (même carte enregistrée plusieurs fois).
 // On garde la carte par défaut, sinon la plus récente. Renvoie les cartes restantes.
 async function dedoublonnerCartes(customerId, cartesStripe, defautId) {
@@ -524,7 +782,7 @@ async function dedoublonnerCartes(customerId, cartesStripe, defautId) {
   await Promise.all(aRetirer.map(pm => Promise.all([stripe.paymentMethods.detach(pm.id).catch(() => {}), oublierCarte(pm.id).catch(() => {})])));
   return gardees;
 }
-
+ 
 async function idsEnregistres(userId) {
   const [rows] = await db.promise().query("SELECT pm_id FROM cartes_enregistrees WHERE user_id = ?", [userId]);
   return new Set(rows.map(r => r.pm_id));
@@ -535,13 +793,13 @@ async function enregistrerCarte(userId, pmId) {
 async function oublierCarte(pmId) {
   await db.promise().query("DELETE FROM cartes_enregistrees WHERE pm_id = ?", [pmId]);
 }
-
+ 
 function exigerStripe(req, res, next) {
   if (!req.session.userId) return res.status(401).json({ success: false, message: "Non connecté" });
   if (!stripe) return res.status(503).json({ success: false, message: "Paiement indisponible (STRIPE_SECRET manquant dans .env)" });
   next();
 }
-
+ 
 // Liste des cartes
 app.get("/api/cartes", exigerStripe, async (req, res) => {
   try {
@@ -571,7 +829,7 @@ app.get("/api/cartes", exigerStripe, async (req, res) => {
     res.status(500).json({ success: false, message: "Impossible de charger tes cartes." });
   }
 });
-
+ 
 // Préparer l'ajout d'une carte (SetupIntent Stripe : la carte est vérifiée sans être débitée)
 app.post("/api/cartes/preparer", exigerStripe, async (req, res) => {
   try {
@@ -583,7 +841,7 @@ app.post("/api/cartes/preparer", exigerStripe, async (req, res) => {
     res.status(500).json({ success: false, message: "Impossible d'ajouter une carte pour le moment." });
   }
 });
-
+ 
 // Enregistrer dans le portefeuille une carte qui vient d'être ajoutée
 app.post("/api/cartes/:id/enregistrer", exigerStripe, async (req, res) => {
   try {
@@ -595,7 +853,7 @@ app.post("/api/cartes/:id/enregistrer", exigerStripe, async (req, res) => {
     res.status(e.statut || 400).json({ success: false, message: e.statut ? e.message : "Impossible d'enregistrer cette carte." });
   }
 });
-
+ 
 // Définir la carte par défaut
 app.post("/api/cartes/:id/defaut", exigerStripe, async (req, res) => {
   try {
@@ -607,7 +865,7 @@ app.post("/api/cartes/:id/defaut", exigerStripe, async (req, res) => {
     res.status(e.statut || 400).json({ success: false, message: e.statut ? e.message : "Impossible de modifier la carte par défaut." });
   }
 });
-
+ 
 // Modifier une carte (titulaire et date d'expiration)
 app.put("/api/cartes/:id", exigerStripe, async (req, res) => {
   const mois = parseInt(req.body.exp_mois);
@@ -628,7 +886,7 @@ app.put("/api/cartes/:id", exigerStripe, async (req, res) => {
     res.status(e.statut || 400).json({ success: false, message: e.statut ? e.message : "Impossible de modifier cette carte." });
   }
 });
-
+ 
 // Supprimer une carte
 app.delete("/api/cartes/:id", exigerStripe, async (req, res) => {
   try {
@@ -641,12 +899,12 @@ app.delete("/api/cartes/:id", exigerStripe, async (req, res) => {
     res.status(e.statut || 400).json({ success: false, message: e.statut ? e.message : "Impossible de supprimer cette carte." });
   }
 });
-
+ 
 app.post("/pay", async (req, res) => {
   const userId = req.session.userId;
   if (!userId) return res.status(401).json({ success: false, message: "Non connecté" });
   if (!stripe) return res.status(503).json({ success: false, message: "Paiement indisponible (STRIPE_SECRET manquant dans .env)" });
-
+ 
   const { paymentMethodId, amount, items } = req.body;
   const livraison = nettoyerLivraison(req.body.livraison);
   const montant = parseInt(amount);
@@ -656,12 +914,12 @@ app.post("/pay", async (req, res) => {
   if (!livraison) {
     return res.status(400).json({ success: false, message: "Adresse de livraison incomplète." });
   }
-
+ 
   let nouvelleCarte = false;
   try {
     const [users] = await db.promise().query("SELECT email, stripe_customer_id FROM users WHERE id = ?", [userId]);
     if (users.length === 0) return res.status(404).json({ success: false, message: "Utilisateur non trouvé" });
-
+ 
     // Si le compte n'a pas encore de client Stripe, on le crée maintenant
     let customerId = users[0].stripe_customer_id;
     if (!customerId) {
@@ -669,7 +927,7 @@ app.post("/pay", async (req, res) => {
       customerId = customer.id;
       await db.promise().query("UPDATE users SET stripe_customer_id = ? WHERE id = ?", [customerId, userId]);
     }
-
+ 
     // Carte déjà dans le portefeuille ? Sinon on la rattache au client
     const pmAvant = await stripe.paymentMethods.retrieve(paymentMethodId);
     nouvelleCarte = pmAvant.customer !== customerId;
@@ -680,7 +938,7 @@ app.post("/pay", async (req, res) => {
       return res.status(403).json({ success: false, message: "Cette carte n'est plus dans ton portefeuille." });
     }
     if (nouvelleCarte) await stripe.paymentMethods.attach(paymentMethodId, { customer: customerId });
-
+ 
     const paymentIntent = await stripe.paymentIntents.create({
       amount: montant,
       currency: "eur",
@@ -690,9 +948,9 @@ app.post("/pay", async (req, res) => {
       confirm: true,
       automatic_payment_methods: { enabled: true, allow_redirects: "never" }
     });
-
+ 
     const paymentMethod = await stripe.paymentMethods.retrieve(paymentMethodId);
-
+ 
     // Nouvelle carte : on la garde dans le portefeuille seulement si le client l'a demandé
     if (nouvelleCarte && !req.body.enregistrerCarte) {
       stripe.paymentMethods.detach(paymentMethodId).catch(() => {});
@@ -705,7 +963,7 @@ app.post("/pay", async (req, res) => {
         await dedoublonnerCartes(customerId, l.data.filter(pm => enregistres.has(pm.id)), c.invoice_settings && c.invoice_settings.default_payment_method);
       } catch (e) { console.error("⚠️  Carte non enregistrée :", e.message); }
     }
-
+ 
     await db.promise().query(
       `INSERT INTO paiements
         (user_id, stripe_payment_intent_id, amount, currency, status, brand, last4, montant)
@@ -713,7 +971,7 @@ app.post("/pay", async (req, res) => {
       [userId, paymentIntent.id, paymentIntent.amount, paymentIntent.currency, paymentIntent.status,
        paymentMethod.card.brand, paymentMethod.card.last4, montant]
     );
-
+ 
     // Enregistrement de la commande (visible dans "Mes commandes")
     let numero = null;
     try {
@@ -726,7 +984,7 @@ app.post("/pay", async (req, res) => {
     } catch (e) {
       console.error("⚠️  Commande non enregistrée :", e.message);
     }
-
+ 
     // "Enregistrer comme adresse principale" coché : on met à jour l'adresse du compte
     if (req.body.livraison && req.body.livraison.enregistrer) {
       try {
@@ -736,7 +994,7 @@ app.post("/pay", async (req, res) => {
         else await db.promise().query("INSERT INTO adresses (adresse, code_postal, ville, pays, telephone, user_id) VALUES (?, ?, ?, ?, ?, ?)", [...v, userId]);
       } catch (e) { console.error("⚠️  Adresse non enregistrée :", e.message); }
     }
-
+ 
     res.json({ success: true, paymentIntent, numero });
   } catch (error) {
     console.error("Erreur Stripe /pay :", error.message);
@@ -758,23 +1016,23 @@ app.post("/pay", async (req, res) => {
     res.status(400).json({ success: false, message });
   }
 });
-
+ 
 // ---------------------- Formulaire de contact (page Aide) ---------------------- //
 const envoisContact = new Map(); // limite anti-spam : 5 messages / 10 min par adresse IP
 app.post("/api/contact", (req, res) => {
   const { nom, email, sujet, message, site } = req.body;
   if (site) return res.json({ success: true }); // champ piège rempli = robot, on ignore
-
+ 
   const ip = req.ip;
   const maintenant = Date.now();
   const recents = (envoisContact.get(ip) || []).filter(t => maintenant - t < 10 * 60 * 1000);
   if (recents.length >= 5) return res.status(429).json({ success: false, message: "Trop de messages envoyés, réessaie dans quelques minutes." });
-
+ 
   if (!nom || !email || !message || !String(message).trim()) {
     return res.status(400).json({ success: false, message: "Nom, email et message sont obligatoires." });
   }
   if (!isValidEmail(String(email))) return res.status(400).json({ success: false, message: "Adresse email invalide." });
-
+ 
   db.query(
     "INSERT INTO messages_support (user_id, nom, email, sujet, message) VALUES (?, ?, ?, ?, ?)",
     [req.session.userId || null, String(nom).slice(0, 100), String(email).slice(0, 255), String(sujet || "Autre").slice(0, 50), String(message).slice(0, 2000)],
@@ -787,11 +1045,11 @@ app.post("/api/contact", (req, res) => {
     }
   );
 });
-
+ 
 app.get("/api/commandes", (req, res) => {
   const userId = req.session.userId;
   if (!userId) return res.status(401).json({ success: false, message: "Non connecté" });
-
+ 
   db.query(
     "SELECT numero, total, statut, articles, livraison, created_at FROM commandes WHERE user_id = ? ORDER BY created_at DESC, id DESC",
     [userId],
@@ -808,11 +1066,11 @@ app.get("/api/commandes", (req, res) => {
     }
   );
 });
-
+ 
 app.get("/paiements", (req, res) => {
   const userId = req.session.userId;
   if (!userId) return res.status(401).json({ success: false, message: "Non connecté" });
-
+ 
   db.query(
     "SELECT brand, last4, montant, status, created_at FROM paiements WHERE user_id = ? ORDER BY created_at DESC",
     [userId],
@@ -822,6 +1080,9 @@ app.get("/paiements", (req, res) => {
     }
   );
 });
-
+ 
 // ---------------------- Lancement du serveur ---------------------- //
 app.listen(port, () => console.log(`🚀 Serveur lancé : http://localhost:${port}`));
+ 
+
+
