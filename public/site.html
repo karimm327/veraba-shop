@@ -19,7 +19,7 @@
     <ul class="pagination pagination-minimal justify-content-end d-none d-lg-flex mb-0 pb-0">
       <li class="page-item active"><a class="page-link border-end" href="localisation.html">Trouver un magasin</a></li>
       <li class="page-item active"><a class="page-link border-end" href="#aide">Rejoins-nous</a></li>
-      <li class="page-item active"><a class="page-link border-end" href="#aide">Aide</a></li>
+      <li class="page-item active"><a class="page-link border-end" href="aide.html">Aide</a></li>
       <li class="page-item active">
         <a class="page-link" href="#accountMenu" data-bs-toggle="offcanvas" aria-controls="accountMenu">
           Mon Compte
@@ -293,7 +293,8 @@
 <span id="real-favorite-count" class="position-absolute translate-middle badge rounded-pill bg-dark border border-dark" style="font-size: 0.65rem; top 1px; right: -11px; padding: 0.3em 0.5em; display: none;">0</span> 
     </div>
 </a>
-      <script>
+      <script src="notif.js"></script>
+<script>
   // Fonction globale autonome
   function forceUpdateFavoriteBadge() {
       try {
@@ -1521,7 +1522,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
       <!-- pay -->
       <li class="mb-2">
-        <a href="/paie.html" class="account-link d-flex justify-content-between align-items-center p-3 rounded-3 text-decoration-none">
+        <a href="/portefeuille.html" class="account-link d-flex justify-content-between align-items-center p-3 rounded-3 text-decoration-none">
           <div class="d-flex align-items-center">
             <span class="icon-box me-3 text-dark">
               <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>
@@ -2366,7 +2367,7 @@ document.addEventListener("DOMContentLoaded", function () {
   if (addToCartBtn) {
     addToCartBtn.addEventListener("click", function () {
       if (!selectedSize) {
-        alert("Veuillez sélectionner une taille avant d'ajouter au panier.");
+        notif("Choisis ta taille avant d'ajouter l'article au panier.", "info", "Taille manquante");
         return;
       }
 

@@ -72,6 +72,19 @@ CREATE TABLE IF NOT EXISTS paiements (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB;
 
+-- ---------- Commandes (remplies automatiquement après chaque paiement) ----------
+CREATE TABLE IF NOT EXISTS commandes (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    user_id BIGINT NOT NULL,
+    numero VARCHAR(20),                        -- ex : VB-10001
+    stripe_payment_intent_id VARCHAR(255),
+    total INT NOT NULL,                        -- en centimes
+    statut VARCHAR(30) DEFAULT 'payee',        -- payee / preparee / expediee / livree / annulee
+    articles TEXT,                             -- liste des articles (JSON)
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    INDEX idx_commandes_user (user_id)
+) ENGINE=InnoDB;
+
 -- ---------- Colonnes manquantes ----------
 CALL vb_add_col('users', 'nom', 'VARCHAR(100)');
 CALL vb_add_col('users', 'prenom', 'VARCHAR(100)');

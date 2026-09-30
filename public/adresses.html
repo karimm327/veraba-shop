@@ -15,16 +15,28 @@
 </head>
 <body>
 
-  <!-- En-tête simple pour revenir au site -->
-  <header class="bg-black text-white py-3">
-    <div class="container d-flex align-items-center">
-      <a href="/site.html" class="text-white text-decoration-none fw-bold me-4">
-        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" class="me-1"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
-        Retour
-      </a>
-      <h1 class="h5 m-0 fw-bold text-uppercase tracking-wide" style="letter-spacing: 2px;">VigoBlue</h1>
-    </div>
-  </header>
+<header class="vb-entete">
+  <div class="vb-entete-in">
+    <a href="/site.html" class="vb-retour" aria-label="Retour">
+      <span class="vb-fleche">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+      </span>
+      <span class="vb-retour-txt">Retour</span>
+    </a>
+    <a href="/" class="vb-marque">Veraba</a>
+  </div>
+</header>
+<style>
+  .vb-entete { position: sticky; top: 0; z-index: 1000; background: #0b0b0b; border-bottom: 3px solid #0f3d2e; }
+  .vb-entete-in { position: relative; max-width: 1140px; margin: 0 auto; height: 64px; padding: 0 20px; display: flex; align-items: center; }
+  .vb-retour { display: inline-flex; align-items: center; gap: 10px; color: #fff; text-decoration: none; font-size: .82rem; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; }
+  .vb-fleche { width: 38px; height: 38px; border-radius: 50%; border: 1px solid rgba(255,255,255,.25); display: flex; align-items: center; justify-content: center; transition: background .2s, border-color .2s, transform .2s; }
+  .vb-retour:hover { color: #fff; }
+  .vb-retour:hover .vb-fleche { background: #0f3d2e; border-color: #0f3d2e; transform: translateX(-3px); }
+  .vb-marque { position: absolute; left: 50%; transform: translateX(-50%); color: #fff; text-decoration: none; font-weight: 900; font-size: 1.05rem; letter-spacing: 4px; text-transform: uppercase; }
+  .vb-marque:hover { color: #7fc8a9; }
+  @media (max-width: 576px) { .vb-entete-in { height: 56px; padding: 0 14px; } .vb-retour-txt { display: none; } }
+</style>
 
   <div class="container py-5" style="font-family: 'Helvetica Neue', Arial, sans-serif; max-width: 900px;">
     <h2 class="fw-bold text-uppercase mb-4" style="letter-spacing: 1px; font-size: 1.5rem;">Adresses enregistrées</h2>
@@ -82,7 +94,8 @@
     </div>
   </div>
 
-  <script>
+  <script src="notif.js"></script>
+<script>
     let userName = "";
 
     document.addEventListener("DOMContentLoaded", async () => {
@@ -192,7 +205,7 @@
     });
 
     async function deleteAddress() {
-      if (!confirm("Voulez-vous vraiment supprimer cette adresse ?")) return;
+      if (!(await confirmer("Cette adresse sera supprimée de ton compte.", { titre: "Supprimer l'adresse ?", bouton: "Supprimer", danger: true }))) return;
 
       try {
         const response = await fetch('/user/address/update', {

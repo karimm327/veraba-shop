@@ -10,6 +10,7 @@ CREATE DATABASE IF NOT EXISTS VigoBlue CHARACTER SET utf8mb4 COLLATE utf8mb4_uni
 USE VigoBlue;
 
 SET FOREIGN_KEY_CHECKS = 0;
+DROP TABLE IF EXISTS commandes;
 DROP TABLE IF EXISTS cart_items;
 DROP TABLE IF EXISTS paiements;
 DROP TABLE IF EXISTS adresses;
@@ -97,6 +98,19 @@ CREATE TABLE paiements (
     montant INT NOT NULL,                      -- en centimes
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     CONSTRAINT fk_paiements_user FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+) ENGINE=InnoDB;
+
+-- ---------- Commandes (remplies automatiquement après chaque paiement) ----------
+CREATE TABLE IF NOT EXISTS commandes (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    user_id BIGINT NOT NULL,
+    numero VARCHAR(20),                        -- ex : VB-10001
+    stripe_payment_intent_id VARCHAR(255),
+    total INT NOT NULL,                        -- en centimes
+    statut VARCHAR(30) DEFAULT 'payee',        -- payee / preparee / expediee / livree / annulee
+    articles TEXT,                             -- liste des articles (JSON)
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    INDEX idx_commandes_user (user_id)
 ) ENGINE=InnoDB;
 
 -- ---------- Produits d'exemple (ceux affichés sur le site) ----------

@@ -193,7 +193,8 @@
                     </a>
                 </li>  
                 
-                <script>
+                <script src="notif.js"></script>
+<script>
 window.addEventListener('DOMContentLoaded', () => {
     function forceCartBadge() {
         const cart = JSON.parse(localStorage.getItem('userCart')) || [];
@@ -910,7 +911,7 @@ async function loadCart() {
     const cartItems = document.getElementById('cart-items');
     cartItems.innerHTML = '';
 
-    if (!data.success) return alert(data.message);
+    if (!data.success) return notif(data.message, "erreur");
 
     let subtotal = 0;
     data.cart.forEach(product => {
@@ -1264,7 +1265,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
       <!-- pay -->
       <li class="mb-2">
-        <a href="/paie.html" class="account-link d-flex justify-content-between align-items-center p-3 rounded-3 text-decoration-none">
+        <a href="/portefeuille.html" class="account-link d-flex justify-content-between align-items-center p-3 rounded-3 text-decoration-none">
           <div class="d-flex align-items-center">
             <span class="icon-box me-3 text-dark">
               <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>
@@ -1997,7 +1998,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
       <!-- Aide / Contact -->
       <li class="mb-2">
-        <a href="#aide.html" class="account-link d-flex justify-content-between align-items-center p-3 rounded-3 text-decoration-none">
+        <a href="/aide.html" class="account-link d-flex justify-content-between align-items-center p-3 rounded-3 text-decoration-none">
           <div class="d-flex align-items-center">
             <span class="icon-box me-3 text-dark">
               <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
@@ -2387,7 +2388,7 @@ document.addEventListener("DOMContentLoaded", () => {
       console.log("📦 Objet produit :", product);
       console.log("📂 État actuel du LocalStorage (userCart) :", cart);
 
-      alert("Produit ajouté au panier avec succès !");
+      notif(`${product.ref} · taille ${product.size} · x${product.quantity}`, "succes", "Ajouté au panier", product.image);
     });
   }
 });

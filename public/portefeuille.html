@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Portefeuille - Veraba</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    :root { --noir: #111; --gris: #6b6b6b; --trait: #ececec; --fond: #f5f5f3; --vert: #0f3d2e; --vert2: #1d5c46; --vert-clair: #e6f0eb; --rouge: #d93025; }
+    body { font-family: 'Helvetica Neue', Arial, sans-serif; background: var(--fond); color: var(--noir); }
+
+    /* ---------- En-tête ---------- */
+    .vb-entete { position: sticky; top: 0; z-index: 1000; background: #0b0b0b; border-bottom: 3px solid var(--vert); }
+    .vb-entete-in { position: relative; max-width: 1140px; margin: 0 auto; height: 64px; padding: 0 20px; display: flex; align-items: center; }
+    .vb-retour { display: inline-flex; align-items: center; gap: 10px; color: #fff; text-decoration: none; font-size: .82rem; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; }
+    .vb-fleche { width: 38px; height: 38px; border-radius: 50%; border: 1px solid rgba(255,255,255,.25); display: flex; align-items: center; justify-content: center; transition: background .2s, border-color .2s, transform .2s; }
+    .vb-retour:hover { color: #fff; }
+    .vb-retour:hover .vb-fleche { background: var(--vert); border-color: var(--vert); transform: translateX(-3px); }
+    .vb-marque { position: absolute; left: 50%; transform: translateX(-50%); color: #fff; text-decoration: none; font-weight: 900; font-size: 1.05rem; letter-spacing: 4px; text-transform: uppercase; }
+    .vb-marque:hover { color: #7fc8a9; }
+    @media (max-width: 576px) { .vb-entete-in { height: 56px; padding: 0 14px; } .vb-retour-txt { display: none; } }
+
+    /* ---------- Bloc portefeuille (illustration) ---------- */
+    .bloc { background: #fff; border-radius: 16px; box-shadow: 0 1px 3px rgba(0,0,0,.06); }
+    .hero { display: flex; align-items: center; gap: 22px; padding: 26px 28px; }
+    .hero svg { flex-shrink: 0; }
+    .hero h2 { font-size: 1.6rem; font-weight: 800; margin: 0 0 4px; }
+    .hero p { margin: 0; color: var(--gris); font-size: .92rem; }
+    .compteur { display: inline-block; margin-top: 10px; background: var(--vert-clair); color: var(--vert); font-weight: 700; font-size: .78rem; padding: 5px 12px; border-radius: 999px; }
+    @media (max-width: 576px) { .hero { flex-direction: column; text-align: center; padding: 24px 18px; } }
+
+    /* ---------- Liste des moyens de paiement ---------- */
+    .titre-section { font-size: .8rem; font-weight: 800; letter-spacing: 1.2px; text-transform: uppercase; color: var(--gris); margin: 30px 4px 12px; }
+    .liste { overflow: hidden; }
+    .ligne { display: flex; align-items: center; gap: 14px; padding: 16px 20px; opacity: 0; transform: translateY(6px); animation: apparition .35s ease forwards; }
+    .ligne + .ligne { border-top: 1px solid var(--trait); }
+    @keyframes apparition { to { opacity: 1; transform: none; } }
+    .logo { width: 52px; height: 36px; border-radius: 7px; border: 1px solid #e3e3e3; display: flex; align-items: center; justify-content: center; flex-shrink: 0; background: #fff; }
+    .logo .visa { font-weight: 900; font-style: italic; color: #1a1f71; font-size: .95rem; letter-spacing: .5px; }
+    .logo .mc { display: flex; } .logo .mc i { width: 18px; height: 18px; border-radius: 50%; background: #eb001b; display: block; } .logo .mc i + i { background: #f79e1b; margin-left: -7px; opacity: .9; }
+    .logo .autre { font-weight: 800; font-size: .6rem; color: var(--gris); text-transform: uppercase; }
+    .infos { flex: 1; min-width: 0; }
+    .infos strong { display: block; font-size: .95rem; }
+    .infos small { color: var(--gris); font-size: .8rem; }
+    .tag { display: inline-block; margin-left: 8px; font-size: .62rem; font-weight: 800; letter-spacing: .5px; text-transform: uppercase; background: var(--vert-clair); color: var(--vert); padding: 2px 8px; border-radius: 999px; vertical-align: 2px; }
+    .tag.rouge { background: #fdecea; color: var(--rouge); }
+    .btns { display: flex; gap: 6px; }
+    .btn-ico { display: inline-flex; align-items: center; gap: 6px; border: 1px solid #e0e0e0; background: #fff; border-radius: 999px; padding: 8px 14px; font-size: .78rem; font-weight: 700; color: var(--noir); transition: all .15s; }
+    .btn-ico:hover { border-color: var(--noir); }
+    .btn-ico.suppr:hover { border-color: var(--rouge); color: var(--rouge); background: #fdecea; }
+    @media (max-width: 576px) { .btn-ico span { display: none; } .btn-ico { padding: 9px; } }
+
+    .ajouter { width: 100%; display: flex; align-items: center; gap: 14px; padding: 16px 20px; background: none; border: 0; text-align: left; color: var(--vert); font-weight: 700; font-size: .95rem; transition: background .15s; }
+    .ajouter:hover { background: #f7faf8; }
+    .ajouter .plus { width: 52px; height: 36px; border-radius: 7px; border: 1.5px dashed #9cbfae; display: flex; align-items: center; justify-content: center; font-size: 1.3rem; font-weight: 400; flex-shrink: 0; transition: background .2s, color .2s; }
+    .ajouter:hover .plus { background: var(--vert); color: #fff; border-color: var(--vert); }
+    .liste .ligne + .ajouter, .liste .ajouter { border-top: 1px solid var(--trait); }
+    .liste .ajouter:first-child { border-top: 0; }
+
+    /* ---------- Panneau d'ajout ---------- */
+    .panneau { margin-top: 16px; display: grid; grid-template-rows: 0fr; transition: grid-template-rows .4s ease; }
+    .panneau.ouvert { grid-template-rows: 1fr; }
+    .panneau > div { overflow: hidden; }
+    .panneau-in { padding: 24px; }
+    .form-label { font-size: .7rem; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: #555; margin-bottom: 6px; }
+    .form-control, .form-select, .champ-stripe { border: 1px solid #d6d6d6; border-radius: 10px; padding: 12px 14px; font-size: .95rem; background: #fff; }
+    .form-control:focus, .form-select:focus, .champ-stripe.StripeElement--focus { border-color: var(--vert); box-shadow: 0 0 0 3px rgba(15,61,46,.12); outline: none; }
+    .champ-stripe.StripeElement--invalid { border-color: var(--rouge); }
+    .champ-stripe.StripeElement--complete { border-color: #2e7d5b; }
+    .erreur-champ { color: var(--rouge); font-size: .76rem; min-height: 16px; margin-top: 4px; }
+    .case { display: flex; align-items: center; gap: 10px; font-size: .88rem; cursor: pointer; }
+    .case input { width: 18px; height: 18px; accent-color: var(--vert); }
+    .btn-noir { border: 0; border-radius: 999px; background: var(--noir); color: #fff; padding: 13px 26px; font-size: .82rem; font-weight: 800; transition: background .2s; }
+    .btn-noir:hover:not(:disabled) { background: var(--vert); }
+    .btn-noir:disabled { background: #9a9a9a; }
+    .btn-clair { border: 1px solid #d6d6d6; border-radius: 999px; background: #fff; padding: 12px 22px; font-size: .82rem; font-weight: 700; }
+    .btn-clair:hover { border-color: var(--noir); }
+    .roue { display: inline-block; width: 14px; height: 14px; border: 2px solid rgba(255,255,255,.35); border-top-color: #fff; border-radius: 50%; animation: tourne .7s linear infinite; vertical-align: -2px; margin-right: 6px; }
+    @keyframes tourne { to { transform: rotate(360deg); } }
+    .test { background: #f3f7f5; border: 1px dashed #9cbfae; border-radius: 10px; padding: 12px 14px; font-size: .8rem; color: #4d6b5e; }
+    .test b { color: var(--vert); }
+    .test code { font-family: "Courier New", monospace; font-weight: 700; color: var(--noir); font-size: .86rem; }
+    .copier { border: 1px solid var(--vert); background: #fff; color: var(--vert); border-radius: 6px; font-size: .66rem; font-weight: 800; padding: 2px 8px; margin-left: 4px; }
+    .copier:hover { background: var(--vert); color: #fff; }
+
+    /* ---------- Fenêtre "modifier" ---------- */
+    .modale-fond { position: fixed; inset: 0; z-index: 2000; background: rgba(0,0,0,.45); display: flex; align-items: center; justify-content: center; padding: 16px; opacity: 0; pointer-events: none; transition: opacity .2s; }
+    .modale-fond.ouvert { opacity: 1; pointer-events: auto; }
+    .modale { background: #fff; border-radius: 18px; width: min(420px, 100%); padding: 24px; transform: translateY(14px); transition: transform .3s cubic-bezier(.2,1.3,.4,1); }
+    .modale-fond.ouvert .modale { transform: none; }
+
+    .securite { display: flex; gap: 12px; align-items: flex-start; padding: 16px 18px; margin-top: 22px; font-size: .82rem; color: var(--gris); }
+    .securite svg { color: var(--vert); flex-shrink: 0; margin-top: 2px; }
+    .squelette { height: 68px; margin: 0 20px; border-bottom: 1px solid var(--trait); background: linear-gradient(90deg, #f3f3f3 25%, #eaeaea 50%, #f3f3f3 75%); background-size: 200% 100%; animation: brille 1.2s infinite; }
+    @keyframes brille { to { background-position: -200% 0; } }
+    @media (prefers-reduced-motion: reduce) { .ligne { animation: none; opacity: 1; transform: none; } .panneau { transition: none; } }
+  </style>
+</head>
+<body>
+
+  <header class="vb-entete">
+    <div class="vb-entete-in">
+      <a href="/site.html" class="vb-retour" aria-label="Retour">
+        <span class="vb-fleche"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg></span>
+        <span class="vb-retour-txt">Retour</span>
+      </a>
+      <a href="/" class="vb-marque">Veraba</a>
+    </div>
+  </header>
+
+  <main class="container py-4 py-md-5" style="max-width: 760px;">
+
+    <!-- Bloc portefeuille -->
+    <section class="bloc hero">
+      <svg width="112" height="96" viewBox="0 0 112 96" aria-hidden="true">
+        <rect x="18" y="8" width="70" height="44" rx="7" fill="#1d5c46" transform="rotate(-8 53 30)"/>
+        <rect x="28" y="4" width="70" height="44" rx="7" fill="#2e7d5b" transform="rotate(6 63 26)"/>
+        <rect x="30" y="16" width="16" height="11" rx="2" fill="#e8d18b" transform="rotate(6 63 26)"/>
+        <rect x="6" y="30" width="100" height="62" rx="12" fill="#111"/>
+        <rect x="6" y="30" width="100" height="16" rx="8" fill="#1f1f1f"/>
+        <rect x="70" y="52" width="40" height="24" rx="8" fill="#0f3d2e"/>
+        <circle cx="84" cy="64" r="5" fill="#e6f0eb"/>
+      </svg>
+      <div>
+        <h2>Portefeuille</h2>
+        <p>Tes moyens de paiement pour commander en un clic.</p>
+        <span class="compteur" id="compteur">Chargement…</span>
+      </div>
+    </section>
+
+    <h3 class="titre-section">Moyens de paiement</h3>
+    <section class="bloc liste" id="liste">
+      <div class="squelette"></div><div class="squelette" style="border:0"></div>
+    </section>
+
+    <!-- Ajouter un moyen de paiement -->
+    <section class="bloc panneau" id="panneauAjout" aria-label="Ajouter un moyen de paiement">
+      <div><div class="panneau-in">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+          <h3 class="titre-section m-0" style="color:var(--noir)">Nouvelle carte</h3>
+          <button type="button" class="btn-clair py-2" id="fermerAjout">Annuler</button>
+        </div>
+        <form id="formAjout" novalidate>
+          <div class="row g-3">
+            <div class="col-12">
+              <label for="titulaire" class="form-label">Titulaire de la carte</label>
+              <input id="titulaire" class="form-control" placeholder="Prénom Nom" maxlength="100" autocomplete="cc-name">
+            </div>
+            <div class="col-12">
+              <label class="form-label">Numéro de carte</label>
+              <div id="card-number" class="champ-stripe"></div>
+              <div class="erreur-champ" id="err-number"></div>
+            </div>
+            <div class="col-6">
+              <label class="form-label">Expiration</label>
+              <div id="card-expiry" class="champ-stripe"></div>
+              <div class="erreur-champ" id="err-expiry"></div>
+            </div>
+            <div class="col-6">
+              <label class="form-label">CVC</label>
+              <div id="card-cvc" class="champ-stripe"></div>
+              <div class="erreur-champ" id="err-cvc"></div>
+            </div>
+            <div class="col-12">
+              <label class="case"><input type="checkbox" id="parDefaut"> Utiliser par défaut pour mes paiements</label>
+            </div>
+            <div class="col-12">
+              <div class="test">
+                <b>Mode test</b> · Visa <code>4242 4242 4242 4242</code><button type="button" class="copier" data-num="4242424242424242">Copier</button>
+                · Mastercard <code>5555 5555 5555 4444</code><button type="button" class="copier" data-num="5555555555554444">Copier</button>
+                · date future, CVC au choix.
+              </div>
+            </div>
+            <div class="col-12">
+              <button type="submit" class="btn-noir" id="btnAjout">Enregistrer la carte</button>
+            </div>
+          </div>
+        </form>
+      </div></div>
+    </section>
+
+    <div class="securite">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3l8 3v6c0 4.5-3.4 8.3-8 9-4.6-.7-8-4.5-8-9V6l8-3z"/><path d="M9 12l2 2 4-4"/></svg>
+      <div>Seules les cartes que tu choisis d'enregistrer apparaissent ici. Elles sont conservées de façon chiffrée par <strong>Stripe</strong> : Veraba ne voit jamais ton numéro complet ni ton CVC.</div>
+    </div>
+  </main>
+
+  <!-- Fenêtre de modification -->
+  <div class="modale-fond" id="modale" role="dialog" aria-modal="true" aria-labelledby="titreModale">
+    <form class="modale" id="formModif" novalidate>
+      <h3 class="fw-bold mb-1" style="font-size:1.1rem" id="titreModale">Modifier la carte</h3>
+      <p class="small text-muted mb-3" id="modaleCarte"></p>
+      <div class="mb-3">
+        <label for="modifTitulaire" class="form-label">Titulaire</label>
+        <input id="modifTitulaire" class="form-control" maxlength="100">
+      </div>
+      <div class="row g-3 mb-3">
+        <div class="col-6"><label for="modifMois" class="form-label">Mois</label><select id="modifMois" class="form-select"></select></div>
+        <div class="col-6"><label for="modifAnnee" class="form-label">Année</label><select id="modifAnnee" class="form-select"></select></div>
+      </div>
+      <label class="case mb-4"><input type="checkbox" id="modifDefaut"> Utiliser par défaut pour mes paiements</label>
+      <div class="d-flex gap-2 justify-content-end">
+        <button type="button" class="btn-clair" id="annulerModif">Annuler</button>
+        <button type="submit" class="btn-noir" id="btnModif">Enregistrer</button>
+      </div>
+    </form>
+  </div>
+
+  <script src="notif.js"></script>
+  <script src="https://js.stripe.com/v3/"></script>
+  <script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const stripe = Stripe("pk_test_51S6yGqPuI7pn7UOVAuI1UOrgRoFDeJOrLwCBpMJsavXKnLAAcNaVYFSMXGqi8WAcB5v3b3PVN2VKPnHOH7h0aykp00NdB9ob2Z", { locale: "fr" });
+    const elements = stripe.elements({ locale: "fr" });
+    const style = { base: { color: "#111", fontFamily: "'Helvetica Neue', Arial, sans-serif", fontSize: "16px", "::placeholder": { color: "#a8a8a8" } }, invalid: { color: "#d93025" } };
+    const cardNumber = elements.create("cardNumber", { style, showIcon: true });
+    const cardExpiry = elements.create("cardExpiry", { style });
+    const cardCvc = elements.create("cardCvc", { style });
+    cardNumber.mount("#card-number"); cardExpiry.mount("#card-expiry"); cardCvc.mount("#card-cvc");
+    const complet = { number: false, expiry: false, cvc: false };
+    [["number", cardNumber], ["expiry", cardExpiry], ["cvc", cardCvc]].forEach(([k, el]) => el.on("change", e => {
+      complet[k] = e.complete;
+      document.getElementById("err-" + k).textContent = e.error ? e.error.message : "";
+    }));
+
+    const echapper = t => String(t ?? "").replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+    const NOMS = { visa: "Visa", mastercard: "Mastercard", amex: "American Express", discover: "Discover", jcb: "JCB", unionpay: "UnionPay", diners: "Diners" };
+    const ICONE_MODIF = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 20h4L19 9l-4-4L4 16v4z"/></svg>';
+    const ICONE_SUPPR = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 7h16M9 7V4h6v3M6 7l1 13h10l1-13"/></svg>';
+    let cartes = [];
+
+    async function api(url, options = {}) {
+      const res = await fetch(url, { headers: { "Content-Type": "application/json" }, ...options });
+      if (res.status === 401) { location.href = "/login.html"; throw new Error("Non connecté"); }
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok || !data.success) throw new Error(data.message || "Erreur serveur");
+      return data;
+    }
+
+    const expiree = c => { const d = new Date(); return c.exp_annee < d.getFullYear() || (c.exp_annee === d.getFullYear() && c.exp_mois < d.getMonth() + 1); };
+    const logo = m => m === "visa" ? '<span class="visa">VISA</span>' : m === "mastercard" ? '<span class="mc"><i></i><i></i></span>' : `<span class="autre">${echapper(m)}</span>`;
+
+    function afficher() {
+      const n = cartes.length;
+      document.getElementById("compteur").textContent = n ? `${n} moyen${n > 1 ? "s" : ""} de paiement enregistré${n > 1 ? "s" : ""}` : "Aucun moyen de paiement enregistré";
+
+      document.getElementById("liste").innerHTML = cartes.map((c, i) => `
+        <div class="ligne" style="animation-delay:${i * 60}ms">
+          <div class="logo">${logo(c.marque)}</div>
+          <div class="infos">
+            <strong>${echapper(NOMS[c.marque] || c.marque)} •••• ${echapper(c.last4)}${expiree(c) ? '<span class="tag rouge">Expirée</span>' : c.defaut ? '<span class="tag">Par défaut</span>' : ""}</strong>
+            <small>Expire ${String(c.exp_mois).padStart(2, "0")}/${String(c.exp_annee).slice(-2)}${c.titulaire ? " · " + echapper(c.titulaire) : ""}</small>
+          </div>
+          <div class="btns">
+            <button class="btn-ico" data-action="modifier" data-id="${echapper(c.id)}" aria-label="Modifier">${ICONE_MODIF}<span>Modifier</span></button>
+            <button class="btn-ico suppr" data-action="supprimer" data-id="${echapper(c.id)}" aria-label="Supprimer">${ICONE_SUPPR}<span>Supprimer</span></button>
+          </div>
+        </div>`).join("") + `
+        <button class="ajouter" id="ouvrirAjout"><span class="plus">+</span>Ajouter un moyen de paiement</button>`;
+
+      document.getElementById("ouvrirAjout").addEventListener("click", () => ouvrirAjout(true));
+      document.querySelectorAll("[data-action]").forEach(b => b.addEventListener("click", () => actions[b.dataset.action](b.dataset.id)));
+    }
+
+    async function charger() {
+      try { cartes = (await api("/api/cartes")).cartes; }
+      catch (e) { cartes = []; notif(e.message, "erreur"); }
+      afficher();
+    }
+
+    /* ---------- Ajouter ---------- */
+    function ouvrirAjout(ouvrir) {
+      const p = document.getElementById("panneauAjout");
+      p.classList.toggle("ouvert", ouvrir);
+      p.firstElementChild.inert = !ouvrir;
+      if (ouvrir) {
+        document.getElementById("parDefaut").checked = cartes.length === 0;
+        setTimeout(() => p.scrollIntoView({ behavior: "smooth", block: "center" }), 150);
+      }
+    }
+    ouvrirAjout(false);
+    document.getElementById("fermerAjout").addEventListener("click", () => ouvrirAjout(false));
+
+    document.querySelectorAll(".copier").forEach(b => b.addEventListener("click", async () => {
+      try { await navigator.clipboard.writeText(b.dataset.num); } catch (e) {}
+      notif("Colle-le dans le champ « Numéro de carte » (Ctrl+V).", "info", "Numéro copié");
+      cardNumber.focus();
+    }));
+
+    document.getElementById("formAjout").addEventListener("submit", async e => {
+      e.preventDefault();
+      const titulaire = document.getElementById("titulaire").value.trim();
+      if (!titulaire) return notif("Indique le nom du titulaire de la carte.", "erreur", "Titulaire manquant");
+      if (!complet.number || !complet.expiry || !complet.cvc) return notif("Complète le numéro, la date d'expiration et le CVC.", "erreur", "Carte incomplète");
+
+      const bouton = document.getElementById("btnAjout");
+      bouton.disabled = true; bouton.innerHTML = '<span class="roue"></span>Vérification…';
+      try {
+        const { clientSecret } = await api("/api/cartes/preparer", { method: "POST" });
+        const r = await stripe.confirmCardSetup(clientSecret, { payment_method: { card: cardNumber, billing_details: { name: titulaire } } });
+        if (r.error) throw new Error(r.error.message);
+        const pmId = r.setupIntent.payment_method;
+        await api(`/api/cartes/${encodeURIComponent(pmId)}/enregistrer`, { method: "POST" });
+        if (document.getElementById("parDefaut").checked) await api(`/api/cartes/${encodeURIComponent(pmId)}/defaut`, { method: "POST" });
+        cardNumber.clear(); cardExpiry.clear(); cardCvc.clear();
+        document.getElementById("titulaire").value = "";
+        ouvrirAjout(false);
+        await charger();
+        notif("Ta carte est enregistrée dans ton portefeuille.", "succes", "Carte ajoutée");
+      } catch (err) {
+        notif(err.message, "erreur", "Carte refusée");
+      } finally {
+        bouton.disabled = false; bouton.textContent = "Enregistrer la carte";
+      }
+    });
+
+    /* ---------- Modifier ---------- */
+    const modale = document.getElementById("modale");
+    let carteEnCours = null;
+    const annee = new Date().getFullYear();
+    document.getElementById("modifMois").innerHTML = Array.from({ length: 12 }, (_, i) => `<option value="${i + 1}">${String(i + 1).padStart(2, "0")}</option>`).join("");
+    document.getElementById("modifAnnee").innerHTML = Array.from({ length: 16 }, (_, i) => `<option>${annee + i}</option>`).join("");
+    const fermerModale = () => { modale.classList.remove("ouvert"); carteEnCours = null; };
+    document.getElementById("annulerModif").addEventListener("click", fermerModale);
+    modale.addEventListener("click", e => { if (e.target === modale) fermerModale(); });
+    document.addEventListener("keydown", e => { if (e.key === "Escape") fermerModale(); });
+
+    document.getElementById("formModif").addEventListener("submit", async e => {
+      e.preventDefault();
+      const bouton = document.getElementById("btnModif");
+      bouton.disabled = true;
+      try {
+        const id = encodeURIComponent(carteEnCours.id);
+        await api(`/api/cartes/${id}`, { method: "PUT", body: JSON.stringify({
+          titulaire: document.getElementById("modifTitulaire").value,
+          exp_mois: document.getElementById("modifMois").value,
+          exp_annee: document.getElementById("modifAnnee").value }) });
+        if (document.getElementById("modifDefaut").checked && !carteEnCours.defaut) await api(`/api/cartes/${id}/defaut`, { method: "POST" });
+        fermerModale();
+        await charger();
+        notif("Les informations de ta carte sont à jour.", "succes", "Carte modifiée");
+      } catch (err) { notif(err.message, "erreur"); }
+      finally { bouton.disabled = false; }
+    });
+
+    const actions = {
+      modifier(id) {
+        carteEnCours = cartes.find(c => c.id === id);
+        document.getElementById("modaleCarte").textContent = `${NOMS[carteEnCours.marque] || carteEnCours.marque} •••• ${carteEnCours.last4}`;
+        document.getElementById("modifTitulaire").value = carteEnCours.titulaire;
+        document.getElementById("modifMois").value = carteEnCours.exp_mois;
+        const selAnnee = document.getElementById("modifAnnee");
+        if (![...selAnnee.options].some(o => +o.value === carteEnCours.exp_annee)) selAnnee.insertAdjacentHTML("afterbegin", `<option>${carteEnCours.exp_annee}</option>`);
+        selAnnee.value = carteEnCours.exp_annee;
+        const defaut = document.getElementById("modifDefaut");
+        defaut.checked = carteEnCours.defaut; defaut.disabled = carteEnCours.defaut;
+        modale.classList.add("ouvert");
+        setTimeout(() => document.getElementById("modifTitulaire").focus(), 100);
+      },
+      async supprimer(id) {
+        const c = cartes.find(x => x.id === id);
+        const ok = await confirmer(`La carte ${NOMS[c.marque] || c.marque} se terminant par ${c.last4} sera retirée de ton portefeuille.`, { titre: "Supprimer la carte ?", bouton: "Supprimer", danger: true });
+        if (!ok) return;
+        try { await api(`/api/cartes/${encodeURIComponent(id)}`, { method: "DELETE" }); await charger(); notif("La carte a été retirée de ton portefeuille.", "succes", "Carte supprimée"); }
+        catch (err) { notif(err.message, "erreur"); }
+      }
+    };
+
+    charger();
+  });
+  </script>
+</body>
+</html>

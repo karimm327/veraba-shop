@@ -1,21 +1,304 @@
-<div class="container py-5" style="font-family: 'Helvetica Neue', Arial, sans-serif; max-width: 800px;">
-  <h2 class="fw-bold text-uppercase mb-4" style="letter-spacing: 1px; font-size: 1.5rem;">Aide & Service client</h2>
-  
-  <div class="card border-0 shadow-sm rounded-0 p-4 mb-4" style="background-color: #fcfcfc;">
-    <h5 class="fw-bold mb-3" style="font-size: 1.05rem;">Questions fréquentes</h5>
-    <div class="mb-3">
-      <strong style="font-size: 0.9rem; display: block; margin-bottom: 4px;">Quels sont les délais de livraison ?</strong>
-      <p class="text-muted mb-0" style="font-size: 0.85rem;">Chez VigoBlue, nous garantissons une livraison rapide en 3 jours ouvrés pour toutes vos commandes de t-shirts.</p>
-    </div>
-    <div class="mb-0">
-      <strong style="font-size: 0.9rem; display: block; margin-bottom: 4px;">Comment effectuer un retour ?</strong>
-      <p class="text-muted mb-0" style="font-size: 0.85rem;">Vous disposez de 30 jours après réception pour faire une demande de retour directement depuis votre espace commandes.</p>
-    </div>
-  </div>
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Aide & Service client - VigoBlue</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    :root { --noir: #111; --gris: #6c757d; --trait: #e6e6e6; }
+    body { font-family: 'Helvetica Neue', Arial, sans-serif; background: #f6f6f6; color: var(--noir); }
+    .titre-section { font-size: .78rem; font-weight: 800; letter-spacing: 1.5px; text-transform: uppercase; margin: 0 0 14px; }
 
-  <div class="card border-0 shadow-sm rounded-0 p-4 text-center" style="background-color: #111; color: #fff;">
-    <h5 class="fw-bold mb-2" style="font-size: 1.05rem;">Besoin d'aide supplémentaire ?</h5>
-    <p class="text-muted mb-3" style="font-size: 0.85rem; color: #aaa !important;">Notre équipe vous répond sous 24h.</p>
-    <a href="mailto:support@vigoblue.com" class="btn btn-light rounded-0 px-4 py-2 text-uppercase fw-bold text-dark text-decoration-none mx-auto" style="font-size: 0.8rem; letter-spacing: 1px; display: inline-block;">Contacter le support</a>
+    /* ---------- Bandeau + recherche ---------- */
+    .hero { background: var(--noir); color: #fff; padding: 48px 0 56px; }
+    .hero h2 { font-size: 1.6rem; letter-spacing: 1px; }
+    .hero p { color: #aaa; font-size: .95rem; }
+    .recherche { position: relative; max-width: 560px; }
+    .recherche input { width: 100%; border: 0; border-radius: 0; padding: 16px 18px 16px 48px; font-size: .95rem; outline: none; }
+    .recherche input:focus { box-shadow: 0 0 0 3px rgba(255,255,255,.25); }
+    .recherche svg { position: absolute; left: 16px; top: 50%; transform: translateY(-50%); }
+
+    /* ---------- Raccourcis ---------- */
+    .raccourcis { margin-top: -28px; }
+    .raccourci { display: flex; align-items: center; gap: 14px; background: #fff; border: 1px solid var(--trait);
+      padding: 18px; height: 100%; color: var(--noir); text-decoration: none; transition: transform .2s ease, box-shadow .2s ease, border-color .2s; }
+    .raccourci:hover { transform: translateY(-3px); box-shadow: 0 12px 24px -12px rgba(0,0,0,.25); border-color: var(--noir); color: var(--noir); }
+    .raccourci .ico { width: 42px; height: 42px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; background: #f3f3f3; }
+    .raccourci strong { display: block; font-size: .85rem; text-transform: uppercase; letter-spacing: .5px; }
+    .raccourci small { color: var(--gris); font-size: .8rem; }
+
+    /* ---------- Catégories ---------- */
+    .filtres { display: flex; gap: 8px; flex-wrap: wrap; }
+    .filtre { border: 1px solid var(--noir); background: #fff; color: var(--noir); padding: 7px 14px; font-size: .72rem;
+      font-weight: 700; letter-spacing: 1px; text-transform: uppercase; cursor: pointer; transition: background .15s, color .15s; }
+    .filtre:hover { background: #f2f2f2; }
+    .filtre.actif { background: var(--noir); color: #fff; }
+
+    /* ---------- FAQ (accordéon) ---------- */
+    .faq { background: #fff; border: 1px solid var(--trait); }
+    .q + .q { border-top: 1px solid var(--trait); }
+    .q-titre { width: 100%; display: flex; align-items: center; justify-content: space-between; gap: 16px; background: none; border: 0;
+      padding: 18px 20px; text-align: left; font-weight: 700; font-size: .92rem; color: var(--noir); cursor: pointer; }
+    .q-titre:hover { background: #fafafa; }
+    .q-cat { display: block; font-size: .65rem; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: var(--gris); margin-bottom: 3px; }
+    .plus { width: 18px; height: 18px; flex-shrink: 0; position: relative; }
+    .plus::before, .plus::after { content: ""; position: absolute; top: 50%; left: 0; width: 18px; height: 2px; background: var(--noir); transition: transform .25s ease; }
+    .plus::after { transform: rotate(90deg); }
+    .q.ouvert .plus::after { transform: rotate(0); }
+    .q-rep { display: grid; grid-template-rows: 0fr; transition: grid-template-rows .3s ease; }
+    .q.ouvert .q-rep { grid-template-rows: 1fr; }
+    .q-rep > div { overflow: hidden; }
+    .q-rep p { margin: 0; padding: 0 20px 18px; color: #555; font-size: .88rem; line-height: 1.55; }
+    .q-rep a { color: var(--noir); font-weight: 700; }
+    mark { background: #fff1a8; padding: 0 1px; }
+    .aucun { padding: 30px 20px; text-align: center; color: var(--gris); display: none; }
+
+    /* ---------- Contact ---------- */
+    .contact { background: var(--noir); color: #fff; padding: 28px; }
+    .contact p.sous { color: #aaa; font-size: .88rem; }
+    .contact label { font-size: .7rem; text-transform: uppercase; letter-spacing: 1px; color: #bbb; margin-bottom: 6px; }
+    .contact .form-control, .contact .form-select { border-radius: 0; border: 1px solid #333; background: #1c1c1c; color: #fff; padding: 12px 14px; font-size: .9rem; }
+    .contact .form-control::placeholder { color: #777; }
+    .contact .form-control:focus, .contact .form-select:focus { border-color: #fff; box-shadow: none; background: #1c1c1c; color: #fff; }
+    .btn-blanc { background: #fff; color: var(--noir); border: 0; border-radius: 0; padding: 13px 22px; font-size: .78rem; font-weight: 800;
+      letter-spacing: 1px; text-transform: uppercase; transition: opacity .2s; }
+    .btn-blanc:hover { opacity: .85; }
+    .btn-blanc:disabled { opacity: .5; }
+    .infos-contact div { display: flex; gap: 10px; align-items: flex-start; font-size: .85rem; color: #ccc; margin-bottom: 14px; }
+    .infos-contact strong { color: #fff; display: block; }
+    .piege { position: absolute; left: -9999px; }
+
+    @media (prefers-reduced-motion: reduce) { .q-rep, .plus::after, .raccourci { transition: none; } }
+  </style>
+</head>
+<body>
+
+  <!-- En-tête (même style que "Mon compte") -->
+ <header class="vb-entete">
+  <div class="vb-entete-in">
+    <a href="/site.html" class="vb-retour" aria-label="Retour">
+      <span class="vb-fleche">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+      </span>
+      <span class="vb-retour-txt">Retour</span>
+    </a>
+    <a href="/" class="vb-marque">Veraba</a>
   </div>
-</div>
+</header>
+<style>
+  .vb-entete { position: sticky; top: 0; z-index: 1000; background: #0b0b0b; border-bottom: 3px solid #0f3d2e; }
+  .vb-entete-in { position: relative; max-width: 1140px; margin: 0 auto; height: 64px; padding: 0 20px; display: flex; align-items: center; }
+  .vb-retour { display: inline-flex; align-items: center; gap: 10px; color: #fff; text-decoration: none; font-size: .82rem; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; }
+  .vb-fleche { width: 38px; height: 38px; border-radius: 50%; border: 1px solid rgba(255,255,255,.25); display: flex; align-items: center; justify-content: center; transition: background .2s, border-color .2s, transform .2s; }
+  .vb-retour:hover { color: #fff; }
+  .vb-retour:hover .vb-fleche { background: #0f3d2e; border-color: #0f3d2e; transform: translateX(-3px); }
+  .vb-marque { position: absolute; left: 50%; transform: translateX(-50%); color: #fff; text-decoration: none; font-weight: 900; font-size: 1.05rem; letter-spacing: 4px; text-transform: uppercase; }
+  .vb-marque:hover { color: #7fc8a9; }
+  @media (max-width: 576px) { .vb-entete-in { height: 56px; padding: 0 14px; } .vb-retour-txt { display: none; } }
+</style>
+
+  <!-- Bandeau de recherche -->
+  <section class="hero">
+    <div class="container" style="max-width: 900px;">
+      <h2 class="fw-bold text-uppercase mb-2">Aide & Service client</h2>
+      <p class="mb-4">Une question sur ta commande, la livraison ou un retour ? On t'explique tout.</p>
+      <div class="recherche">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#111" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
+        <input id="recherche" type="search" placeholder="Rechercher : livraison, retour, taille, paiement…" aria-label="Rechercher dans l'aide">
+      </div>
+    </div>
+  </section>
+
+  <main class="container pb-5" style="max-width: 900px;">
+
+    <!-- Raccourcis -->
+    <div class="row g-3 raccourcis mb-5">
+      <div class="col-6 col-md-3">
+        <a class="raccourci" href="/commandes.html">
+          <span class="ico"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#111" stroke-width="1.8"><path d="M6 7h12l-1 13H7L6 7z"/><path d="M9 7V5a3 3 0 0 1 6 0v2"/></svg></span>
+          <span><strong>Mes commandes</strong><small>Suivi et retours</small></span>
+        </a>
+      </div>
+      <div class="col-6 col-md-3">
+        <a class="raccourci" href="/guideproduct.html">
+          <span class="ico"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#111" stroke-width="1.8"><path d="M3 8h18v8H3z"/><path d="M7 8v3M11 8v4M15 8v3M19 8v4"/></svg></span>
+          <span><strong>Guide des tailles</strong><small>Trouver ta taille</small></span>
+        </a>
+      </div>
+      <div class="col-6 col-md-3">
+        <a class="raccourci" href="/localisation.html">
+          <span class="ico"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#111" stroke-width="1.8"><path d="M12 21s7-6.2 7-11.5A7 7 0 0 0 5 9.5C5 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg></span>
+          <span><strong>Nos magasins</strong><small>Retrait gratuit</small></span>
+        </a>
+      </div>
+      <div class="col-6 col-md-3">
+        <a class="raccourci" href="/compte.html">
+          <span class="ico"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#111" stroke-width="1.8"><circle cx="12" cy="8" r="4"/><path d="M4 21c1.5-4 4.5-6 8-6s6.5 2 8 6"/></svg></span>
+          <span><strong>Mon compte</strong><small>Infos et adresses</small></span>
+        </a>
+      </div>
+    </div>
+
+    <!-- Questions fréquentes -->
+    <section class="mb-5">
+      <div class="d-flex justify-content-between align-items-end flex-wrap gap-3 mb-3">
+        <h3 class="titre-section m-0">Questions fréquentes</h3>
+        <div class="filtres" id="filtres">
+          <button class="filtre actif" data-cat="tout">Tout</button>
+          <button class="filtre" data-cat="Commande">Commande</button>
+          <button class="filtre" data-cat="Livraison">Livraison</button>
+          <button class="filtre" data-cat="Retours">Retours</button>
+          <button class="filtre" data-cat="Paiement">Paiement</button>
+          <button class="filtre" data-cat="Compte">Compte</button>
+        </div>
+      </div>
+      <div class="faq" id="faq"></div>
+    </section>
+
+    <!-- Contact -->
+    <section class="contact" id="contact">
+      <div class="row g-4">
+        <div class="col-md-5">
+          <h3 class="titre-section" style="color:#fff;">Besoin d'aide supplémentaire ?</h3>
+          <p class="sous mb-4">Écris-nous, notre équipe te répond sous 24 h (jours ouvrés).</p>
+          <div class="infos-contact">
+            <div><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8"><path d="M4 6h16v12H4z"/><path d="M4 7l8 6 8-6"/></svg>
+              <span><strong>Email</strong>support@vigoblue.com</span></div>
+            <div><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+              <span><strong>Horaires</strong>Du lundi au vendredi, 10 h – 18 h</span></div>
+          </div>
+        </div>
+        <div class="col-md-7">
+          <form id="formContact" novalidate>
+            <div class="row g-3">
+              <div class="col-sm-6">
+                <label for="cNom" class="form-label">Nom</label>
+                <input id="cNom" class="form-control" maxlength="100" placeholder="Ton nom" required>
+              </div>
+              <div class="col-sm-6">
+                <label for="cEmail" class="form-label">Email</label>
+                <input id="cEmail" type="email" class="form-control" maxlength="255" placeholder="toi@exemple.fr" required>
+              </div>
+              <div class="col-12">
+                <label for="cSujet" class="form-label">Sujet</label>
+                <select id="cSujet" class="form-select">
+                  <option>Ma commande</option><option>Livraison</option><option>Retour / échange</option>
+                  <option>Paiement</option><option>Mon compte</option><option>Autre</option>
+                </select>
+              </div>
+              <div class="col-12">
+                <label for="cMessage" class="form-label">Message</label>
+                <textarea id="cMessage" class="form-control" rows="4" maxlength="2000" placeholder="Explique-nous ta demande (numéro de commande si tu en as un)" required></textarea>
+              </div>
+              <input class="piege" id="cSite" tabindex="-1" autocomplete="off" aria-hidden="true">
+              <div class="col-12"><button type="submit" class="btn-blanc" id="cEnvoyer">Envoyer le message</button></div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script src="notif.js"></script>
+  <script>
+    /* ---------- Contenu de la FAQ ---------- */
+    const FAQ = [
+      { cat: "Livraison", q: "Quels sont les délais de livraison ?", r: "Nous livrons en <strong>3 jours ouvrés</strong> pour toutes les commandes de t-shirts, partout en France métropolitaine." },
+      { cat: "Livraison", q: "Combien coûte la livraison ?", r: "La livraison coûte <strong>5 €</strong> et devient <strong>gratuite dès 25 €</strong> d'achat (après remise). Le montant restant pour en profiter s'affiche dans ton panier." },
+      { cat: "Livraison", q: "Puis-je retirer ma commande en magasin ?", r: "Oui, le retrait en magasin est gratuit. Retrouve nos boutiques sur la page <a href=\"/localisation.html\">Nos magasins</a>." },
+      { cat: "Commande", q: "Où suivre ma commande ?", r: "Toutes tes commandes et leur avancement (payée, en préparation, expédiée, livrée) sont dans <a href=\"/commandes.html\">Mes commandes</a>." },
+      { cat: "Commande", q: "Comment choisir ma taille ?", r: "Consulte notre <a href=\"/guideproduct.html\">guide des tailles</a>. Nos t-shirts sont disponibles du S au XL." },
+      { cat: "Commande", q: "Puis-je repasser une ancienne commande ?", r: "Oui : dans <a href=\"/commandes.html\">Mes commandes</a>, clique sur « Commander à nouveau » pour remettre les mêmes articles dans ton panier." },
+      { cat: "Retours", q: "Comment effectuer un retour ?", r: "Tu disposes de <strong>30 jours</strong> après réception pour demander un retour. Envoie-nous ta demande avec ton numéro de commande via le formulaire ci-dessous." },
+      { cat: "Retours", q: "Quand serai-je remboursé ?", r: "Le remboursement est effectué sur ta carte dès réception et vérification de l'article retourné." },
+      { cat: "Paiement", q: "Quels moyens de paiement acceptez-vous ?", r: "Le paiement se fait par <strong>carte bancaire</strong> (Visa, Mastercard) via Stripe. Tes données de carte ne sont jamais stockées sur notre site." },
+      { cat: "Paiement", q: "Avez-vous des codes promo ?", r: "Une remise de <strong>5 %</strong> est appliquée automatiquement sur ton panier, et le code <strong>VB10</strong> te fait profiter de 10 € supplémentaires." },
+      { cat: "Compte", q: "J'ai oublié mon mot de passe", r: "Sur la page <a href=\"/login.html\">Se connecter</a>, saisis ton email puis clique sur « Mot de passe oublié ? » pour recevoir un lien de réinitialisation." },
+      { cat: "Compte", q: "Comment modifier mon adresse de livraison ?", r: "Rends-toi dans <a href=\"/adresses.html\">Mes adresses</a> pour ajouter, modifier ou supprimer ton adresse." }
+    ];
+
+    const zoneFaq = document.getElementById("faq");
+    let categorie = "tout";
+
+    zoneFaq.innerHTML = FAQ.map((f, i) => `
+      <div class="q" data-cat="${f.cat}" data-texte="${(f.q + " " + f.r.replace(/<[^>]+>/g, "")).toLowerCase()}">
+        <button class="q-titre" aria-expanded="false" aria-controls="rep${i}">
+          <span><span class="q-cat">${f.cat}</span><span class="q-texte">${f.q}</span></span><span class="plus" aria-hidden="true"></span>
+        </button>
+        <div class="q-rep" id="rep${i}" role="region"><div><p>${f.r}</p></div></div>
+      </div>`).join("") + `<div class="aucun" id="aucun">Aucune réponse trouvée. <a href="#contact" class="fw-bold text-dark">Écris-nous</a>, on t'aide.</div>`;
+
+    // Ouvrir / fermer une question
+    zoneFaq.querySelectorAll(".q-titre").forEach(bouton => bouton.addEventListener("click", () => {
+      const q = bouton.parentElement;
+      const ouvert = q.classList.toggle("ouvert");
+      bouton.setAttribute("aria-expanded", ouvert);
+    }));
+
+    // Recherche + filtres
+    const champ = document.getElementById("recherche");
+    function filtrer() {
+      const mot = champ.value.trim().toLowerCase();
+      let visibles = 0;
+      zoneFaq.querySelectorAll(".q").forEach(q => {
+        const okCat = categorie === "tout" || q.dataset.cat === categorie;
+        const okMot = !mot || q.dataset.texte.includes(mot);
+        q.style.display = okCat && okMot ? "" : "none";
+        const titre = q.querySelector(".q-texte");
+        const original = FAQ[[...zoneFaq.querySelectorAll(".q")].indexOf(q)].q;
+        titre.innerHTML = mot && okMot ? original.replace(new RegExp("(" + mot.replace(/[.*+?^${}()|[\]\\]/g, "\\$&") + ")", "ig"), "<mark>$1</mark>") : original;
+        if (okCat && okMot) visibles++;
+        if (mot && okCat && okMot && visibles <= 2) { q.classList.add("ouvert"); q.querySelector(".q-titre").setAttribute("aria-expanded", true); }
+      });
+      document.getElementById("aucun").style.display = visibles ? "none" : "block";
+    }
+    champ.addEventListener("input", filtrer);
+    document.querySelectorAll(".filtre").forEach(b => b.addEventListener("click", () => {
+      document.querySelectorAll(".filtre").forEach(x => x.classList.remove("actif"));
+      b.classList.add("actif");
+      categorie = b.dataset.cat;
+      filtrer();
+    }));
+
+    // Pré-remplir nom et email si le client est connecté
+    fetch("/user/me").then(r => r.ok ? r.json() : null).then(d => {
+      if (d && d.success) {
+        document.getElementById("cNom").value = `${d.user.prenom || ""} ${d.user.nom || ""}`.trim();
+        document.getElementById("cEmail").value = d.user.email || "";
+      }
+    }).catch(() => {});
+
+    // Envoi du formulaire de contact
+    document.getElementById("formContact").addEventListener("submit", async e => {
+      e.preventDefault();
+      const nom = document.getElementById("cNom").value.trim();
+      const email = document.getElementById("cEmail").value.trim();
+      const sujet = document.getElementById("cSujet").value;
+      const message = document.getElementById("cMessage").value.trim();
+      const site = document.getElementById("cSite").value; // champ piège anti-robots
+
+      if (!nom || !email || !message) return notif("Remplis ton nom, ton email et ton message.", "erreur");
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return notif("Ton adresse email ne semble pas valide.", "erreur");
+
+      const bouton = document.getElementById("cEnvoyer");
+      bouton.disabled = true; bouton.textContent = "Envoi…";
+      try {
+        const res = await fetch("/api/contact", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ nom, email, sujet, message, site })
+        });
+        const data = await res.json();
+        if (!data.success) throw new Error(data.message);
+        notif("On te répond sous 24 h à " + email + ".", "succes", "Message envoyé");
+        document.getElementById("cMessage").value = "";
+      } catch (err) {
+        notif(err.message || "Impossible d'envoyer le message, réessaie dans un instant.", "erreur");
+      } finally {
+        bouton.disabled = false; bouton.textContent = "Envoyer le message";
+      }
+    });
+  </script>
+</body>
+</html>

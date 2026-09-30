@@ -74,6 +74,7 @@ Saisis ton adresse e-mail pour nous rejoindre ou te connecter.</label>
     </div>
 </div>
 
+<script src="notif.js"></script>
 <script>
 // ---------- Login ----------
 document.getElementById("loginForm").addEventListener("submit", async (e) => {
@@ -88,13 +89,13 @@ document.getElementById("loginForm").addEventListener("submit", async (e) => {
     });
     const result = await res.json();
     if (result.success && result.redirect) window.location.href = result.redirect;
-    else alert(result.message);
+    else notif(result.message, "erreur");
 });
 
 // ---------- Mot de passe oublié ----------
 document.getElementById("forgotPassword").addEventListener("click", async () => {
     const email = document.getElementById("loginEmail").value;
-    if (!email) return alert("Veuillez entrer votre email avant de continuer.");
+    if (!email) return notif("Veuillez entrer votre email avant de continuer.", "erreur");
 
     try {
         const res = await fetch("/send-reset-mail", {
@@ -103,10 +104,10 @@ document.getElementById("forgotPassword").addEventListener("click", async () => 
             body: JSON.stringify({ email })
         });
         const text = await res.text();
-        alert(text);
+        notif(text, res.ok ? "succes" : "erreur");
     } catch (err) {
         console.error(err);
-        alert("Erreur lors de l'envoi de l'email");
+        notif("Erreur lors de l'envoi de l'email", "erreur");
     }
 });
 

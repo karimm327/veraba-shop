@@ -1,249 +1,654 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Vigoblue - Paiement Sécurisé</title>
-    <!-- Bootstrap 5 CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <link rel="stylesheet" href="paiement.css" />
-    
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vigoblue - Paiement Sécurisé</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    :root { --noir: #111; --gris: #6c757d; --trait: #e6e6e6; --vert: #1f9d74; --rouge: #d93025; }
+    body { font-family: 'Helvetica Neue', Arial, sans-serif; background: #f6f6f6; color: var(--noir); }
+    .titre-section { font-size: .78rem; font-weight: 800; letter-spacing: 1.5px; text-transform: uppercase; margin: 0 0 16px; }
+    .bloc { background: #fff; border: 1px solid var(--trait); padding: 26px; }
+
+    /* ---------- Étapes ---------- */
+    .etapes-achat { display: flex; justify-content: center; gap: 10px; font-size: .7rem; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: #9a9a9a; }
+    .etapes-achat span.actif { color: var(--noir); }
+    .etapes-achat i { font-style: normal; color: #ccc; }
+
+    /* ---------- Carte bancaire visuelle ---------- */
+    .carte-scene { perspective: 1200px; max-width: 360px; margin: 0 auto 26px; }
+    .carte { position: relative; width: 100%; aspect-ratio: 1.586; transform-style: preserve-3d; transition: transform .7s cubic-bezier(.4,.2,.2,1); }
+    .carte.retournee { transform: rotateY(180deg); }
+    .face { position: absolute; inset: 0; backface-visibility: hidden; border-radius: 16px; padding: 22px; color: #fff; overflow: hidden;
+      background: radial-gradient(120% 140% at 0% 0%, #3a3a3a 0%, #151515 55%, #000 100%);
+      box-shadow: 0 22px 40px -18px rgba(0,0,0,.55); transition: background .5s ease; }
+    .face::after { content: ""; position: absolute; width: 260px; height: 260px; right: -90px; top: -110px; border-radius: 50%;
+      background: radial-gradient(circle, rgba(255,255,255,.14), transparent 65%); }
+    .carte.visa .face { background: radial-gradient(120% 140% at 0% 0%, #2b3f8f 0%, #16215a 55%, #0b1133 100%); }
+    .carte.mastercard .face { background: radial-gradient(120% 140% at 0% 0%, #4a2a1a 0%, #231510 55%, #0f0a08 100%); }
+    .carte.amex .face { background: radial-gradient(120% 140% at 0% 0%, #1f6f86 0%, #124352 55%, #09222a 100%); }
+    .face-haut { display: flex; justify-content: space-between; align-items: flex-start; }
+    .logo-vb { width: 58px; height: 58px; margin: -10px 0 0 -8px; background: url(logop.png) center 42%/175% no-repeat; filter: invert(1); mix-blend-mode: screen; }
+    .marque { font-weight: 900; font-size: 1.15rem; letter-spacing: 1px; font-style: italic; min-height: 24px; transition: opacity .3s; }
+    .puce { width: 44px; height: 32px; border-radius: 6px; margin-top: 8px; background: linear-gradient(135deg, #e8d18b, #b99843); position: relative; }
+    .puce::before { content: ""; position: absolute; inset: 7px 0; border-top: 1px solid rgba(0,0,0,.25); border-bottom: 1px solid rgba(0,0,0,.25); }
+    .numero.saisie { opacity: .55; } .numero.complet { color: #7ee2bd; }
+    .numero { transition: color .3s, opacity .3s; font-family: "Courier New", monospace; font-size: clamp(1rem, 4.6vw, 1.3rem); letter-spacing: 2px; margin: 16px 0 14px; text-shadow: 0 1px 2px rgba(0,0,0,.4); }
+    .face-bas { display: flex; justify-content: space-between; align-items: flex-end; gap: 10px; }
+    .etiquette { font-size: .55rem; letter-spacing: 1px; text-transform: uppercase; opacity: .6; }
+    .titulaire { font-size: .85rem; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 210px; }
+    .etat-carte { font-size: .75rem; font-weight: 700; }
+    .dos { transform: rotateY(180deg); padding: 22px 0; }
+    .bande { height: 42px; background: #000; margin-top: 6px; }
+    .signature { display: flex; align-items: center; gap: 10px; margin: 18px 22px 0; }
+    .signature div:first-child { flex: 1; height: 34px; background: repeating-linear-gradient(90deg, #f3f3f3 0 8px, #e4e4e4 8px 16px); }
+    .cvc-zone { background: #fff; color: #111; font-family: "Courier New", monospace; font-weight: 700; padding: 6px 12px; }
+    .dos p { font-size: .6rem; opacity: .6; margin: 16px 22px 0; }
+
+    /* ---------- Champs ---------- */
+    .form-label { font-size: .7rem; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: #555; margin-bottom: 6px; }
+    .form-control, .champ-stripe { border: 1px solid #d6d6d6; border-radius: 0; padding: 13px 14px; font-size: .95rem; background: #fff; transition: border-color .2s, box-shadow .2s; }
+    .form-control:focus, .champ-stripe.StripeElement--focus { border-color: var(--noir); box-shadow: 0 0 0 3px rgba(17,17,17,.08); outline: none; }
+    .champ-stripe.StripeElement--invalid { border-color: var(--rouge); }
+    .champ-stripe.StripeElement--complete { border-color: var(--vert); }
+    .erreur-champ { color: var(--rouge); font-size: .78rem; min-height: 18px; margin-top: 4px; }
+
+    .btn-payer { width: 100%; border: 0; border-radius: 0; background: var(--noir); color: #fff; padding: 17px; font-size: .85rem; font-weight: 800;
+      letter-spacing: 1.5px; text-transform: uppercase; display: flex; align-items: center; justify-content: center; gap: 10px; transition: background .2s, transform .15s; }
+    .btn-payer:hover:not(:disabled) { background: #2b2b2b; }
+    .btn-payer:active:not(:disabled) { transform: scale(.99); }
+    .btn-payer:disabled { background: #9a9a9a; cursor: not-allowed; }
+    .roue { width: 16px; height: 16px; border: 2px solid rgba(255,255,255,.35); border-top-color: #fff; border-radius: 50%; animation: tourne .7s linear infinite; }
+    @keyframes tourne { to { transform: rotate(360deg); } }
+    .confiance { display: flex; justify-content: center; align-items: center; gap: 6px; color: var(--gris); font-size: .75rem; margin-top: 12px; }
+
+    /* ---------- Cartes de test ---------- */
+    .test { background: #fffbea; border: 1px dashed #d8b64a; padding: 18px; margin-top: 22px; }
+    .test-titre { display: flex; align-items: center; gap: 8px; font-size: .72rem; font-weight: 800; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 4px; }
+    .test-badge { background: #d8b64a; color: #fff; padding: 2px 7px; font-size: .62rem; }
+    .test small { color: #7a6a33; font-size: .76rem; }
+    .test-ligne { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 9px 0; border-top: 1px solid #f0e2b0; }
+    .test-ligne:first-of-type { border-top: 0; }
+    .test-num { font-family: "Courier New", monospace; font-weight: 700; font-size: .9rem; letter-spacing: .5px; }
+    .test-res { font-size: .72rem; font-weight: 700; padding: 2px 8px; white-space: nowrap; }
+    .test-res.ok { background: #e3f4ee; color: var(--vert); }
+    .test-res.ko { background: #fde8e6; color: var(--rouge); }
+    .copier { border: 1px solid var(--noir); background: #fff; font-size: .65rem; font-weight: 800; letter-spacing: 1px; text-transform: uppercase; padding: 5px 9px; transition: background .15s, color .15s; }
+    .copier:hover, .copier.fait { background: var(--noir); color: #fff; }
+
+    /* ---------- Récapitulatif ---------- */
+    .recap-article { display: flex; align-items: center; gap: 12px; padding: 10px 0; }
+    .recap-article + .recap-article { border-top: 1px solid #f0f0f0; }
+    .recap-img { position: relative; width: 54px; height: 66px; background: #f1f1f1; flex-shrink: 0; }
+    .recap-img img { width: 100%; height: 100%; object-fit: cover; }
+    .recap-qte { position: absolute; top: -7px; right: -7px; background: var(--noir); color: #fff; font-size: .65rem; font-weight: 700; min-width: 20px; height: 20px; border-radius: 10px; display: flex; align-items: center; justify-content: center; padding: 0 5px; }
+    .recap-nom { font-size: .85rem; font-weight: 700; margin: 0; }
+    .recap-info { font-size: .75rem; color: var(--gris); margin: 0; }
+    .recap-prix { margin-left: auto; font-weight: 700; font-size: .88rem; white-space: nowrap; }
+    .ligne-total { display: flex; justify-content: space-between; font-size: .88rem; padding: 5px 0; }
+    .ligne-total.grand { font-size: 1.25rem; font-weight: 800; border-top: 1px solid var(--trait); margin-top: 8px; padding-top: 14px; }
+    .remise { color: var(--vert); }
+
+    .num-etape { display: inline-flex; width: 22px; height: 22px; border-radius: 50%; background: var(--noir); color: #fff;
+      align-items: center; justify-content: center; font-size: .7rem; margin-right: 8px; letter-spacing: 0; }
+    .form-select { border: 1px solid #d6d6d6; border-radius: 0; padding: 13px 14px; font-size: .95rem; }
+    .form-select:focus { border-color: var(--noir); box-shadow: 0 0 0 3px rgba(17,17,17,.08); }
+    .form-control.invalide { border-color: var(--rouge); }
+    .note-adresse { font-size: .78rem; color: var(--vert); font-weight: 700; display: none; }
+    .case { display: flex; align-items: center; gap: 10px; font-size: .85rem; cursor: pointer; user-select: none; }
+    .case input { width: 18px; height: 18px; accent-color: #111; }
+    .volet { padding: 0; }
+    .volet-tete { width: 100%; display: flex; align-items: center; justify-content: space-between; gap: 16px; background: none; border: 0;
+      padding: 22px 26px; text-align: left; color: var(--noir); cursor: pointer; }
+    .volet-tete:hover { background: #fafafa; }
+    .volet-tete .titre-section { margin: 0; }
+    .volet-resume { display: block; font-size: .82rem; color: #555; margin-top: 6px; padding-left: 30px; }
+    .volet-resume.ok { color: var(--vert); font-weight: 700; }
+    .volet.ouvert .volet-resume { display: none; }
+    .volet-signe { width: 20px; height: 20px; flex-shrink: 0; position: relative; }
+    .volet-signe::before, .volet-signe::after { content: ""; position: absolute; top: 50%; left: 0; width: 20px; height: 2px; margin-top: -1px; background: var(--noir); transition: transform .3s ease; }
+    .volet-signe::after { transform: rotate(90deg); }
+    .volet.ouvert .volet-signe::after { transform: rotate(0); }
+    .volet-corps { display: grid; grid-template-rows: 0fr; transition: grid-template-rows .4s ease; }
+    .volet.ouvert .volet-corps { grid-template-rows: 1fr; }
+    .volet-corps > div { overflow: hidden; }
+    .volet-interieur { padding: 0 26px 26px; }
+    .btn-suivant { border: 1px solid var(--noir); background: #fff; color: var(--noir); border-radius: 0; padding: 13px 20px; font-size: .78rem;
+      font-weight: 800; letter-spacing: 1px; text-transform: uppercase; transition: background .2s, color .2s; }
+    .btn-suivant:hover { background: var(--noir); color: #fff; }
+    .choix-cartes { display: grid; gap: 10px; margin-bottom: 20px; }
+    .choix { display: flex; align-items: center; gap: 12px; border: 1px solid #d6d6d6; border-radius: 10px; padding: 12px 14px; cursor: pointer; transition: border-color .15s, background .15s; }
+    .choix:hover { border-color: #0f3d2e; }
+    .choix.actif { border-color: #0f3d2e; background: #f3f7f5; box-shadow: 0 0 0 1px #0f3d2e inset; }
+    .choix input { width: 18px; height: 18px; accent-color: #0f3d2e; flex-shrink: 0; }
+    .mini-carte { width: 46px; height: 30px; border-radius: 5px; flex-shrink: 0; background: linear-gradient(135deg, #1d5c46, #0f3d2e); color: #fff; font-size: .5rem; font-weight: 900; font-style: italic; display: flex; align-items: flex-end; justify-content: flex-end; padding: 3px 4px; }
+    .mini-carte.visa { background: linear-gradient(135deg, #2b3f8f, #0b1133); }
+    .mini-carte.mastercard { background: linear-gradient(135deg, #333, #000); }
+    .choix-txt { font-size: .88rem; line-height: 1.3; }
+    .choix-txt small { color: #6b6b6b; }
+    .choix-badge { margin-left: auto; font-size: .62rem; font-weight: 800; letter-spacing: .5px; text-transform: uppercase; background: #e6f0eb; color: #0f3d2e; padding: 3px 8px; border-radius: 999px; }
+    .choix-plus { width: 46px; height: 30px; border-radius: 5px; border: 1.5px dashed #9cbfae; color: #0f3d2e; display: flex; align-items: center; justify-content: center; font-size: 1.1rem; flex-shrink: 0; }
+    .lien-portefeuille { font-size: .78rem; font-weight: 700; color: #0f3d2e; }
+    .zone-nouvelle[hidden] { display: none !important; }
+    .choix.cachee { display: none; }
+    .voir-plus { border: 0; background: none; padding: 2px 0; font-size: .8rem; font-weight: 700; color: #0f3d2e; text-align: left; }
+    .voir-plus:hover { text-decoration: underline; }
+    .case-enregistrer { background: #f3f7f5; border: 1px solid #dde9e3; border-radius: 10px; padding: 12px 14px; }
+    .case-enregistrer small { display: block; color: #6b6b6b; margin: 2px 0 0 28px; font-size: .76rem; }
+    @media (min-width: 992px) { .recap-colle { position: sticky; top: 24px; } }
+    @media (prefers-reduced-motion: reduce) { .carte, .face { transition: none; } }
+    /* ===== Palette noir + vert profond ===== */
+    :root { --vert: #0f5132; }
+    .num-etape { background: #0f3d2e; }
+    .btn-payer:hover:not(:disabled) { background: #0f3d2e; }
+    .btn-suivant:hover { background: #0f3d2e; border-color: #0f3d2e; }
+    .form-control:focus, .form-select:focus, .champ-stripe.StripeElement--focus { border-color: #0f3d2e; box-shadow: 0 0 0 3px rgba(15,61,46,.12); }
+    .face { background: radial-gradient(120% 140% at 0% 0%, #1d5c46 0%, #0f3d2e 50%, #06120d 100%); }
+    .test { background: #f3f7f5; border: 1px dashed #9cbfae; }
+    .test-badge { background: #0f3d2e; }
+    .test small { color: #4d6b5e; }
+    .test-ligne { border-top-color: #dde9e3; }
+    .test-res.ok { background: #e6f0eb; color: #0f3d2e; }
+    .copier:hover, .copier.fait { background: #0f3d2e; border-color: #0f3d2e; color: #fff; }
+    .etapes-achat span.actif { color: #0f3d2e; }
+  </style>
 </head>
 <body>
 
-<section id="checkout-section" class="py-5 d-flex align-items-center min-vh-100">
-  <div class="container" style="max-width: 550px;" id="main-container">
-    
-    <!-- En-tête -->
-    <div class="text-center mb-4">
-      <h2 class="fw-bold text-dark tracking-tight mb-1">Paiement sécurisé</h2>
-      <p class="text-muted small mb-0">Compte : <span id="userEmail" class="fw-medium text-dark">Chargement...</span></p>
-    </div>
+<!-- ===== En-tête : retour + marque (noir / vert profond) ===== -->
+<header class="vb-entete">
+  <div class="vb-entete-in">
+    <a href="/panier.html" class="vb-retour" aria-label="Retour">
+      <span class="vb-fleche">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+      </span>
+      <span class="vb-retour-txt">Retour</span>
+    </a>
+    <a href="/" class="vb-marque">Veraba</a>
+  </div>
+</header>
+<style>
+  .vb-entete { position: sticky; top: 0; z-index: 1000; background: #0b0b0b; border-bottom: 3px solid #0f3d2e; }
+  .vb-entete-in { position: relative; max-width: 1140px; margin: 0 auto; height: 64px; padding: 0 20px; display: flex; align-items: center; }
+  .vb-retour { display: inline-flex; align-items: center; gap: 10px; color: #fff; text-decoration: none; font-size: .82rem; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; }
+  .vb-fleche { width: 38px; height: 38px; border-radius: 50%; border: 1px solid rgba(255,255,255,.25); display: flex; align-items: center; justify-content: center; transition: background .2s, border-color .2s, transform .2s; }
+  .vb-retour:hover { color: #fff; }
+  .vb-retour:hover .vb-fleche { background: #0f3d2e; border-color: #0f3d2e; transform: translateX(-3px); }
+  .vb-marque { position: absolute; left: 50%; transform: translateX(-50%); color: #fff; text-decoration: none; font-weight: 900; font-size: 1.05rem; letter-spacing: 4px; text-transform: uppercase; }
+  .vb-marque:hover { color: #7fc8a9; }
+  @media (max-width: 576px) { .vb-entete-in { height: 56px; padding: 0 14px; } .vb-retour-txt { display: none; } }
+</style>
 
-    <!-- Carte principale du formulaire -->
-    <div class="card border-0 shadow-sm p-4 p-md-5 rounded-4">
-      
-      <form id="paymentForm">
-        
-        <!-- Ligne Prénom & Nom -->
-        <div class="row g-3 mb-3">
-          <div class="col-6">
-            <label for="prenom" class="form-label small text-secondary fw-medium">Prénom</label>
-            <input type="text" id="prenom" class="form-control py-2 px-3 small" placeholder="Jean" required>
+
+  <main class="container py-4 py-md-5" style="max-width: 1040px;" id="main-container">
+    <div class="etapes-achat mb-4"><span>Panier</span><i>—</i><span class="actif">Livraison & paiement</span><i>—</i><span>Confirmation</span></div>
+
+    <div class="row g-4">
+      <!-- ================= Formulaire ================= -->
+      <div class="col-lg-7 order-2 order-lg-1">
+        <!-- ===== 1. Livraison ===== -->
+        <div class="bloc volet ouvert mb-4" id="blocLivraison">
+          <button type="button" class="volet-tete" aria-expanded="true" aria-controls="corpsLivraison">
+            <span>
+              <h2 class="titre-section"><span class="num-etape">1</span>Adresse de livraison</h2>
+              <span class="volet-resume" id="resumeLivraison">Clique pour saisir ton adresse</span>
+            </span>
+            <span class="volet-signe" aria-hidden="true"></span>
+          </button>
+          <div class="volet-corps" id="corpsLivraison"><div><div class="volet-interieur">
+          <div class="d-flex justify-content-between align-items-start flex-wrap gap-2 mb-3">
+            <p class="small text-muted m-0">Compte : <span id="userEmail" class="fw-bold text-dark">Chargement…</span></p>
+            <span class="note-adresse" id="noteAdresse">✓ Adresse enregistrée chargée</span>
           </div>
-          <div class="col-6">
-            <label for="nom" class="form-label small text-secondary fw-medium">Nom</label>
-            <input type="text" id="nom" class="form-control py-2 px-3 small" placeholder="Dupont" required>
-          </div>
-        </div>
-
-        <!-- Input caché alimenté par le JS pour Stripe -->
-        <input type="hidden" id="cardholder">
-
-        <!-- Numéro de carte / Visa / Mastercard (Géré par Stripe) -->
-        <div class="mb-4">
-          <div class="d-flex justify-content-between align-items-center mb-1">
-            <label class="form-label small text-secondary fw-medium mb-0">Carte bancaire</label>
-            <div class="d-flex gap-1 text-muted" style="font-size: 0.75rem; font-weight: 600;">
-              <span>VISA</span>
-              <span>•</span>
-              <span>MC</span>
+          <div class="row g-3">
+            <div class="col-6">
+              <label for="prenom" class="form-label">Prénom</label>
+              <input type="text" id="prenom" class="form-control" placeholder="Jean" autocomplete="given-name" maxlength="100" required>
+            </div>
+            <div class="col-6">
+              <label for="nom" class="form-label">Nom</label>
+              <input type="text" id="nom" class="form-control" placeholder="Dupont" autocomplete="family-name" maxlength="100" required>
+            </div>
+            <div class="col-12">
+              <label for="adresse" class="form-label">Adresse</label>
+              <input type="text" id="adresse" class="form-control" placeholder="12 rue de la Paix, appartement 3" autocomplete="street-address" maxlength="255" required>
+            </div>
+            <div class="col-4">
+              <label for="codePostal" class="form-label">Code postal</label>
+              <input type="text" id="codePostal" class="form-control" placeholder="75001" autocomplete="postal-code" inputmode="numeric" maxlength="10" required>
+            </div>
+            <div class="col-8">
+              <label for="ville" class="form-label">Ville</label>
+              <input type="text" id="ville" class="form-control" placeholder="Paris" autocomplete="address-level2" maxlength="100" required>
+            </div>
+            <div class="col-6">
+              <label for="pays" class="form-label">Pays</label>
+              <select id="pays" class="form-select" autocomplete="country-name">
+                <option>France</option><option>Belgique</option><option>Suisse</option><option>Luxembourg</option>
+              </select>
+            </div>
+            <div class="col-6">
+              <label for="telephone" class="form-label">Téléphone</label>
+              <input type="tel" id="telephone" class="form-control" placeholder="06 12 34 56 78" autocomplete="tel" maxlength="30" required>
+            </div>
+            <div class="col-12">
+              <label class="case"><input type="checkbox" id="enregistrerAdresse" checked> Enregistrer comme adresse principale</label>
+            </div>
+            <div class="col-12">
+              <button type="button" class="btn-suivant" id="versPaiement">Continuer vers le paiement →</button>
             </div>
           </div>
-          <div id="card-element" class="p-3 rounded-3">
-            <!-- Stripe injectera l'iframe sécurisée ici -->
+          </div></div></div>
+        </div>
+
+        <!-- ===== 2. Paiement ===== -->
+        <div class="bloc volet" id="blocPaiement">
+          <button type="button" class="volet-tete" aria-expanded="false" aria-controls="corpsPaiement">
+            <span>
+              <h2 class="titre-section"><span class="num-etape">2</span>Paiement par carte</h2>
+              <span class="volet-resume" id="resumePaiement">Carte bancaire · Visa, Mastercard</span>
+            </span>
+            <span class="volet-signe" aria-hidden="true"></span>
+          </button>
+          <div class="volet-corps" id="corpsPaiement"><div><div class="volet-interieur">
+
+          <!-- Cartes enregistrées (portefeuille) -->
+          <div id="blocCartes" hidden>
+            <div class="d-flex justify-content-between align-items-center mb-2">
+              <span class="form-label m-0">Mes cartes</span>
+              <a href="/portefeuille.html" class="lien-portefeuille">Gérer mon portefeuille →</a>
+            </div>
+            <div class="choix-cartes" id="choixCartes"></div>
           </div>
+
+          <!-- Carte visuelle -->
+          <div class="carte-scene zone-nouvelle" aria-hidden="true">
+            <div class="carte" id="carteVisuelle">
+              <div class="face">
+                <div class="face-haut"><div class="logo-vb"></div><div class="marque" id="carteMarque"></div></div>
+                <div class="puce"></div>
+                <div class="numero" id="carteNumero">•••• •••• •••• ••••</div>
+                <div class="face-bas">
+                  <div><div class="etiquette">Titulaire</div><div class="titulaire" id="carteNom">Prénom Nom</div></div>
+                  <div class="text-end"><div class="etiquette">Statut</div><div class="etat-carte" id="carteEtat">À saisir</div></div>
+                </div>
+              </div>
+              <div class="face dos">
+                <div class="bande"></div>
+                <div class="signature"><div></div><div class="cvc-zone">•••</div></div>
+                <p>Le code à 3 chiffres (CVC) se trouve au dos de ta carte.</p>
+              </div>
+            </div>
+          </div>
+
+          <form id="paymentForm" novalidate>
+            <div class="row g-3 zone-nouvelle">
+              <div class="col-12">
+                <label class="form-label">Numéro de carte</label>
+                <div id="card-number" class="champ-stripe"></div>
+                <div class="erreur-champ" id="err-number"></div>
+              </div>
+              <div class="col-6">
+                <label class="form-label">Expiration</label>
+                <div id="card-expiry" class="champ-stripe"></div>
+                <div class="erreur-champ" id="err-expiry"></div>
+              </div>
+              <div class="col-6">
+                <label class="form-label">CVC</label>
+                <div id="card-cvc" class="champ-stripe"></div>
+                <div class="erreur-champ" id="err-cvc"></div>
+              </div>
+              <div class="col-12 mb-2">
+                <div class="case-enregistrer">
+                  <label class="case"><input type="checkbox" id="enregistrerCarte"> Enregistrer cette carte pour mes prochains achats</label>
+                  <small>Elle sera ajoutée à ton portefeuille. Sinon, elle sert uniquement pour cette commande.</small>
+                </div>
+              </div>
+            </div>
+
+            <input type="hidden" id="cardholder">
+            <input type="hidden" id="amount" value="0">
+
+            <button type="submit" id="checkout-btn" class="btn-payer mt-2">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="5" y="11" width="14" height="10"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>
+              <span id="btnTexte">Payer <span id="displayAmount">0,00 €</span></span>
+            </button>
+            <div class="confiance">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3l8 3v6c0 4.5-3.4 8.3-8 9-4.6-.7-8-4.5-8-9V6l8-3z"/></svg>
+              Paiement chiffré par Stripe · Tes données de carte ne sont jamais stockées chez nous
+            </div>
+          </form>
+
+          <!-- Cartes de test -->
+          <div class="test zone-nouvelle">
+            <div class="test-titre"><span class="test-badge">Mode test</span> Cartes de démonstration</div>
+            <small>Aucun vrai paiement n'est effectué. Utilise une date future (ex. <strong>12/34</strong>) et n'importe quel CVC (ex. <strong>123</strong>).</small>
+            <div class="mt-2" id="cartesTest"></div>
+          </div>
+          </div></div></div>
         </div>
-
-        <!-- Affichage élégant du montant du panier -->
-        <div class="d-flex justify-content-between align-items-center mb-3 px-1">
-          <span class="text-secondary small fw-medium">Total à régler :</span>
-          <span class="text-dark fw-bold fs-5" id="displayAmount">0.00€</span>
-        </div>
-
-        <!-- Montant de la commande (dynamique, géré en JS) -->
-        <input type="hidden" id="amount" value="0">
-
-        <!-- Bouton de paiement -->
-        <button type="submit" id="checkout-btn" class="btn btn-dark w-100 py-3 rounded-pill fw-medium small shadow-none transition-all">
-          Payer maintenant
-        </button>
-
-      </form>
-
-    <!-- Historique des paiements mis en commentaire -->
-      <!--
-      <div class="mt-4 pt-3 border-top border-light">
-        <h6 class="fw-bold text-dark fs-6 mb-3" style="font-size: 0.8rem !important;">Moyens de paiement enregistrés</h6>
-        <ul id="paiementsList" class="list-unstyled small text-secondary ps-0 mb-0">
-          <li>Chargement...</li>
-        </ul>
       </div>
-      -->
 
+      <!-- ================= Récapitulatif ================= -->
+      <div class="col-lg-5 order-1 order-lg-2">
+        <div class="bloc recap-colle">
+          <h2 class="titre-section">Ta commande</h2>
+          <div id="recapArticles"></div>
+          <div class="mt-3" id="recapTotaux"></div>
+          <a href="/panier.html" class="d-inline-block mt-3 small fw-bold text-dark">Modifier le panier</a>
+        </div>
+      </div>
     </div>
-  </div>
-</section>
+  </main>
 
-<!-- Scripts Stripe et Logique JS -->
-<script src="https://js.stripe.com/v3/"></script>
-<script>
-document.addEventListener("DOMContentLoaded", async () => {
-  const stripe = Stripe("pk_test_51S6yGqPuI7pn7UOVAuI1UOrgRoFDeJOrLwCBpMJsavXKnLAAcNaVYFSMXGqi8WAcB5v3b3PVN2VKPnHOH7h0aykp00NdB9ob2Z");
-  const elements = stripe.elements();
-  
-  const cardElementContainer = document.getElementById("card-element");
-  let cardElement = null;
-  if (cardElementContainer) {
-    cardElement = elements.create("card", {
-      style: {
-        base: {
-          color: '#2c2c2c',
-          fontFamily: 'inherit',
-          fontSize: '14px',
-          '::placeholder': { color: '#aab7c4' }
-        },
-        invalid: { color: '#fa755a' }
-      }
+  <script src="notif.js"></script>
+  <script src="https://js.stripe.com/v3/"></script>
+  <script>
+  document.addEventListener("DOMContentLoaded", async () => {
+    const stripe = Stripe("pk_test_51S6yGqPuI7pn7UOVAuI1UOrgRoFDeJOrLwCBpMJsavXKnLAAcNaVYFSMXGqi8WAcB5v3b3PVN2VKPnHOH7h0aykp00NdB9ob2Z", { locale: "fr" });
+    const elements = stripe.elements({ locale: "fr" });
+
+    const euros = n => n.toFixed(2).replace(".", ",") + " €";
+    const echapper = t => String(t ?? "").replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+
+    /* ---------- Champs Stripe séparés ---------- */
+    const style = {
+      base: { color: "#111", fontFamily: "'Helvetica Neue', Arial, sans-serif", fontSize: "16px", "::placeholder": { color: "#a8a8a8" } },
+      invalid: { color: "#d93025" }
+    };
+    const cardNumber = elements.create("cardNumber", { style, showIcon: true, placeholder: "1234 1234 1234 1234" });
+    const cardExpiry = elements.create("cardExpiry", { style });
+    const cardCvc = elements.create("cardCvc", { style, placeholder: "123" });
+    cardNumber.mount("#card-number");
+    cardExpiry.mount("#card-expiry");
+    cardCvc.mount("#card-cvc");
+
+    /* ---------- Carte visuelle animée ---------- */
+    const carte = document.getElementById("carteVisuelle");
+    const MARQUES = { visa: "VISA", mastercard: "Mastercard", amex: "AMEX", discover: "Discover", unionpay: "UnionPay", jcb: "JCB", diners: "Diners" };
+    const etat = { number: false, expiry: false, cvc: false };
+
+    function majEtatCarte() {
+      const pret = etat.number && etat.expiry && etat.cvc;
+      const el = document.getElementById("carteEtat");
+      el.textContent = pret ? "Prête ✓" : etat.number ? "Presque…" : "À saisir";
+      el.style.color = pret ? "#7ee2bd" : "#fff";
+    }
+
+    cardNumber.on("change", e => {
+      carte.classList.remove("visa", "mastercard", "amex");
+      if (["visa", "mastercard", "amex"].includes(e.brand)) carte.classList.add(e.brand);
+      document.getElementById("carteMarque").textContent = MARQUES[e.brand] || "";
+      const num = document.getElementById("carteNumero");
+      num.classList.toggle("complet", !!e.complete);
+      num.classList.toggle("saisie", !e.empty && !e.complete);
+      etat.number = e.complete;
+      document.getElementById("err-number").textContent = e.error ? e.error.message : "";
+      majEtatCarte();
     });
-    cardElement.mount("#card-element");
-  }
+    cardExpiry.on("change", e => { etat.expiry = e.complete; document.getElementById("err-expiry").textContent = e.error ? e.error.message : ""; majEtatCarte(); });
+    cardCvc.on("change", e => { etat.cvc = e.complete; document.getElementById("err-cvc").textContent = e.error ? e.error.message : ""; majEtatCarte(); });
+    cardCvc.on("focus", () => carte.classList.add("retournee"));
+    cardCvc.on("blur", () => carte.classList.remove("retournee"));
 
-  const userEmailEl = document.getElementById("userEmail");
-  const paiementsList = document.getElementById("paiementsList");
-  const paymentForm = document.getElementById("paymentForm");
-  const amountInput = document.getElementById("amount");
-  const displayAmountEl = document.getElementById("displayAmount");
+    const majNom = () => {
+      const n = `${document.getElementById("prenom").value} ${document.getElementById("nom").value}`.trim();
+      document.getElementById("carteNom").textContent = n || "Prénom Nom";
+    };
+    document.getElementById("prenom").addEventListener("input", majNom);
+    document.getElementById("nom").addEventListener("input", majNom);
 
-  // 1. Récupération dynamique du montant du panier
-  async function loadCartAmount() {
-    let cartTotal = 0;
-
-    // Même calcul que la page panier : panier local (userCart) - 5 % - code promo + livraison
-    const cart = JSON.parse(localStorage.getItem("userCart")) || [];
-    const subtotal = cart.reduce((sum, p) => sum + (Number(p.price) || 0) * (Number(p.quantity) || 0), 0);
-    if (subtotal > 0) {
-      const promo = Number(localStorage.getItem("vigoblue_promo")) || 0;
-      const discount = Math.min(subtotal * 0.05 + promo, subtotal);
-      const afterDiscount = subtotal - discount;
-      const shipping = afterDiscount >= 25 ? 0 : 5;
-      cartTotal = afterDiscount + shipping;
-    }
-
-    // Mise à jour du champ caché et du texte à l'écran
-    if (amountInput) amountInput.value = cartTotal.toFixed(2);
-    if (displayAmountEl) displayAmountEl.textContent = `${cartTotal.toFixed(2)}€`;
-  }
-
-  // Utilisateur connecté
-  async function fetchUser() {
-    try {
-      const res = await fetch("/user/me");
-      const data = await res.json();
-      if (data.success && userEmailEl) {
-        userEmailEl.textContent = data.user.email;
-      } else if (userEmailEl) {
-        userEmailEl.textContent = "Non connecté";
+    /* ---------- Cartes de test ---------- */
+    const TESTS = [
+      { num: "4242 4242 4242 4242", res: "Visa · accepté", ok: true },
+      { num: "5555 5555 5555 4444", res: "Mastercard · accepté", ok: true }
+    ];
+    document.getElementById("cartesTest").innerHTML = TESTS.map((t, i) => `
+      <div class="test-ligne">
+        <span class="test-num">${t.num}</span>
+        <span class="d-flex align-items-center gap-2">
+          <span class="test-res ${t.ok ? "ok" : "ko"}">${t.res}</span>
+          <button type="button" class="copier" data-i="${i}">Copier</button>
+        </span>
+      </div>`).join("");
+    document.querySelectorAll(".copier").forEach(b => b.addEventListener("click", async () => {
+      const num = TESTS[b.dataset.i].num.replace(/\s/g, "");
+      try { await navigator.clipboard.writeText(num); } catch (e) {
+        const t = document.createElement("textarea"); t.value = num; document.body.appendChild(t); t.select(); document.execCommand("copy"); t.remove();
       }
-    } catch (err) {
-      console.error("Erreur fetchUser:", err);
-      if (userEmailEl) userEmailEl.textContent = "Non connecté";
-    }
-  }
+      document.querySelectorAll(".copier").forEach(x => { x.classList.remove("fait"); x.textContent = "Copier"; });
+      b.classList.add("fait"); b.textContent = "Copié ✓";
+      notif("Colle-le dans le champ « Numéro de carte » (Ctrl+V).", "info", "Numéro copié");
+      cardNumber.focus();
+    }));
 
-  // Afficher les moyens de paiement enregistrés
-  async function fetchPaiements() {
-    if (!paiementsList) return;
+    /* ---------- Récapitulatif + montant (même calcul que le panier) ---------- */
+    const amountInput = document.getElementById("amount");
+    const panier = JSON.parse(localStorage.getItem("userCart")) || [];
+    const sousTotal = panier.reduce((s, p) => s + (Number(p.price) || 0) * (Number(p.quantity) || 0), 0);
+    const promo = Number(localStorage.getItem("vigoblue_promo")) || 0;
+    const remise = Math.min(sousTotal * 0.05 + promo, sousTotal);
+    const apresRemise = sousTotal - remise;
+    const livraison = sousTotal > 0 ? (apresRemise >= 25 ? 0 : 5) : 0;
+    const total = sousTotal > 0 ? apresRemise + livraison : 0;
+    amountInput.value = total.toFixed(2);
+    document.getElementById("displayAmount").textContent = euros(total);
+
+    document.getElementById("recapArticles").innerHTML = panier.length
+      ? panier.map(p => `
+        <div class="recap-article">
+          <div class="recap-img"><img src="${echapper(p.image || "vigo1.png")}" alt=""><span class="recap-qte">${Number(p.quantity) || 1}</span></div>
+          <div><p class="recap-nom">${echapper(p.ref || p.name || "Article")}</p><p class="recap-info">${p.size ? "Taille " + echapper(p.size) : ""}</p></div>
+          <div class="recap-prix">${euros((Number(p.price) || 0) * (Number(p.quantity) || 1))}</div>
+        </div>`).join("")
+      : `<p class="text-muted small mb-0">Ton panier est vide. <a href="/site.html" class="fw-bold text-dark">Découvrir la boutique</a></p>`;
+
+    document.getElementById("recapTotaux").innerHTML = panier.length ? `
+      <div class="ligne-total"><span>Sous-total</span><span>${euros(sousTotal)}</span></div>
+      <div class="ligne-total remise"><span>Réduction${promo ? " (dont VB10)" : " (-5 %)"}</span><span>-${euros(remise)}</span></div>
+      <div class="ligne-total"><span>Livraison</span><span>${livraison === 0 ? "Gratuite" : euros(livraison)}</span></div>
+      <div class="ligne-total grand"><span>Total</span><span>${euros(total)}</span></div>` : "";
+
+    const bouton = document.getElementById("checkout-btn");
+    if (total <= 0) bouton.disabled = true;
+
+    /* ---------- Utilisateur connecté ---------- */
     try {
-      const res = await fetch("/paiements");
-      const data = await res.json();
-      if (data.success && data.paiements && data.paiements.length > 0) {
-        paiementsList.innerHTML = data.paiements.map(p => `
-          <li>
-            <span><i class="fa-regular fa-credit-card me-2 text-dark"></i>${p.brand.toUpperCase()} ****${p.last4}</span>
-            <span class="fw-bold text-dark">${(p.montant/100).toFixed(2)}€</span>
-          </li>
-        `).join("");
-      } else {
-        paiementsList.innerHTML = "<li class='text-center py-2'>Aucun moyen de paiement enregistré</li>";
+      const r = await fetch("/user/me"); const d = await r.json();
+      document.getElementById("userEmail").textContent = d.success ? d.user.email : "Non connecté";
+      if (d.success && !document.getElementById("prenom").value) {
+        document.getElementById("prenom").value = d.user.prenom || "";
+        document.getElementById("nom").value = d.user.nom || "";
+        majNom();
       }
-    } catch (err) {
-      console.error("Erreur fetchPaiements:", err);
-      paiementsList.innerHTML = "<li class='text-center text-danger'>Erreur de chargement</li>";
-    }
-  }
+    } catch (e) { document.getElementById("userEmail").textContent = "Non connecté"; }
 
-  // Soumission du formulaire
-  if (paymentForm) {
-    paymentForm.addEventListener("submit", async (e) => {
+    /* ---------- Adresse de livraison enregistrée ---------- */
+    let adresseChargee = false;
+    try {
+      const r = await fetch("/user/address"); const d = await r.json();
+      const a = d.success && d.address;
+      if (a && a.adresse && a.adresse.trim()) {
+        document.getElementById("adresse").value = a.adresse || "";
+        document.getElementById("codePostal").value = a.code_postal || "";
+        document.getElementById("ville").value = a.ville || "";
+        if (a.pays) document.getElementById("pays").value = a.pays;
+        document.getElementById("telephone").value = a.telephone || "";
+        document.getElementById("noteAdresse").style.display = "inline";
+        document.getElementById("enregistrerAdresse").checked = false;
+        adresseChargee = true;
+      }
+    } catch (e) {}
+
+    /* ---------- Volets + / - ---------- */
+    function volet(id, ouvrir) {
+      const bloc = document.getElementById(id);
+      const ouvert = ouvrir === undefined ? !bloc.classList.contains("ouvert") : ouvrir;
+      bloc.classList.toggle("ouvert", ouvert);
+      bloc.querySelector(".volet-tete").setAttribute("aria-expanded", ouvert);
+      bloc.querySelector(".volet-corps").inert = !ouvert; // champs cachés non accessibles au clavier
+    }
+    document.querySelectorAll(".volet-tete").forEach(t => t.addEventListener("click", () => {
+      const id = t.parentElement.id;
+      volet(id);
+      if (id === "blocLivraison" && !document.getElementById(id).classList.contains("ouvert")) majResumeLivraison();
+    }));
+
+    function majResumeLivraison() {
+      const l = lireLivraison();
+      const r = document.getElementById("resumeLivraison");
+      const complet = l.prenom && l.nom && l.adresse && l.code_postal && l.ville && l.telephone;
+      r.textContent = complet ? `✓ ${l.prenom} ${l.nom} · ${l.adresse}, ${l.code_postal} ${l.ville}` : "À compléter";
+      r.classList.toggle("ok", !!complet);
+    }
+
+    document.getElementById("versPaiement").addEventListener("click", () => {
+      if (!verifierLivraison(lireLivraison())) return notif("Vérifie les champs entourés en rouge.", "erreur", "Adresse incomplète");
+      majResumeLivraison();
+      volet("blocLivraison", false);
+      volet("blocPaiement", true);
+      setTimeout(() => document.getElementById("blocPaiement").scrollIntoView({ behavior: "smooth", block: "start" }), 200);
+    });
+
+    /* ---------- Cartes enregistrées ---------- */
+    let carteChoisie = null; // id de la carte enregistrée choisie, ou null = nouvelle carte
+    const NOMS_CARTES = { visa: "Visa", mastercard: "Mastercard", amex: "American Express" };
+    function choisirCarte(id) {
+      carteChoisie = id || null;
+      document.querySelectorAll(".choix").forEach(c => c.classList.toggle("actif", (c.dataset.id || null) === carteChoisie));
+      document.querySelectorAll(".zone-nouvelle").forEach(z => z.hidden = !!carteChoisie);
+      const r = document.querySelector(`.choix[data-id="${carteChoisie || ""}"] input`); if (r) r.checked = true;
+    }
+    (async () => {
+      try {
+        const r = await fetch("/api/cartes"); const d = await r.json();
+        if (!d.success || !d.cartes.length) return;
+        const maintenant = new Date();
+        const valides = d.cartes.filter(c => c.exp_annee > maintenant.getFullYear() || (c.exp_annee === maintenant.getFullYear() && c.exp_mois >= maintenant.getMonth() + 1));
+        if (!valides.length) return;
+        const MAX_VISIBLES = 2; // au-delà, les cartes sont repliées derrière "Afficher mes autres cartes"
+        document.getElementById("choixCartes").innerHTML = valides.map((c, i) => `
+          <label class="choix ${i >= MAX_VISIBLES ? "cachee" : ""}" data-id="${echapper(c.id)}">
+            <input type="radio" name="carte" value="${echapper(c.id)}">
+            <span class="mini-carte ${echapper(c.marque)}">${echapper((NOMS_CARTES[c.marque] || c.marque).slice(0, 4).toUpperCase())}</span>
+            <span class="choix-txt">${echapper(NOMS_CARTES[c.marque] || c.marque)} •••• ${echapper(c.last4)}<br><small>Expire ${String(c.exp_mois).padStart(2, "0")}/${String(c.exp_annee).slice(-2)}${c.titulaire ? " · " + echapper(c.titulaire) : ""}</small></span>
+            ${c.defaut ? '<span class="choix-badge">Par défaut</span>' : ""}
+          </label>`).join("") + `
+          ${valides.length > MAX_VISIBLES ? `<button type="button" class="voir-plus" id="voirPlus">Afficher mes autres cartes (${valides.length - MAX_VISIBLES})</button>` : ""}
+          <label class="choix" data-id="">
+            <input type="radio" name="carte" value="">
+            <span class="choix-plus">+</span>
+            <span class="choix-txt">Ajouter un moyen de paiement</span>
+          </label>`;
+        const voirPlus = document.getElementById("voirPlus");
+        if (voirPlus) voirPlus.addEventListener("click", () => { document.querySelectorAll(".choix.cachee").forEach(c => c.classList.remove("cachee")); voirPlus.remove(); });
+        document.querySelectorAll(".choix").forEach(c => c.addEventListener("click", () => choisirCarte(c.dataset.id)));
+        document.getElementById("blocCartes").hidden = false;
+        choisirCarte((valides.find(c => c.defaut) || valides[0]).id);
+      } catch (e) {}
+    })();
+
+    function lireLivraison() {
+      const v = id => document.getElementById(id).value.trim();
+      return { prenom: v("prenom"), nom: v("nom"), adresse: v("adresse"), code_postal: v("codePostal"),
+        ville: v("ville"), pays: v("pays"), telephone: v("telephone"), enregistrer: document.getElementById("enregistrerAdresse").checked };
+    }
+
+    // Vérifie l'adresse et entoure en rouge les champs à corriger
+    function verifierLivraison(l) {
+      const erreurs = [];
+      const marquer = (id, ok) => { document.getElementById(id).classList.toggle("invalide", !ok); if (!ok) erreurs.push(id); };
+      marquer("prenom", !!l.prenom);
+      marquer("nom", !!l.nom);
+      marquer("adresse", l.adresse.length >= 5);
+      marquer("codePostal", l.pays === "France" ? /^\d{5}$/.test(l.code_postal) : /^[A-Za-z0-9 -]{3,10}$/.test(l.code_postal));
+      marquer("ville", !!l.ville);
+      marquer("telephone", /^[+0-9 .()-]{8,20}$/.test(l.telephone));
+      if (erreurs.length) {
+        volet("blocLivraison", true);
+        setTimeout(() => document.getElementById(erreurs[0]).focus(), 350);
+        document.getElementById("blocLivraison").scrollIntoView({ behavior: "smooth", block: "start" });
+      }
+      return erreurs.length === 0;
+    }
+    ["prenom", "nom", "adresse", "codePostal", "ville", "telephone"].forEach(id =>
+      document.getElementById(id).addEventListener("input", e => e.target.classList.remove("invalide")));
+
+    // État de départ : adresse déjà enregistrée → on passe direct au paiement
+    document.getElementById("resumePaiement").textContent = `Carte bancaire · Total ${euros(total)}`;
+    if (adresseChargee) {
+      majResumeLivraison();
+      volet("blocLivraison", false);
+      volet("blocPaiement", true);
+    } else {
+      volet("blocLivraison", true);
+      volet("blocPaiement", false);
+    }
+
+    /* ---------- Paiement ---------- */
+    const chargement = actif => {
+      bouton.disabled = actif;
+      document.getElementById("btnTexte").innerHTML = actif
+        ? '<span class="roue"></span> Paiement en cours…'
+        : `Payer <span id="displayAmount">${euros(total)}</span>`;
+    };
+
+    document.getElementById("paymentForm").addEventListener("submit", async e => {
       e.preventDefault();
-
       const prenom = document.getElementById("prenom").value.trim();
       const nom = document.getElementById("nom").value.trim();
-      const cardholderName = `${prenom} ${nom}`;
-      
-      // Calcul du montant exact en centimes pour Stripe
       const currentAmount = parseFloat(amountInput.value) || 0;
-      if (currentAmount <= 0) {
-        return alert("Le montant du panier est invalide.");
-      }
-      const amountInCents = Math.round(currentAmount * 100);
 
-      const resPM = await stripe.createPaymentMethod({
-        type: "card",
-        card: cardElement,
-        billing_details: { name: cardholderName }
-      });
+      if (currentAmount <= 0) return notif("Ton panier est vide ou le montant est invalide.", "erreur", "Paiement impossible");
+      const livraison = lireLivraison();
+      if (!verifierLivraison(livraison)) return notif("Vérifie les champs entourés en rouge.", "erreur", "Adresse incomplète");
+      if (!carteChoisie && (!etat.number || !etat.expiry || !etat.cvc)) return notif("Complète le numéro, la date d'expiration et le CVC.", "erreur", "Carte incomplète");
 
-      if (resPM.error) {
-        console.error("Erreur Stripe:", resPM.error.message);
-        return alert(resPM.error.message);
+      chargement(true);
+      let paymentMethodId = carteChoisie;
+      if (!paymentMethodId) {
+        const resPM = await stripe.createPaymentMethod({ type: "card", card: cardNumber, billing_details: { name: `${prenom} ${nom}` } });
+        if (resPM.error) { chargement(false); return notif(resPM.error.message, "erreur", "Carte refusée"); }
+        paymentMethodId = resPM.paymentMethod.id;
       }
 
       try {
         const res = await fetch("/pay", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ paymentMethodId: resPM.paymentMethod.id, amount: amountInCents })
+          body: JSON.stringify({ paymentMethodId, amount: Math.round(currentAmount * 100), items: panier, livraison, enregistrerCarte: !carteChoisie && document.getElementById("enregistrerCarte").checked })
         });
         const result = await res.json();
-        
-        if (result.success) {
-          // Vider la valeur du panier sauvegardée
-          localStorage.removeItem("vigoblue_cart_total");
-          localStorage.removeItem("userCart");       // commande payée : on vide le panier
-          localStorage.removeItem("vigoblue_promo");
+        if (!result.success) { chargement(false); return notif(result.message || "Erreur lors du paiement", "erreur", "Paiement refusé"); }
 
-          const container = document.getElementById("main-container");
-          container.innerHTML = `
-            <div class="card border-0 shadow-sm p-5 rounded-4 text-center">
-              <div class="mb-3">
-                <span class="bg-success bg-opacity-10 text-success p-3 rounded-circle d-inline-flex align-items-center justify-content-center" style="width: 60px; height: 60px;">
-                  <i class="fas fa-check fs-4"></i>
-                </span>
-              </div>
-              <h3 class="fw-bold text-dark mb-2">Merci pour votre commande !</h3>
-              <p class="text-muted small mb-4">Votre paiement de ${currentAmount.toFixed(2)}€ a été validé avec succès. Nous préparons votre commande VigoBlue avec soin.</p>
-              <a href="/site.html" class="btn btn-dark py-3 rounded-pill fw-medium small text-decoration-none">Retour vers le site</a>
+        localStorage.removeItem("vigoblue_cart_total");
+        localStorage.removeItem("userCart");
+        localStorage.removeItem("vigoblue_promo");
+        notif(`Paiement de ${euros(currentAmount)} validé.${result.numero ? " Commande n° " + result.numero + "." : ""}`, "succes", "Commande confirmée");
+
+        document.getElementById("main-container").innerHTML = `
+          <div class="etapes-achat mb-4"><span>Panier</span><i>—</i><span>Paiement</span><i>—</i><span class="actif">Confirmation</span></div>
+          <div class="bloc text-center mx-auto" style="max-width: 520px; padding: 44px 28px;">
+            <svg width="64" height="64" viewBox="0 0 34 34" class="mb-3"><circle cx="17" cy="17" r="16" fill="#e3f4ee"/><path d="M10 17.5l4.5 4.5L24 12.5" fill="none" stroke="#1f9d74" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            <h3 class="fw-bold text-uppercase mb-2" style="letter-spacing:1px; font-size:1.2rem;">Merci pour ta commande !</h3>
+            ${result.numero ? `<p class="mb-1">Commande <strong>#${echapper(result.numero)}</strong></p>` : ""}
+            <p class="text-muted small mb-3">Ton paiement de <strong>${euros(currentAmount)}</strong> a été validé. Nous préparons ta commande VigoBlue avec soin.</p>
+            <div class="text-start small mb-4 p-3" style="background:#f6f6f6;">
+              <div class="fw-bold text-uppercase mb-1" style="font-size:.7rem; letter-spacing:1px;">Livraison à</div>
+              ${echapper(livraison.prenom + " " + livraison.nom)}<br>${echapper(livraison.adresse)}<br>${echapper(livraison.code_postal + " " + livraison.ville + ", " + livraison.pays)}
             </div>
-          `;
-        } else {
-          alert(result.message || "Erreur lors du paiement");
-        }
+            <a href="/commandes.html" class="btn-payer text-decoration-none mb-2">Voir ma commande</a>
+            <a href="/site.html" class="d-block small fw-bold text-dark mt-3">Continuer mes achats</a>
+          </div>`;
+        window.scrollTo({ top: 0, behavior: "smooth" });
       } catch (err) {
-        console.error("Erreur réseau backend /pay:", err);
-        alert("Impossible de joindre le serveur de paiement.");
+        console.error("Erreur réseau /pay :", err);
+        chargement(false);
+        notif("Impossible de joindre le serveur de paiement.", "erreur");
       }
     });
-  }
-
-  // Initialisation des données au chargement
-  await loadCartAmount();
-  fetchUser();
-  fetchPaiements();
-});
-</script>
-
+  });
+  </script>
 </body>
 </html>

@@ -280,7 +280,8 @@
 <span id="real-favorite-count" class="position-absolute translate-middle badge rounded-pill bg-dark border border-dark" style="font-size: 0.65rem; top 1px; right: -11px; padding: 0.3em 0.5em; display: none;">0</span> 
     </div>
 </a>
-      <script>
+      <script src="notif.js"></script>
+<script>
   // Fonction globale autonome
   function forceUpdateFavoriteBadge() {
       try {
@@ -677,140 +678,134 @@ footer .container-fluid {
 </style>
 
 
+<section id="page1" class="vbp">
+  <style>
+    .vbp { --noir: #111; --gris: #707072; --trait: #e5e5e5; --vert: #0f3d2e; background: #fff; padding: 40px 0 72px; font-family: 'Helvetica Neue', Arial, sans-serif; color: var(--noir); }
+    .vbp-in { max-width: 1100px; margin: 0 auto; padding: 0 20px; display: grid; grid-template-columns: minmax(0, 1fr) 350px; gap: 56px; align-items: start; }
+    @media (max-width: 991px) { .vbp-in { grid-template-columns: 1fr; gap: 32px; } }
 
-<section id="page1" class="py-5 bg-white">
-  <div class="container" style="max-width: 1300px; width: 100%; margin-left: auto; margin-right: auto;">
-    
+    /* Bandeau livraison offerte */
+    .vbp-livraison { background: #f5f5f5; padding: 14px 16px; margin-bottom: 26px; font-size: .88rem; }
+    .vbp-livraison-txt strong { color: var(--vert); }
+    .vbp-barre { height: 4px; background: #ddd; border-radius: 2px; margin-top: 10px; overflow: hidden; }
+    .vbp-barre span { display: block; height: 100%; width: 0; background: var(--vert); border-radius: 2px; transition: width .5s ease; }
 
+    /* Titre */
+    .vbp-titre { font-size: 1.5rem; font-weight: 500; margin: 0 0 4px; }
+    .vbp-sous { color: var(--gris); font-size: .95rem; margin: 0 0 8px; }
 
-    <!-- Grille principale du Panier (Design e-commerce haut de gamme) -->
-<div class="container py-4">
-  
-  <!-- Étapes du tunnel de commande (Rassurance & Clarté) -->
-  <div class="row mb-5 d-none d-md-flex">
-    <div class="col-12">
-      <div class="d-flex justify-content-between align-items-center position-relative px-5">
-        <!-- Ligne de progression -->
-        <div class="position-absolute w-100 bg-light" style="height: 2px; top: 50%; left: 0; z-index: 1; transform: translateY(-50%);"></div>
-        
-        <!-- Étape 1 : Panier (Actif) -->
-        <div class="d-flex flex-column align-items-center bg-white px-3 position-relative" style="z-index: 2;">
-          <div class="rounded-circle bg-dark text-white d-flex align-items-center justify-content-center fw-bold shadow-sm" style="width: 32px; height: 32px; font-size: 0.8rem;">1</div>
-          <span class="mt-2 text-dark fw-bold" style="font-size: 0.75rem; letter-spacing: 0.05em;">PANIER</span>
-        </div>
+    /* Articles (générés par le script du panier) */
+    .vbp #cart-items { gap: 0 !important; }
+    .vbp .cart-item-card { background: transparent !important; border: 0 !important; border-bottom: 1px solid var(--trait) !important; border-radius: 0 !important; box-shadow: none !important; padding: 24px 0 !important; margin: 0 !important; }
+    .vbp .cart-item-card img { width: 150px !important; height: 150px !important; object-fit: cover !important; background: #f5f5f5; }
+    .vbp .cart-item-card > .row { flex-wrap: nowrap; align-items: flex-start !important; }
+    .vbp .cart-item-card > .row > div { width: auto; flex: 0 0 auto; }
+    .vbp .cart-item-card > .row > div:nth-child(1) { text-align: left !important; }
+    .vbp .cart-item-card > .row > div:nth-child(2) { flex: 1 1 auto; min-width: 0; }
+    .vbp .cart-item-card > .row > div:nth-child(4) { flex-direction: column; align-items: flex-end !important; justify-content: flex-start !important; gap: 10px !important; }
+    @media (max-width: 767px) {
+      .vbp .cart-item-card > .row { flex-wrap: wrap; }
+      .vbp .cart-item-card > .row > div:nth-child(2) { flex: 1 1 calc(100% - 130px); }
+      .vbp .cart-item-card > .row > div:nth-child(3) { margin-left: 112px; }
+      .vbp .cart-item-card > .row > div:nth-child(4) { flex-direction: row; align-items: center !important; margin-left: auto; }
+    }
+    .vbp .cart-item-card h6 { font-size: 1rem !important; font-weight: 500 !important; }
+    .vbp .cart-item-card .badge { background: none !important; border: 0 !important; padding: 0 !important; color: var(--gris) !important; font-size: .95rem !important; font-weight: 400 !important; border-radius: 0 !important; display: block; text-align: left; }
+    .vbp .cart-item-card .my-2 { flex-direction: column; gap: 2px !important; }
+    .vbp .cart-item-card .d-inline-flex.rounded-pill { background: #fff !important; border: 1px solid var(--trait) !important; }
+    .vbp .cart-item-card .quantity-btn { width: 30px; height: 30px; border-radius: 50%; }
+    .vbp .cart-item-card .quantity-btn:hover { background: #f5f5f5; }
+    .vbp .cart-item-card .product-total { font-weight: 500 !important; font-size: 1rem !important; }
+    .vbp .cart-item-card .remove-btn { width: 36px; height: 36px; border-radius: 50%; display: inline-flex !important; align-items: center; justify-content: center; }
+    .vbp .cart-item-card .remove-btn:hover { background: #f5f5f5; color: var(--noir) !important; }
+    @media (max-width: 767px) { .vbp .cart-item-card img { width: 96px !important; height: 96px !important; } }
 
-        <!-- Étape 2 : Livraison -->
-        <div class="d-flex flex-column align-items-center bg-white px-3 position-relative" style="z-index: 2;">
-          <div class="rounded-circle bg-light text-muted border d-flex align-items-center justify-content-center fw-semibold" style="width: 32px; height: 32px; font-size: 0.8rem;">2</div>
-          <span class="mt-2 text-muted" style="font-size: 0.75rem; letter-spacing: 0.05em;">LIVRAISON</span>
-        </div>
+    /* Récapitulatif */
+    .vbp-recap { position: sticky; top: 90px; }
+    .vbp-recap h2 { font-size: 1.5rem; font-weight: 500; margin: 0 0 22px; }
+    .vbp-ligne { display: flex; justify-content: space-between; font-size: .95rem; margin-bottom: 12px; }
+    .vbp-ligne #summary-discount { color: var(--vert) !important; }
+    .vbp-total { display: flex; justify-content: space-between; align-items: center; border-top: 1px solid var(--trait); border-bottom: 1px solid var(--trait); padding: 16px 0; margin: 18px 0 22px; font-size: 1rem; font-weight: 500; }
+    .vbp-total #summary-total { font-size: 1rem !important; font-weight: 500 !important; }
+    .vbp-promo { margin: 4px 0 16px; }
+    .vbp-promo summary { list-style: none; cursor: pointer; display: flex; justify-content: space-between; align-items: center; font-size: .95rem; }
+    .vbp-promo summary::-webkit-details-marker { display: none; }
+    .vbp-promo summary::after { content: "+"; font-size: 1.3rem; font-weight: 300; transition: transform .2s; }
+    .vbp-promo[open] summary::after { transform: rotate(45deg); }
+    .vbp-promo-form { display: flex; gap: 8px; margin-top: 12px; }
+    .vbp-promo-form input { flex: 1; border: 1px solid #ccc; border-radius: 8px; padding: 11px 14px; font-size: .9rem; outline: none; }
+    .vbp-promo-form input:focus { border-color: var(--noir); }
+    .vbp-promo-form button { border: 1px solid var(--noir); background: #fff; border-radius: 999px; padding: 0 18px; font-size: .85rem; font-weight: 500; }
+    .vbp-promo-form button:hover { background: var(--noir); color: #fff; }
+    #promo-message { font-size: .8rem; margin-top: 6px; }
+    .vbp-btn { display: block; width: 100%; text-align: center; background: var(--noir); color: #fff !important; border-radius: 999px; padding: 18px; font-size: 1rem; font-weight: 500; text-decoration: none; transition: background .2s; }
+    .vbp-btn:hover { background: #3a3a3a; }
+    .vbp-btn.disabled { background: #ccc; }
+    .vbp-rassurance { margin-top: 22px; display: grid; gap: 10px; font-size: .82rem; color: var(--gris); }
+    .vbp-rassurance div { display: flex; align-items: center; gap: 10px; }
+    .vbp-rassurance svg { flex-shrink: 0; color: var(--noir); }
+    @media (max-width: 991px) { .vbp-recap { position: static; } }
+  </style>
 
-        <!-- Étape 3 : Paiement Sécurisé -->
-        <div class="d-flex flex-column align-items-center bg-white px-3 position-relative" style="z-index: 2;">
-          <div class="rounded-circle bg-light text-muted border d-flex align-items-center justify-content-center fw-semibold" style="width: 32px; height: 32px; font-size: 0.8rem;">3</div>
-          <span class="mt-2 text-muted" style="font-size: 0.75rem; letter-spacing: 0.05em;">PAIEMENT</span>
-        </div>
+  <div class="vbp-in">
+    <!-- Articles -->
+    <div>
+      <div class="vbp-livraison">
+        <div class="vbp-livraison-txt"><span id="free-shipping-remaining">Ajoutez des articles</span> pour profiter de la <span class="fw-bold text-success">livraison offerte</span>.</div>
+        <div class="vbp-barre"><span id="barreLivraison"></span></div>
       </div>
+      <h1 class="vbp-titre">Panier</h1>
+      <p class="vbp-sous" id="cart-count-subtitle">0 article</p>
+      <div id="cart-items" class="d-flex flex-column"></div>
     </div>
+
+    <!-- Récapitulatif -->
+    <aside class="vbp-recap">
+      <h2>Récapitulatif</h2>
+      <div class="vbp-ligne"><span>Sous-total</span><span id="summary-subtotal">0.00€</span></div>
+      <div class="vbp-ligne"><span>Réduction</span><span id="summary-discount">-0.00€</span></div>
+      <div class="vbp-ligne"><span>Livraison estimée</span><span id="summary-shipping">5.00€</span></div>
+
+      <details class="vbp-promo">
+        <summary>Tu as un code promo ?</summary>
+        <div class="vbp-promo-form">
+          <input type="text" id="promo-input" placeholder="Code promo" aria-label="Code promo">
+          <button type="button" id="apply-promo-btn">Appliquer</button>
+        </div>
+        <div id="promo-message"></div>
+      </details>
+
+      <div class="vbp-total"><span>Total</span><span id="summary-total">0.00€</span></div>
+      <a href="paiement.html" id="checkout-btn" class="vbp-btn">Paiement</a>
+
+      <div class="vbp-rassurance">
+        <div><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="11" width="14" height="10" rx="1"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>Paiement sécurisé par Stripe</div>
+        <div><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5"/></svg>Retours gratuits sous 30 jours</div>
+        <div><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 7h11v9H3zM14 10h4l3 3v3h-7z"/><circle cx="7" cy="18" r="1.6"/><circle cx="17" cy="18" r="1.6"/></svg>Livraison en 3 jours ouvrés</div>
+      </div>
+    </aside>
   </div>
 
-  <div class="row g-4 align-items-start">
-    
-    <!-- Liste des articles (Inchangée pour la logique) -->
-    <div class="col-lg-8">
-      <div class="d-flex align-items-center justify-content-between mb-3">
-        <h1 class="h5 fw-bold text-uppercase mb-0" style="letter-spacing: 0.05em;">Votre Panier</h1>
-        <span class="text-muted" style="font-size: 0.85rem;">Articles sélectionnés</span>
-      </div>
-      <div id="cart-items" class="d-flex flex-column gap-3">
-        <!-- Injection dynamique des articles -->
-      </div>
-    </div>
-
-    <!-- Résumé de la commande (Style Minimaliste & Conversion Optimisée) -->
-    <div class="col-lg-4">
-      <div class="p-4 bg-white border shadow-2xs position-sticky" style="top: 90px;">
-        
-        <h2 class="fw-bold text-uppercase pb-3 mb-4 border-bottom border-dark" style="font-size: 1rem; letter-spacing: 0.08em;">Résumé de la commande</h2>
-        
-        <div class="d-flex justify-content-between mb-3 fs-6 text-secondary" style="font-size: 0.9rem;">
-          <span>Sous-total</span>
-          <span id="summary-subtotal" class="fw-semibold text-dark">0.00€</span>
-        </div>
-
-        <div class="d-flex justify-content-between mb-3 fs-6 text-secondary" style="font-size: 0.9rem;">
-          <span>Réduction</span>
-          <span id="summary-discount" class="text-success fw-semibold">-0.00€</span>
-        </div>
-
-        <div class="d-flex justify-content-between align-items-center mb-3 fs-6 text-secondary" style="font-size: 0.9rem;">
-          <span class="d-flex align-items-center gap-2">
-            <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" fill="currentColor" class="bi bi-truck text-dark" viewBox="0 0 16 16">
-              <path d="M0 3.5A1.5 1.5 0 0 1 1.5 2h9A1.5 1.5 0 0 1 12 3.5V5h1.02a1.5 1.5 0 0 1 1.7.563l1.481 1.85a1.5 1.5 0 0 1 .329.938V10.5a1.5 1.5 0 0 1-1.5 1.5H14a2 2 0 1 1-4 0H5a2 2 0 1 1-3.998-.085A1.5 1.5 0 0 1 0 10.5zm1.294 7.49A1.995 1.995 0 0 1 4.73 11h5.54a1.995 1.995 0 0 1 3.436 0H14.5a.5.5 0 0 0 .5-.5v-3a.5.5 0 0 0-.11-.328l-1.48-1.85A.5.5 0 0 0 13.02 5H12v5.5a1.5 1.5 0 0 1-1.5 1.5zM3 11a1 1 0 1 0 0 2 1 1 0 0 0 0-2m9 0a1 1 0 1 0 0 2 1 1 0 0 0 0-2"/>
-            </svg>
-            Livraison
-          </span>
-          <span id="summary-shipping" class="fw-semibold text-dark">5.00€</span>
-        </div>
-
-        <!-- Alerte Livraison Offerte -->
-        <div class="bg-light p-3 mb-4 text-center border-0 rounded-0 text-dark" style="font-size: 0.82rem;">
-          <span id="free-shipping-remaining">Ajoutez des articles</span> pour profiter de la <span class="fw-bold text-success">livraison offerte</span>.
-        </div>
-
-        <!-- Code Promo -->
-        <div class="mb-4">
-          <div class="input-group">
-            <input type="text" id="promo-input" class="form-control rounded-0 border-dark shadow-none py-2 px-3" placeholder="Code promotionnel" style="font-size: 0.85rem;">
-            <button class="btn btn-dark rounded-0 px-4 fw-semibold shadow-none text-uppercase" type="button" id="apply-promo-btn" style="font-size: 0.8rem; letter-spacing: 0.5px;">Appliquer</button>
-          </div>
-          <div id="promo-message" class="form-text mt-1 text-danger fw-medium" style="font-size: 0.8rem;"></div>
-        </div>
-
-        <!-- Total -->
-        <div class="d-flex justify-content-between align-items-center mb-4 pt-3 border-top border-dark">
-          <span class="fw-bold text-uppercase fs-6 text-dark" style="letter-spacing: 0.05em;">Total TTC</span>
-          <span id="summary-total" class="fs-3 fw-bold text-dark">0.00€</span>
-        </div>
-
-        <!-- Bouton Checkout -->
-     <a href="paiement.html" class="text-decoration-none">
-          <button class="btn btn-dark text-white w-100 py-3 text-uppercase fw-bold shadow-none rounded-0 d-flex align-items-center justify-content-center gap-2" style="font-size: 0.85rem; letter-spacing: 1.5px; background-color: #000 !important; border-color: #000 !important; color: #fff !important;" id="checkout-btn">
-            <span style="color: #fff !important;">Passer la commande</span>
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#fff" class="bi bi-arrow-right" viewBox="0 0 16 16">
-              <path fill-rule="evenodd" d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8z"/>
-            </svg>
-          </button>
-        </a>
-
-        <!-- Blocs de rassurance renforcés (Sécurité & Confiance) -->
-        <div class="d-flex flex-column gap-2 mt-4 pt-3 border-top text-secondary" style="font-size: 0.75rem;">
-          <div class="d-flex align-items-center gap-2">
-            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" class="bi bi-shield-check text-success" viewBox="0 0 16 16">
-              <path d="M5.338 1.59a61.44 61.44 0 0 0-2.838.858.75.75 0 0 0-.5.724v5.695c0 3.82 2.4 7.135 6 8.35 3.6-1.215 6-4.53 6-8.35V3.172a.75.75 0 0 0-.5-.724 61.44 61.44 0 0 0-2.838-.858C9.568.758 8.026.5 8 .5s-1.568.258-2.662.805zM5 4.5a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1v-2z"/>
-            </svg>
-            <span class="fw-semibold text-dark">Paiement 100% sécurisé (SSL & 3D Secure)</span>
-          </div>
-          <div class="d-flex align-items-center gap-2">
-            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" class="bi bi-arrow-clockwise text-dark" viewBox="0 0 16 16">
-              <path fill-rule="evenodd" d="M8 3a5 5 0 1 0 4.546 2.914.5.5 0 0 1 .908-.417A6 6 0 1 1 8 2v1z"/>
-              <path d="M8 4.466V.534a.25.25 0 0 1 .41-.192l2.36 1.966c.12.1.12.284 0 .384L8.41 4.658A.25.25 0 0 1 8 4.466z"/>
-            </svg>
-            <span>Retours et échanges offerts sous 30 jours</span>
-          </div>
-          <div class="d-flex align-items-center gap-2">
-            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" class="bi bi-headset text-dark" viewBox="0 0 16 16">
-              <path d="M8 1a5 5 0 0 0-5 5v1h1a1 1 0 0 1 1 1v3a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V6a6 6 0 1 1 12 0v6a2.5 2.5 0 0 1-2.5 2.5H9.36a1 1 0 0 1-.895-.553l-.316-.632a1 1 0 0 1 .112-1.072l.462-.693A1 1 0 0 1 9.36 10h1.14a1 1 0 0 0 1-1V6a5 5 0 0 0-5-5z"/>
-            </svg>
-            <span>Service client disponible 7j/7</span>
-          </div>
-        </div>
-
-      </div>
-    </div>
-
-  </div>
-</div>
+  <script>
+    // Barre "livraison offerte" : même calcul que le panier (-5 %, code promo, gratuite dès 25 €)
+    (function () {
+      function majBarre() {
+        let panier = [];
+        try { panier = JSON.parse(localStorage.getItem("userCart")) || []; } catch (e) {}
+        const sousTotal = panier.reduce((s, p) => s + (Number(p.price) || 0) * (Number(p.quantity) || 0), 0);
+        const promo = Number(localStorage.getItem("vigoblue_promo")) || 0;
+        const apresRemise = Math.max(0, sousTotal - Math.min(sousTotal * 0.05 + promo, sousTotal));
+        document.getElementById("barreLivraison").style.width = Math.min(100, (apresRemise / 25) * 100) + "%";
+        const txt = document.querySelector(".vbp-livraison-txt");
+        if (sousTotal === 0) txt.innerHTML = 'Ajoute des articles pour profiter de la <strong>livraison offerte</strong> dès 25 €.';
+        else if (apresRemise >= 25) txt.innerHTML = '✓ Tu bénéficies de la <strong>livraison offerte</strong>.';
+        else txt.innerHTML = `Plus que <strong>${(25 - apresRemise).toFixed(2).replace(".", ",")} €</strong> pour profiter de la <strong>livraison offerte</strong>.`;
+      }
+      new MutationObserver(majBarre).observe(document.getElementById("summary-total"), { childList: true, characterData: true, subtree: true });
+      document.addEventListener("DOMContentLoaded", majBarre);
+      majBarre();
+    })();
+  </script>
 </section>
 
 
@@ -1864,7 +1859,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
       <!-- pay -->
       <li class="mb-2">
-        <a href="/paie.html" class="account-link d-flex justify-content-between align-items-center p-3 rounded-3 text-decoration-none">
+        <a href="/portefeuille.html" class="account-link d-flex justify-content-between align-items-center p-3 rounded-3 text-decoration-none">
           <div class="d-flex align-items-center">
             <span class="icon-box me-3 text-dark">
               <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>
@@ -2238,7 +2233,7 @@ document.addEventListener("DOMContentLoaded", function() {
       }
 
       localStorage.setItem('userCart', JSON.stringify(cart));
-      alert('Produit ajouté au panier avec succès !');
+      notif(`${product.ref || product.name || "Article"}${product.size ? " · taille " + product.size : ""}`, "succes", "Ajouté au panier", product.image);
     });
   }
 });
@@ -2329,7 +2324,7 @@ document.addEventListener("DOMContentLoaded", function() {
       localStorage.setItem('userCart', JSON.stringify(cart));
       console.log("🛒 Produit ajouté :", product);
       console.log("📦 Panier actuel :", cart);
-      alert('Produit ajouté au panier avec succès !');
+      notif(`${product.ref || product.name || "Article"}${product.size ? " · taille " + product.size : ""}`, "succes", "Ajouté au panier", product.image);
     });
   }
 });
@@ -2840,7 +2835,7 @@ document.addEventListener("DOMContentLoaded", function () {
   if (addToCartBtn) {
     addToCartBtn.addEventListener("click", function () {
       if (!selectedSize) {
-        alert("Veuillez sélectionner une taille avant d'ajouter au panier.");
+        notif("Choisis ta taille avant d'ajouter l'article au panier.", "info", "Taille manquante");
         return;
       }
 

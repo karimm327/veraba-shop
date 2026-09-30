@@ -60,6 +60,7 @@
   </div>
 </div>
 
+<script src="notif.js"></script>
 <script>
 /* -------------------- CONFIGURATION -------------------- */
 // Vide = même serveur que la page (http://localhost:3000)
@@ -113,12 +114,12 @@ registerForm.addEventListener("submit", async (e) => {
                         /[!@#$%^&*\.]/.test(password);
 
   if (!validPassword) {
-    alert("Mot de passe invalide : respectez les règles affichées.");
+    notif("Mot de passe invalide : respectez les règles affichées.", "erreur");
     return;
   }
 
   if (!email || !password || !prenom || !nom || !jour || !mois || !annee) {
-    alert("Tous les champs sont requis");
+    notif("Tous les champs sont requis", "erreur");
     return;
   }
 
@@ -129,11 +130,11 @@ registerForm.addEventListener("submit", async (e) => {
       body: JSON.stringify({ email, password, prenom, nom, jour, mois, annee })
     });
     const data = await res.json();
-    alert(data.message);
-    if (data.success && data.redirect) setTimeout(() => window.location.href = data.redirect, 1000);
+    notif(data.message, data.success ? "succes" : "erreur", data.success ? "Bienvenue chez VigoBlue" : undefined);
+    if (data.success && data.redirect) setTimeout(() => window.location.href = data.redirect, 1800);
   } catch (err) {
     console.error(err);
-    alert("Erreur serveur");
+    notif("Erreur serveur, réessaie dans un instant.", "erreur");
   }
 });
 </script>

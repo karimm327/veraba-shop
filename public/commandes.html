@@ -1,31 +1,399 @@
-<div class="container py-5" style="font-family: 'Helvetica Neue', Arial, sans-serif; max-width: 900px;">
-  <h2 class="fw-bold text-uppercase mb-4" style="letter-spacing: 1px; font-size: 1.5rem;">Mes commandes & retours</h2>
-  
-  <!-- Exemple de carte de commande -->
-  <div class="card border-0 shadow-sm rounded-0 p-4 mb-4" style="background-color: #fcfcfc;">
-    <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 pb-3 border-bottom">
-      <div>
-        <span class="text-muted" style="font-size: 0.85rem;">Commande n° <strong>#VB-84920</strong></span>
-        <div class="fw-bold" style="font-size: 0.9rem;">Passée le 22 août 2026</div>
-      </div>
-      <span class="badge bg-dark rounded-0 text-uppercase px-3 py-2" style="font-size: 0.75rem; letter-spacing: 1px;">Expédiée</span>
-    </div>
-    
-    <div class="py-3 d-flex align-items-center justify-content-between flex-wrap gap-3">
-      <div class="d-flex align-items-center gap-3">
-        <div style="width: 60px; height: 75px; background: #eee;" class="overflow-hidden">
-          <img src="vigo1.png" alt="Article" style="width: 100%; height: 100%; object-fit: cover;">
-        </div>
-        <div>
-          <h6 class="mb-1 fw-bold" style="font-size: 0.95rem;">T-shirt blanc Oversize</h6>
-          <p class="text-muted mb-0" style="font-size: 0.85rem;">Quantité : 1 | Taille : M</p>
-        </div>
-      </div>
-      <div class="fw-bold" style="font-size: 1rem;">22.99€</div>
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mes commandes - VigoBlue</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+    :root {
+      --noir: #1a1a1a; --gris: #6b6b6b; --trait: #e7e7e7; --fond: #f5f5f3;
+      --orange: #0f3d2e; --orange-fonce: #092a20; --orange-clair: #e6f0eb;
+      --vert: #0f9d58; --vert-clair: #e6f6ee; --bleu: #1a73e8; --bleu-clair: #e8f0fe; --rouge: #d93025; --rouge-clair: #fdecea;
+    }
+    body { font-family: 'Helvetica Neue', Arial, sans-serif; background: var(--fond); color: var(--noir); }
+
+    /* ---------- En-tête ---------- */
+    .entete { background: var(--noir); }
+    .entete .accent { height: 3px; background: linear-gradient(90deg, var(--orange), #ffb347); }
+    .page-titre { font-size: 1.5rem; letter-spacing: .5px; }
+    .page-sous { color: var(--gris); font-size: .92rem; }
+
+    /* ---------- Résumé ---------- */
+    .resume { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+    .resume-bloc { background: #fff; border-radius: 12px; padding: 16px 18px; display: flex; align-items: center; gap: 14px; box-shadow: 0 1px 2px rgba(0,0,0,.05); }
+    .resume-ico { width: 42px; height: 42px; border-radius: 10px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .resume-ico.o { background: var(--orange-clair); color: var(--orange); }
+    .resume-ico.b { background: var(--bleu-clair); color: var(--bleu); }
+    .resume-ico.v { background: var(--vert-clair); color: var(--vert); }
+    .resume-bloc .val { font-size: 1.25rem; font-weight: 800; line-height: 1.1; }
+    .resume-bloc .lib { font-size: .74rem; color: var(--gris); }
+    @media (max-width: 576px) { .resume { grid-template-columns: 1fr 1fr; } .resume-bloc:last-child { grid-column: span 2; } }
+
+    /* ---------- Barre de filtres ---------- */
+    .filtres { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; margin: 26px 0 16px; }
+    .puces { display: flex; gap: 8px; flex-wrap: wrap; }
+    .puce { border: 1px solid #d5d5d5; background: #fff; color: var(--noir); border-radius: 999px; padding: 7px 14px; font-size: .8rem; font-weight: 600; cursor: pointer; transition: all .15s; }
+    .puce:hover { border-color: var(--orange); color: var(--orange); }
+    .puce.actif { background: var(--orange); border-color: var(--orange); color: #fff; }
+    .puce .nb { display: inline-block; min-width: 18px; margin-left: 4px; padding: 0 5px; border-radius: 9px; background: rgba(0,0,0,.08); font-size: .7rem; }
+    .puce.actif .nb { background: rgba(255,255,255,.25); }
+    .tri { display: flex; align-items: center; gap: 8px; font-size: .82rem; color: var(--gris); }
+    .tri select { border: 1px solid #d5d5d5; border-radius: 8px; padding: 7px 30px 7px 12px; font-size: .82rem; font-weight: 600; color: var(--noir); background-color: #fff; }
+    .tri select:focus { border-color: var(--orange); box-shadow: 0 0 0 3px rgba(255,106,0,.15); outline: none; }
+
+    /* ---------- Carte commande (dépliable) ---------- */
+    .cmd { background: #fff; border-radius: 12px; margin-bottom: 14px; overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,.06);
+      border-left: 4px solid var(--trait); transition: box-shadow .2s, border-color .2s;
+      opacity: 0; transform: translateY(10px); animation: apparition .45s ease forwards; }
+    .cmd:hover { box-shadow: 0 6px 18px -6px rgba(0,0,0,.15); }
+    .cmd.payee, .cmd.preparee { border-left-color: var(--orange); }
+    .cmd.expediee { border-left-color: var(--bleu); }
+    .cmd.livree { border-left-color: var(--vert); }
+    .cmd.annulee { border-left-color: var(--rouge); }
+    @keyframes apparition { to { opacity: 1; transform: none; } }
+
+    .cmd-tete { width: 100%; display: flex; align-items: center; gap: 16px; padding: 16px 20px; background: none; border: 0; text-align: left; color: inherit; cursor: pointer; }
+    .cmd-tete:hover { background: #fcfcfb; }
+    .cmd-infos { flex: 1; min-width: 0; }
+    .cmd-num { font-size: .75rem; color: var(--gris); }
+    .cmd-num strong { color: var(--noir); }
+    .cmd-date { font-weight: 700; font-size: .95rem; margin: 2px 0 6px; }
+    .statut { display: inline-flex; align-items: center; gap: 6px; font-size: .72rem; font-weight: 700; padding: 4px 10px; border-radius: 999px; }
+    .statut::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: currentColor; }
+    .statut.payee, .statut.preparee { background: var(--orange-clair); color: var(--orange-fonce); }
+    .statut.expediee { background: var(--bleu-clair); color: var(--bleu); }
+    .statut.livree { background: var(--vert-clair); color: var(--vert); }
+    .statut.annulee { background: var(--rouge-clair); color: var(--rouge); }
+
+    .miniatures { display: flex; }
+    .miniatures img, .miniatures span { width: 40px; height: 48px; object-fit: cover; border-radius: 6px; border: 2px solid #fff; background: #f1f1f1; margin-left: -10px; box-shadow: 0 1px 3px rgba(0,0,0,.12); }
+    .miniatures img:first-child { margin-left: 0; }
+    .miniatures span { display: flex; align-items: center; justify-content: center; font-size: .7rem; font-weight: 700; color: var(--gris); }
+    .cmd.ouvert .miniatures { opacity: 0; width: 0; overflow: hidden; }
+    .cmd-total { text-align: right; white-space: nowrap; }
+    .cmd-total .val { font-size: 1.1rem; font-weight: 800; }
+    .cmd-total .lib { font-size: .72rem; color: var(--gris); }
+
+    .signe { width: 34px; height: 34px; border-radius: 50%; background: var(--fond); flex-shrink: 0; position: relative; transition: background .2s; }
+    .cmd-tete:hover .signe { background: var(--orange-clair); }
+    .signe::before, .signe::after { content: ""; position: absolute; left: 10px; top: 16px; width: 14px; height: 2px; background: var(--noir); transition: transform .3s ease, background .2s; }
+    .signe::after { transform: rotate(90deg); }
+    .cmd.ouvert .signe { background: var(--orange); }
+    .cmd.ouvert .signe::before, .cmd.ouvert .signe::after { background: #fff; }
+    .cmd.ouvert .signe::after { transform: rotate(0); }
+
+    .cmd-corps { display: grid; grid-template-rows: 0fr; transition: grid-template-rows .4s ease; }
+    .cmd.ouvert .cmd-corps { grid-template-rows: 1fr; }
+    .cmd-corps > div { overflow: hidden; }
+    .cmd-interieur { border-top: 1px solid var(--trait); }
+
+    /* ---------- Suivi ---------- */
+    .suivi { padding: 22px 20px 6px; }
+    .etapes { position: relative; display: flex; justify-content: space-between; }
+    .etapes::before, .etapes .progression { content: ""; position: absolute; top: 12px; left: 13px; height: 3px; border-radius: 2px; }
+    .etapes::before { right: 13px; background: var(--trait); }
+    .etapes .progression { background: linear-gradient(90deg, var(--orange), #ffb347); width: 0; transition: width 1s ease .2s; }
+    .cmd.livree .etapes .progression { background: var(--vert); }
+    .etape { position: relative; z-index: 1; text-align: center; width: 25%; }
+    .etape:first-of-type { text-align: left; } .etape:last-of-type { text-align: right; }
+    .pastille { width: 26px; height: 26px; border-radius: 50%; border: 2px solid var(--trait); background: #fff; display: inline-flex; align-items: center; justify-content: center; }
+    .pastille svg { width: 12px; height: 12px; stroke: #fff; opacity: 0; }
+    .etape.faite .pastille { background: var(--orange); border-color: var(--orange); }
+    .cmd.livree .etape.faite .pastille { background: var(--vert); border-color: var(--vert); }
+    .etape.faite .pastille svg { opacity: 1; }
+    .etape.encours .pastille { border-color: var(--orange); box-shadow: 0 0 0 5px rgba(255,106,0,.15); animation: pulse 1.8s infinite; }
+    @keyframes pulse { 50% { box-shadow: 0 0 0 9px rgba(255,106,0,0); } }
+    .etape-lib { display: block; margin-top: 8px; font-size: .72rem; color: var(--gris); }
+    .etape.faite .etape-lib, .etape.encours .etape-lib { color: var(--noir); font-weight: 700; }
+
+    /* ---------- Articles ---------- */
+    .articles { padding: 8px 20px; }
+    .article { display: flex; align-items: center; gap: 14px; padding: 12px 0; }
+    .article + .article { border-top: 1px solid #f1f1f1; }
+    .article-img { width: 64px; height: 78px; border-radius: 8px; background: #f1f1f1; flex-shrink: 0; overflow: hidden; }
+    .article-img img { width: 100%; height: 100%; object-fit: cover; }
+    .article-nom { font-weight: 700; font-size: .93rem; margin: 0 0 4px; }
+    .article-info { font-size: .8rem; color: var(--gris); margin: 0; }
+    .article-info b { color: var(--noir); font-weight: 600; }
+    .article-prix { margin-left: auto; font-weight: 800; white-space: nowrap; }
+
+    .livraison { display: flex; gap: 10px; align-items: flex-start; margin: 4px 20px 0; padding: 12px 14px; background: var(--bleu-clair); border-radius: 10px; font-size: .84rem; line-height: 1.45; }
+    .livraison svg { color: var(--bleu); }
+    .livraison .lib { font-size: .7rem; font-weight: 800; letter-spacing: .5px; text-transform: uppercase; color: var(--bleu); margin-bottom: 2px; }
+
+    /* ---------- Actions ---------- */
+    .cmd-bas { display: flex; gap: 10px; flex-wrap: wrap; justify-content: flex-end; padding: 16px 20px 18px; }
+    .btn-o { border-radius: 8px; font-size: .8rem; font-weight: 700; padding: 10px 16px; border: 1px solid #d5d5d5; background: #fff; color: var(--noir); text-decoration: none; transition: all .15s; }
+    .btn-o:hover { border-color: var(--noir); color: var(--noir); }
+    .btn-orange { border-radius: 8px; font-size: .8rem; font-weight: 700; padding: 10px 18px; border: 0; background: var(--orange); color: #fff; text-decoration: none; transition: background .15s, transform .1s; }
+    .btn-orange:hover { background: var(--orange-fonce); color: #fff; }
+    .btn-orange:active { transform: scale(.98); }
+
+    /* ---------- États ---------- */
+    .vide { background: #fff; border-radius: 12px; padding: 56px 24px; text-align: center; box-shadow: 0 1px 3px rgba(0,0,0,.06); }
+    .vide-ico { width: 72px; height: 72px; border-radius: 50%; background: var(--orange-clair); color: var(--orange); display: inline-flex; align-items: center; justify-content: center; margin-bottom: 16px; }
+    .squelette { background: #fff; border-radius: 12px; height: 96px; margin-bottom: 14px; position: relative; overflow: hidden; }
+    .squelette::after { content: ""; position: absolute; inset: 0; transform: translateX(-100%); background: linear-gradient(90deg, transparent, rgba(0,0,0,.04), transparent); animation: brille 1.2s infinite; }
+    @keyframes brille { to { transform: translateX(100%); } }
+
+    @media (max-width: 576px) {
+      .cmd-tete { flex-wrap: wrap; gap: 10px 12px; padding: 14px 16px; }
+      .cmd-infos { flex-basis: calc(100% - 50px); }
+      .signe { order: 2; }
+      .miniatures { order: 3; }
+      .cmd-total { order: 4; margin-left: auto; }
+      .etape-lib { font-size: .6rem; }
+      .cmd-bas > * { flex: 1; text-align: center; }
+      .filtres { align-items: stretch; }
+    }
+    @media (prefers-reduced-motion: reduce) { .cmd { animation: none; opacity: 1; transform: none; } .cmd-corps, .etapes .progression { transition: none; } .etape.encours .pastille { animation: none; } }
+  </style>
+</head>
+<body>
+
+ <header class="vb-entete">
+  <div class="vb-entete-in">
+    <a href="/site.html" class="vb-retour" aria-label="Retour">
+      <span class="vb-fleche">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+      </span>
+      <span class="vb-retour-txt">Retour</span>
+    </a>
+    <a href="/" class="vb-marque">Veraba</a>
+  </div>
+</header>
+<style>
+  .vb-entete { position: sticky; top: 0; z-index: 1000; background: #0b0b0b; border-bottom: 3px solid #0f3d2e; }
+  .vb-entete-in { position: relative; max-width: 1140px; margin: 0 auto; height: 64px; padding: 0 20px; display: flex; align-items: center; }
+  .vb-retour { display: inline-flex; align-items: center; gap: 10px; color: #fff; text-decoration: none; font-size: .82rem; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; }
+  .vb-fleche { width: 38px; height: 38px; border-radius: 50%; border: 1px solid rgba(255,255,255,.25); display: flex; align-items: center; justify-content: center; transition: background .2s, border-color .2s, transform .2s; }
+  .vb-retour:hover { color: #fff; }
+  .vb-retour:hover .vb-fleche { background: #0f3d2e; border-color: #0f3d2e; transform: translateX(-3px); }
+  .vb-marque { position: absolute; left: 50%; transform: translateX(-50%); color: #fff; text-decoration: none; font-weight: 900; font-size: 1.05rem; letter-spacing: 4px; text-transform: uppercase; }
+  .vb-marque:hover { color: #7fc8a9; }
+  @media (max-width: 576px) { .vb-entete-in { height: 56px; padding: 0 14px; } .vb-retour-txt { display: none; } }
+</style>
+
+  <main class="container py-4 py-md-5" style="max-width: 920px;">
+    <h2 class="fw-bold mb-1 page-titre">Mes commandes</h2>
+    <p class="page-sous mb-4">Suis tes colis, retrouve tes achats et commande à nouveau en un clic.</p>
+
+    <div id="resume" class="resume"></div>
+
+    <div class="filtres" id="barreFiltres" hidden>
+      <div class="puces" id="puces"></div>
+      <label class="tri">Trier :
+        <select id="tri">
+          <option value="recent">Plus récentes</option>
+          <option value="ancien">Plus anciennes</option>
+          <option value="montant">Montant le plus élevé</option>
+        </select>
+      </label>
     </div>
 
-    <div class="pt-3 border-top d-flex justify-content-end gap-2">
-      <a href="#" class="btn btn-outline-dark rounded-0 px-3 py-2 text-uppercase fw-bold" style="font-size: 0.75rem; letter-spacing: 1px;">Suivre le colis</a>
+    <div id="listeCommandes">
+      <div class="squelette"></div><div class="squelette"></div><div class="squelette"></div>
     </div>
-  </div>
-</div>
+  </main>
+
+  <script src="notif.js"></script>
+  <script>
+    const ETAPES = ["Payée", "En préparation", "Expédiée", "Livrée"];
+    const INDEX_STATUT = { payee: 0, preparee: 1, expediee: 2, livree: 3 };
+    const LIBELLES = { payee: "Payée", preparee: "En préparation", expediee: "Expédiée", livree: "Livrée", annulee: "Annulée" };
+    const FILTRES = [
+      { id: "toutes", nom: "Toutes", test: () => true },
+      { id: "encours", nom: "En cours", test: c => ["payee", "preparee", "expediee"].includes(c.statut) },
+      { id: "livrees", nom: "Livrées", test: c => c.statut === "livree" },
+      { id: "annulees", nom: "Annulées", test: c => c.statut === "annulee" }
+    ];
+
+    const euros = centimes => (centimes / 100).toFixed(2).replace(".", ",") + " €";
+    const eurosDec = n => n.toFixed(2).replace(".", ",") + " €";
+    const dateFr = d => new Date(d).toLocaleDateString("fr-FR", { day: "numeric", month: "long", year: "numeric" });
+    const echapper = t => String(t ?? "").replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+    const coche = '<svg viewBox="0 0 12 12" fill="none" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M2.5 6.2l2.3 2.3 4.7-4.9"/></svg>';
+
+    let commandes = [];
+    let filtre = "toutes";
+    let tri = "recent";
+    const ouvertes = new Set(); // numéros des commandes dépliées
+
+    /* ---------- Résumé ---------- */
+    function afficherResume() {
+      const total = commandes.reduce((s, c) => s + (c.statut === "annulee" ? 0 : c.total), 0);
+      const articles = commandes.reduce((s, c) => s + c.articles.reduce((n, a) => n + a.quantite, 0), 0);
+      const enCours = commandes.filter(FILTRES[1].test).length;
+      document.getElementById("resume").innerHTML = `
+        <div class="resume-bloc"><div class="resume-ico o"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 7h12l-1 13H7L6 7z"/><path d="M9 7V5a3 3 0 0 1 6 0v2"/></svg></div>
+          <div><div class="val">${commandes.length}</div><div class="lib">Commande${commandes.length > 1 ? "s" : ""}</div></div></div>
+        <div class="resume-bloc"><div class="resume-ico b"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 7h11v9H3zM14 10h4l3 3v3h-7z"/><circle cx="7" cy="18" r="1.6"/><circle cx="17" cy="18" r="1.6"/></svg></div>
+          <div><div class="val">${enCours}</div><div class="lib">En cours de livraison</div></div></div>
+        <div class="resume-bloc"><div class="resume-ico v"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v18M16.5 7.5c0-1.7-2-3-4.5-3s-4.5 1.3-4.5 3 1.5 2.7 4.5 3.2 4.5 1.6 4.5 3.3-2 3-4.5 3-4.5-1.3-4.5-3"/></svg></div>
+          <div><div class="val">${euros(total)}</div><div class="lib">${articles} article${articles > 1 ? "s" : ""} achetés</div></div></div>`;
+    }
+
+    /* ---------- Puces de filtre ---------- */
+    function afficherPuces() {
+      document.getElementById("puces").innerHTML = FILTRES.map(f => {
+        const nb = commandes.filter(f.test).length;
+        if (nb === 0 && f.id !== "toutes" && f.id !== filtre) return "";
+        return `<button class="puce ${f.id === filtre ? "actif" : ""}" data-filtre="${f.id}">${f.nom}<span class="nb">${nb}</span></button>`;
+      }).join("");
+      document.querySelectorAll(".puce").forEach(b => b.addEventListener("click", () => { filtre = b.dataset.filtre; afficherPuces(); afficherListe(); }));
+    }
+
+    /* ---------- Une commande ---------- */
+    function blocSuivi(c) {
+      if (c.statut === "annulee") return "";
+      const actuel = INDEX_STATUT[c.statut] ?? 0;
+      const etapes = ETAPES.map((nom, i) => {
+        const classe = i <= actuel ? "faite" : (i === actuel + 1 ? "encours" : "");
+        return `<div class="etape ${classe}"><span class="pastille">${coche}</span><span class="etape-lib">${nom}</span></div>`;
+      }).join("");
+      return `<div class="suivi"><div class="etapes" data-progression="${actuel / (ETAPES.length - 1)}"><div class="progression"></div>${etapes}</div></div>`;
+    }
+
+    function carteCommande(c, rang) {
+      const index = commandes.indexOf(c);
+      const nbArticles = c.articles.reduce((n, a) => n + a.quantite, 0);
+      const ouvert = ouvertes.has(c.numero);
+
+      const miniatures = c.articles.slice(0, 3).map(a => `<img src="${echapper(a.image || "vigo1.png")}" alt="" loading="lazy">`).join("")
+        + (c.articles.length > 3 ? `<span>+${c.articles.length - 3}</span>` : "");
+
+      const articles = c.articles.length
+        ? c.articles.map(a => `
+            <div class="article">
+              <div class="article-img"><img src="${echapper(a.image || "vigo1.png")}" alt="${echapper(a.ref)}" loading="lazy"></div>
+              <div>
+                <p class="article-nom">${echapper(a.ref)}</p>
+                <p class="article-info">${a.taille ? "Taille <b>" + echapper(a.taille) + "</b> · " : ""}Quantité <b>${a.quantite}</b> · ${eurosDec(a.prix)} / pièce</p>
+              </div>
+              <div class="article-prix">${eurosDec(a.prix * a.quantite)}</div>
+            </div>`).join("")
+        : `<p class="text-muted py-3 mb-0" style="font-size: .85rem;">Détail des articles non disponible.</p>`;
+
+      const livraison = c.livraison ? `
+        <div class="livraison">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="flex-shrink:0;margin-top:2px"><path d="M12 21s7-6.2 7-11.5A7 7 0 0 0 5 9.5C5 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg>
+          <div><div class="lib">Livraison à</div>
+            ${echapper(c.livraison.prenom + " " + c.livraison.nom)} · ${echapper(c.livraison.adresse)}, ${echapper(c.livraison.code_postal)} ${echapper(c.livraison.ville)}, ${echapper(c.livraison.pays)}
+            ${c.livraison.telephone ? `<span class="text-muted"> · ${echapper(c.livraison.telephone)}</span>` : ""}</div>
+        </div>` : "";
+
+      return `
+        <article class="cmd ${echapper(c.statut)} ${ouvert ? "ouvert" : ""}" data-numero="${echapper(c.numero)}" style="animation-delay:${Math.min(rang, 8) * 60}ms">
+          <button class="cmd-tete" aria-expanded="${ouvert}">
+            <div class="cmd-infos">
+              <div class="cmd-num">Commande <strong>#${echapper(c.numero || "")}</strong></div>
+              <div class="cmd-date">${dateFr(c.date)}</div>
+              <span class="statut ${echapper(c.statut)}">${LIBELLES[c.statut] || echapper(c.statut)}</span>
+            </div>
+            <div class="miniatures" aria-hidden="true">${miniatures}</div>
+            <div class="cmd-total"><div class="val">${euros(c.total)}</div><div class="lib">${nbArticles} article${nbArticles > 1 ? "s" : ""}</div></div>
+            <span class="signe" aria-hidden="true"></span>
+          </button>
+          <div class="cmd-corps"><div><div class="cmd-interieur">
+            ${blocSuivi(c)}
+            <div class="articles">${articles}</div>
+            ${livraison}
+            <div class="cmd-bas">
+              <a href="/aide.html" class="btn-o">Besoin d'aide ?</a>
+              ${c.statut === "expediee" ? `<a href="#" class="btn-o">Suivre le colis</a>` : ""}
+              ${c.articles.length ? `<button class="btn-orange" data-racheter="${index}">↻ Commander à nouveau</button>` : ""}
+            </div>
+          </div></div></div>
+        </article>`;
+    }
+
+    function animerSuivi(carte) {
+      const e = carte.querySelector(".etapes");
+      if (e) e.querySelector(".progression").style.width = `calc((100% - 26px) * ${e.dataset.progression})`;
+    }
+
+    /* ---------- Liste (filtre + tri) ---------- */
+    function afficherListe() {
+      const zone = document.getElementById("listeCommandes");
+      const test = FILTRES.find(f => f.id === filtre).test;
+      const liste = commandes.filter(test).sort((a, b) =>
+        tri === "ancien" ? new Date(a.date) - new Date(b.date)
+        : tri === "montant" ? b.total - a.total
+        : new Date(b.date) - new Date(a.date));
+
+      if (!liste.length) {
+        zone.innerHTML = `<div class="vide"><p class="fw-bold mb-1">Aucune commande dans cette catégorie</p>
+          <button class="btn-o mt-2" onclick="document.querySelector('[data-filtre=toutes]').click()">Voir toutes les commandes</button></div>`;
+        return;
+      }
+      zone.innerHTML = liste.map(carteCommande).join("");
+
+      zone.querySelectorAll(".cmd").forEach(carte => {
+        if (carte.classList.contains("ouvert")) requestAnimationFrame(() => animerSuivi(carte));
+        carte.querySelector(".cmd-corps").inert = !carte.classList.contains("ouvert");
+        carte.querySelector(".cmd-tete").addEventListener("click", () => {
+          const ouvert = carte.classList.toggle("ouvert");
+          carte.querySelector(".cmd-tete").setAttribute("aria-expanded", ouvert);
+          carte.querySelector(".cmd-corps").inert = !ouvert;
+          ouvert ? ouvertes.add(carte.dataset.numero) : ouvertes.delete(carte.dataset.numero);
+          if (ouvert) animerSuivi(carte);
+        });
+      });
+      zone.querySelectorAll("[data-racheter]").forEach(b => b.addEventListener("click", () => racheter(+b.dataset.racheter)));
+    }
+
+    document.getElementById("tri").addEventListener("change", e => { tri = e.target.value; afficherListe(); });
+
+    /* ---------- Commander à nouveau ---------- */
+    function racheter(index) {
+      const c = commandes[index];
+      const panier = JSON.parse(localStorage.getItem("userCart")) || [];
+      c.articles.forEach(a => {
+        const id = (a.ref + "-" + (a.taille || "U")).replace(/\s+/g, "-");
+        const existant = panier.find(p => p.id === id);
+        if (existant) existant.quantity += a.quantite;
+        else panier.push({ id, ref: a.ref, price: a.prix, quantity: a.quantite, size: a.taille, color: a.couleur || "Standard", image: a.image });
+      });
+      localStorage.setItem("userCart", JSON.stringify(panier));
+      notif(`Les articles de la commande #${c.numero} sont dans ton panier.`, "succes", "Ajouté au panier", c.articles[0] && c.articles[0].image);
+      setTimeout(() => window.location.href = "/panier.html", 1600);
+    }
+
+    /* ---------- Chargement ---------- */
+    (async function () {
+      const zone = document.getElementById("listeCommandes");
+      try {
+        const res = await fetch("/api/commandes");
+        if (res.status === 401) { window.location.href = "/login.html"; return; }
+        const data = await res.json();
+        if (!data.success) throw new Error(data.message);
+        commandes = data.commandes;
+
+        if (!commandes.length) {
+          zone.innerHTML = `
+            <div class="vide">
+              <div class="vide-ico"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6 7h12l-1 13H7L6 7z"/><path d="M9 7V5a3 3 0 0 1 6 0v2"/></svg></div>
+              <p class="fw-bold mb-1">Aucune commande pour le moment</p>
+              <p class="text-muted mb-4" style="font-size:.9rem;">Tes commandes apparaîtront ici juste après ton paiement.</p>
+              <a href="/site.html" class="btn-orange px-4">Découvrir la boutique</a>
+            </div>`;
+          return;
+        }
+
+        // La commande la plus récente est ouverte par défaut, les autres sont repliées
+        const plusRecente = [...commandes].sort((a, b) => new Date(b.date) - new Date(a.date))[0];
+        ouvertes.add(plusRecente.numero);
+
+        afficherResume();
+        document.getElementById("barreFiltres").hidden = false;
+        afficherPuces();
+        afficherListe();
+      } catch (e) {
+        console.error(e);
+        zone.innerHTML = `<div class="vide"><p class="fw-bold mb-1">Impossible de charger tes commandes</p><p class="text-muted mb-0" style="font-size:.9rem;">Réessaie dans un instant.</p></div>`;
+      }
+    })();
+  </script>
+</body>
+</html>
