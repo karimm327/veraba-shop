@@ -152,6 +152,36 @@
     .test-res.ok { background: #e6f0eb; color: #0f3d2e; }
     .copier:hover, .copier.fait { background: #0f3d2e; border-color: #0f3d2e; color: #fff; }
     .etapes-achat span.actif { color: #0f3d2e; }
+
+    /* ===== Petits téléphones (≈ 340-400px) ===== */
+    .form-label { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    @media (max-width: 400px) {
+      #main-container { padding-left: 12px; padding-right: 12px; }
+      .bloc:not(.volet) { padding: 18px 14px; }
+      .volet-tete { gap: 10px; padding: 18px 14px !important; }
+      .volet-interieur { padding: 0 14px 18px; }
+      .volet-resume { padding-left: 0; }
+      .form-label { font-size: .64rem; letter-spacing: .5px; }
+      .form-control, .form-select, .champ-stripe { padding: 11px 12px; font-size: .9rem; }
+      .btn-suivant { width: 100%; padding: 13px 10px; font-size: .72rem; letter-spacing: .5px; }
+      .ligne-total.grand { font-size: 1.1rem; }
+      .face { padding: 14px 16px; border-radius: 14px; }
+      .logo-vb { width: 44px; height: 44px; }
+      .puce { width: 36px; height: 26px; margin-top: 2px; }
+      .numero { font-size: .95rem; letter-spacing: 1px; margin: 8px 0 8px; }
+      .titulaire { font-size: .75rem; max-width: 170px; }
+      .etat-carte { font-size: .68rem; }
+      .dos { padding: 14px 0; }
+      .signature { margin: 12px 16px 0; }
+      .dos p { margin: 10px 16px 0; }
+      .test { padding: 14px 12px !important; }
+      .test-titre { flex-wrap: wrap; }
+      .test-badge { white-space: nowrap; }
+      .test-ligne { flex-wrap: wrap; row-gap: 6px; }
+      .test-num { font-size: .85rem; letter-spacing: 0; white-space: nowrap; }
+      .test-ligne > span:last-child { margin-left: auto; }
+      .test-res { font-size: .66rem; padding: 2px 6px; }
+    }
   </style>
 </head>
 <body>
@@ -214,11 +244,11 @@
               <label for="adresse" class="form-label">Adresse</label>
               <input type="text" id="adresse" class="form-control" placeholder="12 rue de la Paix, appartement 3" autocomplete="street-address" maxlength="255" required>
             </div>
-            <div class="col-4">
+            <div class="col-5">
               <label for="codePostal" class="form-label">Code postal</label>
               <input type="text" id="codePostal" class="form-control" placeholder="75001" autocomplete="postal-code" inputmode="numeric" maxlength="10" required>
             </div>
-            <div class="col-8">
+            <div class="col-7">
               <label for="ville" class="form-label">Ville</label>
               <input type="text" id="ville" class="form-control" placeholder="Paris" autocomplete="address-level2" maxlength="100" required>
             </div>
