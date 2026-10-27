@@ -1100,3 +1100,31 @@ body {
 
 
 
+
+/* ==========================================
+   Bandeau photo (sprr) entre les T-shirts et "À propos"
+   Placé en fin de fichier : remplace les anciennes règles .parallax-2 ci-dessus.
+   ========================================== */
+.parallax.parallax-2 {
+  background-image: url('sprr.webp') !important;
+  background-size: cover !important;
+  background-position: center 72% !important; /* garde le joueur et le logo VB dans le cadre */
+  background-repeat: no-repeat !important;
+  background-attachment: scroll !important; /* pas de parallaxe : elle coupait le logo et zoome sur mobile */
+  width: 100% !important;
+  height: 60vh !important;
+  min-height: 360px !important;
+  max-height: 640px !important;
+}
+
+/* Tablette et téléphone : l'image garde ses proportions (16:9), donc rien n'est coupé ni zoomé */
+@media (max-width: 991.98px) {
+  .parallax.parallax-2 {
+    background-image: url('sprr-mobile.webp') !important;
+    background-position: center !important;
+    height: auto !important;
+    min-height: 0 !important;
+    max-height: none !important;
+    aspect-ratio: 16 / 9;
+  }
+}
