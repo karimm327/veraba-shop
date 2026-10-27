@@ -190,11 +190,6 @@ app.get("/health", (req, res) => {
   db.query("SELECT 1", err => res.status(err ? 500 : 200).send(err ? "db error" : "ok"));
 });
  
-// Le bouton "Voir la boutique" pointe vers shop.html, qui n'existe pas : on renvoie vers l'accueil
-app.get(["/shop", "/shop.html"], (req, res) => {
-  res.redirect(req.session.userId ? "/site.html" : "/index.html");
-});
- 
 // Fichiers du site (HTML, CSS, images...). "/site" fonctionne comme "/site.html".
 app.use(express.static(PUBLIC_DIR, { index: false, extensions: ["html"] }));
  
@@ -265,7 +260,7 @@ app.post("/register", async (req, res) => {
  
 // ---------------------- Connexion / Déconnexion ---------------------- //
 app.post("/login", (req, res) => {
-  const { email, password } = req.body;
+  const { email, password, remember } = req.body;
   if (!email || !password) return res.status(400).json({ success: false, message: "Email et mot de passe requis" });
  
   db.query("SELECT * FROM users WHERE email = ?", [email], async (err, results) => {
@@ -276,6 +271,8 @@ app.post("/login", (req, res) => {
     if (!match) return res.status(401).json({ success: false, message: "Email ou mot de passe incorrect" });
  
     req.session.userId = user.id;
+    // "Rester connecté" : session de 30 jours au lieu de 24 h
+    if (remember === true) req.session.cookie.maxAge = 1000 * 60 * 60 * 24 * 30;
     res.json({ success: true, redirect: "/site.html" });
   });
 });
@@ -423,6 +420,19 @@ app.get("/products/:id", (req, res) => {
     db.query("SELECT * FROM product_variants WHERE product_id = ?", [productId], (err2, variants) => {
       if (err2) return res.status(500).json({ success: false, message: "Erreur variantes" });
       res.json({ success: true, product: products[0], variants });
+    });
+  });
+});
+
+// Tous les produits avec leurs variantes (couleur, taille, stock) en une seule requête : page shop.html
+app.get("/products-full", (req, res) => {
+  db.query("SELECT * FROM products ORDER BY created_at DESC", (err, products) => {
+    if (err) return res.status(500).json({ success: false, message: "Erreur MySQL" });
+
+    db.query("SELECT product_id, couleur, taille, stock FROM product_variants", (err2, variants) => {
+      if (err2) return res.status(500).json({ success: false, message: "Erreur variantes" });
+      products.forEach(p => { p.variants = variants.filter(v => v.product_id === p.id); });
+      res.json({ success: true, products });
     });
   });
 });

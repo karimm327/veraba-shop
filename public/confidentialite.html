@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Politique de confidentialité - Veraba</title>
+<title>Politique de confidentialité - Varenba</title>
 <style>
   * { box-sizing: border-box; }
   body { margin: 0; font-family: 'Helvetica Neue', Arial, sans-serif; background: #f6f6f6; color: #111; line-height: 1.65; }
@@ -28,14 +28,152 @@
   .contact { margin-top: 30px; padding: 16px 20px; border-left: 3px solid #0f3d2e; background: #f3f7f5; font-size: .9rem; }
   @media (max-width: 600px) { main { padding: 20px 12px 48px; } .carte { padding: 24px 18px; } h1 { font-size: 1.35rem; } .sommaire ol { columns: 1; } }
 </style>
+  <link href="nav-pc.css" rel="stylesheet">
 </head>
 <body>
+<!-- ========== Navigation PC (style Zalando / ASOS) : styles dans nav-pc.css, script dans nav-pc.js ========== -->
+<header class="vbnav">
+
+
+  <div class="vbnav-info">
+    <span>Livraison offerte dès 50 € · Retours gratuits sous 30 jours</span>
+    <div class="vbnav-info-links">
+      <a href="aide.html">Aide</a><span>·</span><a href="localisation.html">Trouver un magasin</a>
+    </div>
+  </div>
+
+  <div class="vbnav-main">
+    <div class="vbnav-univ">
+      <button type="button" data-univ="femme">FEMME</button>
+      <button type="button" data-univ="homme">HOMME</button>
+      <button type="button" data-univ="enfants">ENFANTS</button>
+    </div>
+
+    <a href="index.html" class="vbnav-logo">VARENBA</a>
+
+    <div class="vbnav-right">
+      <button type="button" class="vbnav-search" aria-label="Rechercher">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#666" stroke-width="2.2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.6" y2="16.6"/></svg>
+        <span>Rechercher un produit</span>
+      </button>
+
+      <div class="vbnav-account">
+        <a href="login.html" class="vbnav-icon" aria-label="Mon compte">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#111" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c1.5-4 4.5-6 8-6s6.5 2 8 6"/></svg>
+        </a>
+        <div class="vbnav-account-menu">
+          <div class="vbnav-guest">
+            <span class="vbnav-account-title">Bienvenue chez Varenba</span>
+            <a href="login.html" class="vbnav-btn dark">Se connecter</a>
+            <a href="signup.html" class="vbnav-btn">S'inscrire</a>
+            <a href="commandes.html" class="vbnav-row">Mes commandes</a>
+            <a href="favoris.html" class="vbnav-row">Mes favoris</a>
+            <a href="aide.html" class="vbnav-row">Aide</a>
+          </div>
+          <div class="vbnav-member">
+            <a href="compte.html" class="vbnav-row">Mon compte</a>
+            <a href="commandes.html" class="vbnav-row">Mes commandes</a>
+            <a href="favoris.html" class="vbnav-row">Mes favoris</a>
+            <a href="adresses.html" class="vbnav-row">Mes adresses</a>
+            <a href="/logout" class="vbnav-btn dark vbnav-logout">Déconnexion</a>
+          </div>
+        </div>
+      </div>
+
+      <a href="favoris.html" class="vbnav-icon" aria-label="Favoris">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#111" stroke-width="1.8" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78L12 21.23l8.84-8.84a5.5 5.5 0 0 0 0-7.78z"/></svg>
+        <span id="favorite-count" class="vbnav-badge" style="display: none;">0</span>
+      </a>
+
+      <a href="panier.html" class="vbnav-icon" aria-label="Panier">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#111" stroke-width="1.8" stroke-linejoin="round"><path d="M6 7h12l-1 13H7L6 7z"/><path d="M9 7a3 3 0 0 1 6 0"/></svg>
+        <span id="cart-count" class="vbnav-badge" style="display: none;">0</span>
+      </a>
+    </div>
+  </div>
+
+  <nav class="vbnav-cats" aria-label="Catégories">
+    <a href="index.html" class="vbnav-mini-logo">VARENBA</a>
+
+    <div class="vbnav-cat">
+      <a href="shop.html">Nouveautés <em class="hot">HOT DROP</em></a>
+      <div class="vbnav-mega">
+        <div class="vbnav-col"><h4>Dernières sorties</h4>
+          <a href="shop.html">Toutes les nouveautés</a><a href="shop.html">Dernier drop</a><a href="shop.html">Éditions limitées</a></div>
+        <div class="vbnav-col"><h4>Tendances</h4>
+          <a href="shop.html">Les incontournables</a><a href="shop.html">Sélection éco-responsable</a></div>
+        <div class="vbnav-col"><h4>À la une</h4>
+          <a href="shop.html">→ Best-sellers</a><a href="shop.html" class="red">→ -30 % sur tout</a></div>
+      </div>
+    </div>
+
+    <div class="vbnav-cat">
+      <a href="shop.html">Vêtements</a>
+      <div class="vbnav-mega">
+        <div class="vbnav-col"><h4>Vêtements <span class="vbnav-univ-label"></span></h4>
+          <a href="shop.html">Tout voir</a><a href="shop.html">Nouveautés</a><a href="shop.html">Best-sellers</a></div>
+        <div class="vbnav-col"><h4>Hauts</h4>
+          <a href="shop.html">T-shirts</a><a href="shop.html">Sweats</a><a href="shop.html">Vestes</a><a href="shop.html">Chemises</a></div>
+        <div class="vbnav-col"><h4>Bas</h4>
+          <a href="shop.html">Pantalons</a><a href="shop.html">Jeans</a><a href="shop.html">Shorts</a><a href="shop.html">Joggings</a></div>
+        <div class="vbnav-col"><h4>À la une</h4>
+          <a href="shop.html">→ Nouveautés</a><a href="shop.html">→ Best-sellers</a><a href="shop.html">→ Éco-responsable</a><a href="shop.html" class="red">→ -30 % sur tout</a></div>
+      </div>
+    </div>
+
+    <div class="vbnav-cat">
+      <a href="shop.html">Chaussures</a>
+      <div class="vbnav-mega">
+        <div class="vbnav-col"><h4>Chaussures <span class="vbnav-univ-label"></span></h4>
+          <a href="shop.html">Tout voir</a><a href="shop.html">Baskets</a><a href="shop.html">Lifestyle</a><a href="shop.html">Running</a></div>
+        <div class="vbnav-col"><h4>À la une</h4>
+          <a href="shop.html">→ Nouveautés</a><a href="shop.html">→ Best-sellers</a></div>
+      </div>
+    </div>
+
+    <div class="vbnav-cat">
+      <a href="shop.html">Accessoires</a>
+      <div class="vbnav-mega">
+        <div class="vbnav-col"><h4>Accessoires <span class="vbnav-univ-label"></span></h4>
+          <a href="shop.html">Tout voir</a><a href="shop.html">Casquettes</a><a href="shop.html">Sacs</a><a href="shop.html">Chaussettes</a></div>
+      </div>
+    </div>
+
+    <div class="vbnav-cat">
+      <a href="signup.html">VB MMBRS <em>CLUB</em></a>
+      <div class="vbnav-mega">
+        <div class="vbnav-col"><h4>Espace membres</h4>
+          <a href="signup.html">Rejoindre le club gratuitement</a><a href="signup.html">Avantages exclusifs</a></div>
+        <div class="vbnav-col"><h4>Mon compte</h4>
+          <a href="commandes.html">Mes commandes en cours</a><a href="compte.html">Programme de fidélité</a></div>
+      </div>
+    </div>
+
+    <div class="vbnav-cat promo"><a href="shop.html">PROMOS</a></div>
+
+    <div class="vbnav-mini-icons">
+      <button type="button" class="vbnav-icon vbnav-search-mini" aria-label="Rechercher">
+        <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="#111" stroke-width="2.2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.6" y2="16.6"/></svg>
+      </button>
+      <a href="favoris.html" class="vbnav-icon" aria-label="Favoris">
+        <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="#111" stroke-width="1.8" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78L12 21.23l8.84-8.84a5.5 5.5 0 0 0 0-7.78z"/></svg>
+        <span class="vbnav-badge" data-mirror="favorite-count" style="display: none;">0</span>
+      </a>
+      <a href="panier.html" class="vbnav-icon" aria-label="Panier">
+        <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="#111" stroke-width="1.8" stroke-linejoin="round"><path d="M6 7h12l-1 13H7L6 7z"/><path d="M9 7a3 3 0 0 1 6 0"/></svg>
+        <span class="vbnav-badge" data-mirror="cart-count" style="display: none;">0</span>
+      </a>
+    </div>
+  </nav>
+</header>
 <header class="vb-entete"><div class="vb-entete-in">
   <a href="javascript:history.length > 1 ? history.back() : location.href='/'" class="vb-retour" aria-label="Retour">
     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
   </a>
-  <a href="/" class="vb-marque">Veraba</a>
+  <a href="/" class="vb-marque">Varenba</a>
 </div></header>
+
+
 <main><div class="carte">
   <h1>Politique de confidentialité</h1>
   <p class="maj">Dernière mise à jour : 30 septembre 2026</p>
@@ -49,7 +187,7 @@
   <h2 id="s4">4. Combien de temps sont-elles conservées ?</h2>
   <ul><li>Compte : tant qu'il est actif, puis 3 ans après ta dernière activité.</li><li>Commandes et factures : 10 ans (obligation comptable).</li><li>Newsletter : jusqu'à ta désinscription.</li><li>Messages au support : 3 ans.</li></ul>
   <h2 id="s5">5. Qui peut y accéder ?</h2>
-  <p>Uniquement l'équipe Veraba et nos prestataires techniques, dans la limite de leur mission : Stripe (paiement), <span class="a-completer">[hébergeur du site]</span> et <span class="a-completer">[hébergeur de la base de données]</span>. Nous ne vendons jamais tes données.</p>
+  <p>Uniquement l'équipe Varenba et nos prestataires techniques, dans la limite de leur mission : Stripe (paiement), <span class="a-completer">[hébergeur du site]</span> et <span class="a-completer">[hébergeur de la base de données]</span>. Nous ne vendons jamais tes données.</p>
   <h2 id="s6">6. Sécurité</h2>
   <p>Les échanges sont chiffrés (HTTPS), les mots de passe sont hachés et les données de carte sont confiées à Stripe, certifié PCI-DSS.</p>
   <h2 id="s7">7. Cookies</h2>
@@ -58,5 +196,7 @@
   <p>Tu peux à tout moment demander l'accès, la rectification, la suppression ou la portabilité de tes données, t'opposer à leur utilisation ou retirer ton consentement à la newsletter. Écris-nous depuis la page Aide ; nous répondons sous 1 mois. Tu peux aussi saisir la CNIL (www.cnil.fr).</p>
   <div class="contact">Une question ? Écris-nous depuis la page <a href="aide.html">Aide & contact</a>.</div>
 </div></main>
+<script src="nav-pc.js"></script>
+<script src="favoris-badge.js"></script>
 </body>
 </html>

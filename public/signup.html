@@ -2,210 +2,402 @@
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
-<link rel="stylesheet" href="signup.css" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Inscription</title>
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
-  <link rel="icon" type="image/png" href="aaa.png">
+<link rel="icon" type="image/png" href="aaa.png">
+<title>Inscription - Varenba</title>
 <style>
-  /* ===== Consentements (style grandes marques) ===== */
-  .consentements { margin: 6px 0 18px; display: grid; gap: 12px; }
-  .case { display: flex; align-items: flex-start; gap: 12px; cursor: pointer; font-size: .85rem; line-height: 1.45; color: #333; user-select: none; }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    min-height: 100vh;
+    background: #fff;
+    color: #111;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  }
+  a { color: inherit; }
+
+  .signup-top { display: flex; justify-content: center; padding: 28px 16px 0; }
+  .signup-logo {
+    font-weight: 900;
+    font-size: 24px;
+    letter-spacing: 0.28em;
+    margin-right: -0.28em;
+    text-decoration: none;
+  }
+
+  .signup-box { width: 100%; max-width: 460px; margin: 0 auto; padding: 48px 24px 48px; }
+  .signup-title { font-size: 26px; font-weight: 700; line-height: 1.25; letter-spacing: -0.01em; margin: 0 0 8px; }
+  .signup-sub { font-size: 15px; color: #555; margin: 0 0 28px; line-height: 1.5; }
+
+  .section-label { font-size: 14px; font-weight: 600; margin: 22px 0 10px; }
+
+  /* --- Champ avec libellé qui monte au-dessus --- */
+  .row { display: flex; gap: 10px; }
+  .row > .field-wrap { flex: 1; min-width: 0; }
+  .field-wrap { margin-bottom: 12px; }
+  .field { position: relative; }
+  .field input {
+    width: 100%;
+    height: 56px;
+    border: 1px solid #cacacb;
+    border-radius: 8px;
+    padding: 22px 16px 6px;
+    font-size: 16px;
+    color: #111;
+    background: #fff;
+    outline: none;
+    transition: border-color 0.15s ease, box-shadow 0.15s ease;
+    -moz-appearance: textfield;
+  }
+  .field input::-webkit-outer-spin-button,
+  .field input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+  .field input.with-eye { padding-right: 48px; }
+  .field input:focus { border-color: #111; box-shadow: 0 0 0 1px #111; }
+  .field label {
+    position: absolute;
+    left: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 16px;
+    color: #757575;
+    pointer-events: none;
+    white-space: nowrap;
+    transition: all 0.15s ease;
+  }
+  .field input:focus + label,
+  .field input:not(:placeholder-shown) + label { top: 16px; font-size: 12px; }
+  .field-wrap.has-error input { border-color: #d43f21; box-shadow: none; }
+  .field-error { display: none; color: #d43f21; font-size: 13px; margin: 6px 0 0 2px; }
+  .field-wrap.has-error .field-error { display: block; }
+
+  .toggle-pass {
+    position: absolute;
+    right: 8px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    padding: 8px;
+    cursor: pointer;
+    color: #555;
+    display: flex;
+  }
+
+  /* --- Règles du mot de passe --- */
+  .rules { list-style: none; padding: 0; margin: 10px 0 0; display: grid; grid-template-columns: 1fr 1fr; gap: 6px 12px; }
+  .rules li { display: flex; align-items: center; gap: 7px; font-size: 13px; color: #757575; transition: color 0.15s ease; }
+  .rules li::before {
+    content: "";
+    flex-shrink: 0;
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+    border: 1.5px solid #cacacb;
+    transition: all 0.15s ease;
+  }
+  .rules li.ok { color: #1f7a3d; }
+  .rules li.ok::before {
+    border-color: #1f7a3d;
+    background: #1f7a3d url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12' fill='none' stroke='white' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M2.5 6.2l2.3 2.3 4.7-4.9'/%3E%3C/svg%3E") center / 10px no-repeat;
+  }
+  .field-wrap.has-error .rules li:not(.ok) { color: #d43f21; }
+
+  /* --- Cases à cocher --- */
+  .consentements { margin: 26px 0 16px; display: grid; gap: 14px; }
+  .case { display: flex; align-items: flex-start; gap: 12px; cursor: pointer; font-size: 14px; line-height: 1.45; color: #333; user-select: none; }
   .case input { position: absolute; opacity: 0; width: 1px; height: 1px; }
-  .case-boite { flex-shrink: 0; width: 20px; height: 20px; margin-top: 1px; border: 1.5px solid #8a8a8a; border-radius: 4px; background: #fff;
-    display: inline-flex; align-items: center; justify-content: center; transition: background .15s, border-color .15s, box-shadow .15s; }
-  .case-boite svg { width: 12px; height: 12px; stroke: #fff; opacity: 0; transform: scale(.6); transition: opacity .15s, transform .15s; }
+  .case-boite {
+    flex-shrink: 0;
+    width: 20px;
+    height: 20px;
+    margin-top: 1px;
+    border: 1.5px solid #8a8a8a;
+    border-radius: 4px;
+    background: #fff;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.15s, border-color 0.15s, box-shadow 0.15s;
+  }
+  .case-boite svg { width: 12px; height: 12px; stroke: #fff; opacity: 0; transform: scale(0.6); transition: opacity 0.15s, transform 0.15s; }
   .case input:checked + .case-boite { background: #111; border-color: #111; }
   .case input:checked + .case-boite svg { opacity: 1; transform: none; }
-  .case input:focus-visible + .case-boite { box-shadow: 0 0 0 3px rgba(15,61,46,.25); }
+  .case input:focus-visible + .case-boite { box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.2); }
   .case:hover .case-boite { border-color: #111; }
-  .case a { color: #111; font-weight: 600; text-decoration: underline; text-underline-offset: 2px; }
-  .case a:hover { color: #0f3d2e; }
-  .case .oblig { color: #b3261e; }
-  .case.erreur .case-boite { border-color: #b3261e; box-shadow: 0 0 0 3px rgba(179,38,30,.12); }
-  .case.erreur { animation: secoue .35s; }
+  .case a { color: #111; font-weight: 600; text-underline-offset: 2px; }
+  .case .oblig { color: #d43f21; }
+  .case .facultatif { color: #757575; }
+  .case.erreur .case-boite { border-color: #d43f21; box-shadow: 0 0 0 3px rgba(212, 63, 33, 0.15); }
+  .case.erreur { animation: secoue 0.35s; }
   @keyframes secoue { 25% { transform: translateX(-4px); } 75% { transform: translateX(4px); } }
-  .mention { font-size: .75rem; color: #6b6b6b; line-height: 1.5; margin: 0 0 16px; }
-  .mention a { color: #6b6b6b; }
-  #btnInscription.inactif { background: #bdbdbd; border-color: #bdbdbd; }
-  #btnInscription:disabled { opacity: .7; }
+
+  .mention { font-size: 12px; color: #757575; line-height: 1.55; margin: 0 0 28px; }
+
+  .signup-actions { display: flex; justify-content: flex-end; }
+  .btn-main {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    background: #111;
+    color: #fff;
+    border: none;
+    border-radius: 30px;
+    padding: 14px 28px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.15s ease;
+  }
+  .btn-main:hover { background: #333; }
+  .btn-main:disabled { background: #757575; cursor: wait; }
+  .spinner {
+    display: none;
+    width: 16px;
+    height: 16px;
+    border: 2px solid rgba(255, 255, 255, 0.4);
+    border-top-color: #fff;
+    border-radius: 50%;
+    animation: spin 0.7s linear infinite;
+  }
+  .btn-main.loading .spinner { display: inline-block; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  .signup-login {
+    margin-top: 40px;
+    padding-top: 24px;
+    border-top: 1px solid #eee;
+    font-size: 15px;
+    color: #555;
+    text-align: center;
+  }
+  .signup-login a { color: #111; font-weight: 600; }
+
+  @media (max-width: 480px) {
+    .signup-box { padding-top: 36px; }
+    .signup-title { font-size: 22px; }
+    .rules { grid-template-columns: 1fr; }
+    .signup-actions .btn-main { width: 100%; justify-content: center; }
+  }
 </style>
 </head>
 <body>
-<div class="container">
-  <div class="row justify-content-center">
-    <div class="col-md-6">
-      <div class="card mt-5 p-4 shadow-sm">
-        <a class="navbar-brand logo" href="index.html">
-          <img src="logop.png" alt="BrandName" width="150" height="150" class="me-1">
-        </a>
-        <h3 class="text-center mb-4">Faisons de toi un membre Veraba.</h3>
-        <form id="registerForm" novalidate>
-          <div class="mb-3">
-            <label for="registerEmail" class="form-label"></label>
-            <input type="email" id="registerEmail" class="form-control" placeholder="Email*" required>
-          </div>
 
-          <div class="mb-3">
-            <label for="nom" class="form-label"></label>
-            <input type="text" id="nom" class="form-control" placeholder="Nom*" required>
-          </div>
+<div class="signup-top">
+  <a href="index.html" class="signup-logo" aria-label="Retour à l'accueil Varenba">VARENBA</a>
+</div>
 
-          <div class="mb-3">
-            <label for="prenom" class="form-label"></label>
-            <input type="text" id="prenom" class="form-control" placeholder="Prénom*" required>
-          </div>
+<main class="signup-box">
+  <h1 class="signup-title">Faisons de toi un membre Varenba.</h1>
+  <p class="signup-sub">Rejoins VB MMBRS : drops en avant-première, offres réservées aux membres et suivi de tes commandes.</p>
 
-          <div class="mb-3 d-flex gap-2">
-            <input type="number" id="jour" class="form-control" placeholder="Jour*" min="1" max="31" required>
-            <input type="number" id="mois" class="form-control" placeholder="Mois*" min="1" max="12" required>
-            <input type="number" id="annee" class="form-control" placeholder="Année*" min="1900" max="2025" required>
-          </div>
+  <form id="registerForm" novalidate>
+    <div class="field-wrap" id="wrapEmail">
+      <div class="field">
+        <input type="email" id="registerEmail" placeholder=" " autocomplete="email" required>
+        <label for="registerEmail">Adresse e-mail</label>
+      </div>
+      <p class="field-error">Saisis une adresse e-mail valide.</p>
+    </div>
 
-          <div class="mb-3 position-relative">
-            <label for="registerPassword" class="form-label">Créer un mot de passe</label>
-            <input type="password" id="registerPassword" class="form-control" required>
-            <i id="togglePassword" class="bi bi-eye-fill toggle-eye"></i>
-            <ul class="password-rules mt-2" style="padding-left:0;">
-              <li id="ruleLength" style="color:orange;">  Minimum 8 caractères</li>
-              <li id="ruleUpper" style="color:red;"> Au moins 1 majuscule</li>
-              <li id="ruleDigits" style="color:red;"> Au moins 3 chiffres</li>
-              <li id="ruleSymbol" style="color:red;"> Au moins 1 symbole (!@#$%^&*.)</li>
-            </ul>
-          </div>
-
-          <!-- ===== Consentements ===== -->
-          <div class="consentements">
-            <label class="case" id="caseCgu">
-              <input type="checkbox" id="cgu" required>
-              <span class="case-boite"><svg viewBox="0 0 12 12" fill="none" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M2.5 6.2l2.3 2.3 4.7-4.9"/></svg></span>
-              <span>J'accepte les <a href="cgu.html" target="_blank" rel="noopener">Conditions générales d'utilisation et de vente</a> et j'ai lu la <a href="confidentialite.html" target="_blank" rel="noopener">Politique de confidentialité</a>. <span class="oblig">*</span></span>
-            </label>
-
-            <label class="case">
-              <input type="checkbox" id="newsletter">
-              <span class="case-boite"><svg viewBox="0 0 12 12" fill="none" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M2.5 6.2l2.3 2.3 4.7-4.9"/></svg></span>
-              <span>Je souhaite recevoir par e-mail les nouveautés, offres exclusives et codes promo VigoBlue. <span class="text-muted">(facultatif — désinscription possible à tout moment)</span></span>
-            </label>
-          </div>
-
-          <p class="mention">
-            Tes données (e-mail, nom, prénom, date de naissance) sont utilisées uniquement pour créer ton compte, gérer tes commandes et, si tu l'acceptes, t'envoyer nos offres.
-            Tu peux y accéder, les modifier ou les supprimer à tout moment. En savoir plus : <a href="confidentialite.html" target="_blank" rel="noopener">Politique de confidentialité</a>.
-          </p>
-
-          <div class="d-grid mb-3">
-            <button type="submit" id="btnInscription" class="btn btn-dark inactif" aria-disabled="true">S'inscrire</button>
-          </div>
-        </form>
+    <div class="row">
+      <div class="field-wrap" id="wrapPrenom">
+        <div class="field">
+          <input type="text" id="prenom" placeholder=" " autocomplete="given-name" required>
+          <label for="prenom">Prénom</label>
+        </div>
+        <p class="field-error">Saisis ton prénom.</p>
+      </div>
+      <div class="field-wrap" id="wrapNom">
+        <div class="field">
+          <input type="text" id="nom" placeholder=" " autocomplete="family-name" required>
+          <label for="nom">Nom</label>
+        </div>
+        <p class="field-error">Saisis ton nom.</p>
       </div>
     </div>
-  </div>
-</div>
+
+    <p class="section-label">Date de naissance</p>
+    <div class="field-wrap" id="wrapDate">
+      <div class="row">
+        <div class="field" style="flex: 1;">
+          <input type="number" id="jour" placeholder=" " min="1" max="31" inputmode="numeric" autocomplete="bday-day" required>
+          <label for="jour">Jour</label>
+        </div>
+        <div class="field" style="flex: 1;">
+          <input type="number" id="mois" placeholder=" " min="1" max="12" inputmode="numeric" autocomplete="bday-month" required>
+          <label for="mois">Mois</label>
+        </div>
+        <div class="field" style="flex: 1.4;">
+          <input type="number" id="annee" placeholder=" " min="1900" inputmode="numeric" autocomplete="bday-year" required>
+          <label for="annee">Année</label>
+        </div>
+      </div>
+      <p class="field-error">Saisis une date de naissance valide.</p>
+    </div>
+
+    <p class="section-label">Mot de passe</p>
+    <div class="field-wrap" id="wrapPassword">
+      <div class="field">
+        <input type="password" id="registerPassword" class="with-eye" placeholder=" " autocomplete="new-password" required>
+        <label for="registerPassword">Créer un mot de passe</label>
+        <button type="button" class="toggle-pass" id="togglePassword" aria-label="Afficher le mot de passe">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg>
+        </button>
+      </div>
+      <ul class="rules">
+        <li id="ruleLength">8 caractères minimum</li>
+        <li id="ruleUpper">1 majuscule</li>
+        <li id="ruleDigits">3 chiffres</li>
+        <li id="ruleSymbol">1 symbole (!@#$%&amp;*.)</li>
+      </ul>
+    </div>
+
+    <div class="consentements">
+      <label class="case" id="caseCgu">
+        <input type="checkbox" id="cgu" required>
+        <span class="case-boite"><svg viewBox="0 0 12 12" fill="none" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M2.5 6.2l2.3 2.3 4.7-4.9"/></svg></span>
+        <span>J'accepte les <a href="cgu.html" target="_blank" rel="noopener">Conditions générales d'utilisation et de vente</a> et j'ai lu la <a href="confidentialite.html" target="_blank" rel="noopener">Politique de confidentialité</a>. <span class="oblig">*</span></span>
+      </label>
+
+      <label class="case">
+        <input type="checkbox" id="newsletter">
+        <span class="case-boite"><svg viewBox="0 0 12 12" fill="none" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M2.5 6.2l2.3 2.3 4.7-4.9"/></svg></span>
+        <span>Je souhaite recevoir par e-mail les nouveautés, offres exclusives et codes promo Varenba. <span class="facultatif">(facultatif, désinscription à tout moment)</span></span>
+      </label>
+    </div>
+
+    <p class="mention">
+      Tes données (e-mail, nom, prénom, date de naissance) sont utilisées uniquement pour créer ton compte, gérer tes commandes et, si tu l'acceptes, t'envoyer nos offres.
+      Tu peux y accéder, les modifier ou les supprimer à tout moment. En savoir plus : <a href="confidentialite.html" target="_blank" rel="noopener">Politique de confidentialité</a>.
+    </p>
+
+    <div class="signup-actions">
+      <button type="submit" id="btnInscription" class="btn-main"><span class="spinner"></span><span>Créer mon compte</span></button>
+    </div>
+  </form>
+
+  <p class="signup-login">Déjà membre ? <a href="login.html">Se connecter</a></p>
+</main>
 
 <script src="notif.js"></script>
 <script>
-/* -------------------- CONFIGURATION -------------------- */
-// Vide = même serveur que la page (http://localhost:3000)
-const API_URL = "";
-
-/* -------------------- ELEMENTS -------------------- */
 const registerForm = document.getElementById("registerForm");
-const passwordInput = document.getElementById("registerPassword");
-const togglePassword = document.getElementById("togglePassword");
-const ruleLength = document.getElementById("ruleLength");
-const ruleUpper = document.getElementById("ruleUpper");
-const ruleDigits = document.getElementById("ruleDigits");
-const ruleSymbol = document.getElementById("ruleSymbol");
 const emailInput = document.getElementById("registerEmail");
+const passwordInput = document.getElementById("registerPassword");
 const caseCgu = document.getElementById("cgu");
 const btnInscription = document.getElementById("btnInscription");
+const champ = id => document.getElementById(id);
 
-/* -------------------- CONSENTEMENT : bouton actif seulement si les CGU sont cochées -------------------- */
-function majBouton() {
-  btnInscription.classList.toggle("inactif", !caseCgu.checked);
-  btnInscription.setAttribute("aria-disabled", !caseCgu.checked);
+// E-mail déjà tapé sur la page de connexion (signup.html?email=...)
+const emailDepuisConnexion = new URLSearchParams(window.location.search).get("email");
+if (emailDepuisConnexion) emailInput.value = emailDepuisConnexion;
+
+/* -------------------- Règles du mot de passe (mêmes que le serveur) -------------------- */
+const REGLES = {
+  ruleLength: v => v.length >= 8,
+  ruleUpper: v => /[A-Z]/.test(v),
+  ruleDigits: v => (v.match(/\d/g) || []).length >= 3,
+  ruleSymbol: v => /[!@#$%^&*()_+=[\]{};':"\\|,.<>/?]/.test(v)
+};
+function majRegles() {
+  const v = passwordInput.value;
+  let toutesOk = true;
+  for (const [id, test] of Object.entries(REGLES)) {
+    const ok = test(v);
+    champ(id).classList.toggle("ok", ok);
+    if (!ok) toutesOk = false;
+  }
+  if (toutesOk) champ("wrapPassword").classList.remove("has-error");
+  return toutesOk;
 }
-caseCgu.addEventListener("change", () => {
-  majBouton();
-  document.getElementById("caseCgu").classList.remove("erreur");
+passwordInput.addEventListener("input", majRegles);
+
+champ("togglePassword").addEventListener("click", (e) => {
+  const visible = passwordInput.type === "text";
+  passwordInput.type = visible ? "password" : "text";
+  e.currentTarget.setAttribute("aria-label", visible ? "Afficher le mot de passe" : "Masquer le mot de passe");
+  passwordInput.focus();
 });
-// Montre la case obligatoire (tremblement + contour rouge)
+
+/* -------------------- Vérification des champs -------------------- */
+function dateValide(j, m, a) {
+  const anneeMax = new Date().getFullYear();
+  if (!j || !m || !a || a < 1900 || a > anneeMax) return false;
+  const d = new Date(a, m - 1, j);
+  return d.getFullYear() === a && d.getMonth() === m - 1 && d.getDate() === j && d <= new Date();
+}
+
+function verifier() {
+  const erreurs = [];
+  const marquer = (wrapId, ok) => { champ(wrapId).classList.toggle("has-error", !ok); if (!ok) erreurs.push(wrapId); };
+
+  champ("wrapEmail").querySelector(".field-error").textContent = "Saisis une adresse e-mail valide.";
+  marquer("wrapEmail", /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailInput.value.trim()));
+  marquer("wrapPrenom", champ("prenom").value.trim() !== "");
+  marquer("wrapNom", champ("nom").value.trim() !== "");
+  marquer("wrapDate", dateValide(+champ("jour").value, +champ("mois").value, +champ("annee").value));
+  marquer("wrapPassword", majRegles());
+  return erreurs;
+}
+
+// L'erreur d'un champ disparaît dès qu'on le corrige
+[["registerEmail", "wrapEmail"], ["prenom", "wrapPrenom"], ["nom", "wrapNom"], ["jour", "wrapDate"], ["mois", "wrapDate"], ["annee", "wrapDate"]]
+  .forEach(([id, wrap]) => champ(id).addEventListener("input", () => champ(wrap).classList.remove("has-error")));
+
+/* -------------------- Consentement obligatoire -------------------- */
+caseCgu.addEventListener("change", () => champ("caseCgu").classList.remove("erreur"));
 function signalerCgu() {
-  const c = document.getElementById("caseCgu");
+  const c = champ("caseCgu");
   c.classList.remove("erreur"); void c.offsetWidth; c.classList.add("erreur");
   c.scrollIntoView({ behavior: "smooth", block: "center" });
-  notif("Coche la case pour accepter les Conditions générales et la Politique de confidentialité.", "erreur", "Une dernière étape");
 }
 
-/* -------------------- TOGGLE PASSWORD -------------------- */
-togglePassword.addEventListener("click", () => {
-  if (passwordInput.type === "password") {
-    passwordInput.type = "text";
-    togglePassword.classList.replace("bi-eye-fill","bi-eye-slash-fill");
-  } else {
-    passwordInput.type = "password";
-    togglePassword.classList.replace("bi-eye-slash-fill","bi-eye-fill");
-  }
-});
-
-/* -------------------- CHECK PASSWORD RULES -------------------- */
-passwordInput.addEventListener("input", () => {
-  const val = passwordInput.value;
-  ruleLength.style.color = val.length >= 8 ? "green" : "red";
-  ruleUpper.style.color = /[A-Z]/.test(val) ? "green" : "red";
-  ruleDigits.style.color = (val.match(/\d/g) || []).length >= 3 ? "green" : "red";
-  ruleSymbol.style.color = /[!@#$%^&*\.]/.test(val) ? "green" : "red";
-});
-
-/* -------------------- REGISTER -------------------- */
+/* -------------------- Inscription -------------------- */
 registerForm.addEventListener("submit", async (e) => {
   e.preventDefault();
 
-  const email = emailInput.value.trim();
-  const password = passwordInput.value;
-  const prenom = document.getElementById("prenom").value.trim();
-  const nom = document.getElementById("nom").value.trim();
-  const jour = document.getElementById("jour").value.trim();
-  const mois = document.getElementById("mois").value.trim();
-  const annee = document.getElementById("annee").value.trim();
-  const cgu = caseCgu.checked;
-  const newsletter = document.getElementById("newsletter").checked;
-
-  if (!cgu) { signalerCgu(); return; }
-
-  if (!email || !password || !prenom || !nom || !jour || !mois || !annee) {
-    notif("Tous les champs sont requis", "erreur");
+  const erreurs = verifier();
+  if (erreurs.length) {
+    const premier = champ(erreurs[0]).querySelector("input");
+    premier.focus();
     return;
   }
-
-  const validPassword = password.length >= 8 &&
-                        /[A-Z]/.test(password) &&
-                        (password.match(/\d/g) || []).length >= 3 &&
-                        /[!@#$%^&*\.]/.test(password);
-
-  if (!validPassword) {
-    notif("Mot de passe invalide : respectez les règles affichées.", "erreur");
-    return;
-  }
+  if (!caseCgu.checked) { signalerCgu(); return; }
 
   btnInscription.disabled = true;
+  btnInscription.classList.add("loading");
   try {
-    const res = await fetch(`${API_URL}/register`, {
+    const res = await fetch("/register", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email, password, prenom, nom, jour, mois, annee, cgu, newsletter })
+      body: JSON.stringify({
+        email: emailInput.value.trim(),
+        password: passwordInput.value,
+        prenom: champ("prenom").value.trim(),
+        nom: champ("nom").value.trim(),
+        jour: champ("jour").value.trim(),
+        mois: champ("mois").value.trim(),
+        annee: champ("annee").value.trim(),
+        cgu: caseCgu.checked,
+        newsletter: champ("newsletter").checked
+      })
     });
     const data = await res.json();
-    notif(data.message, data.success ? "succes" : "erreur", data.success ? "Bienvenue chez VigoBlue" : undefined);
-    if (data.success && data.redirect) setTimeout(() => window.location.href = data.redirect, 1800);
-    else btnInscription.disabled = false;
+    notif(data.message, data.success ? "succes" : "erreur", data.success ? "Bienvenue chez Varenba" : undefined);
+    if (data.success && data.redirect) {
+      setTimeout(() => window.location.href = data.redirect, 1800);
+      return;
+    }
+    if (/email/i.test(data.message || "")) {
+      champ("wrapEmail").classList.add("has-error");
+      champ("wrapEmail").querySelector(".field-error").textContent = data.message;
+    }
   } catch (err) {
     console.error(err);
     notif("Erreur serveur, réessaie dans un instant.", "erreur");
-    btnInscription.disabled = false;
   }
+  btnInscription.disabled = false;
+  btnInscription.classList.remove("loading");
 });
 </script>
 </body>

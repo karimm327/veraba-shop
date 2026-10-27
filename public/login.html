@@ -3,121 +3,348 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
-  <link rel="icon" type="image/png" href="aaa.png">
-  <title>Connexion</title>
+<link rel="icon" type="image/png" href="aaa.png">
+<title>Connexion - Varenba</title>
 <style>
-    /* body { background-image: url("a."); }  image introuvable */
-    
-    #inscription {text-decoration: none; color:black;}
-       body { margin-top : 90px; }
-    .card, #registerForm {
-    background: transparent !important;
-    border: none !important;
-    box-shadow: none !important;
-}
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    min-height: 100vh;
+    background: #fff;
+    color: #111;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  }
+  a { color: inherit; }
 
+  .login-top {
+    display: flex;
+    justify-content: center;
+    padding: 28px 16px 0;
+  }
+  .login-logo {
+    font-weight: 900;
+    font-size: 24px;
+    letter-spacing: 0.28em;
+    margin-right: -0.28em;
+    text-decoration: none;
+  }
 
-.form-control {
-    border: 1px solid #000 !important;   /* contour noir */
-    border-radius: 7px;                   /* coins légèrement arrondis */
-    background: transparent !important;   /* pas de fond */
-    box-shadow: none !important;          /* pas de halo */
-    outline: none !important;             /* supprime halo focus */
-    padding: 6px 10px;                    /* padding réduit */
-    height:43px;
-    font-size: 0.9rem;                    /* texte plus petit */
-    transition: border-color 0.3s;
-}
+  .login-box {
+    width: 100%;
+    max-width: 460px;
+    margin: 0 auto;
+    padding: 56px 24px 40px;
+  }
+  .login-title {
+    font-size: 26px;
+    font-weight: 700;
+    line-height: 1.25;
+    letter-spacing: -0.01em;
+    margin: 0 0 28px;
+  }
+  .login-email-recap {
+    font-size: 15px;
+    color: #555;
+    margin: -16px 0 24px;
+  }
+  .login-email-recap button {
+    background: none;
+    border: none;
+    padding: 0;
+    font: inherit;
+    color: #111;
+    text-decoration: underline;
+    cursor: pointer;
+  }
 
-/* Focus : garde le contour noir */
-.form-control:focus {
-    border-color: #000 !important;
-}
+  /* --- Champ avec libellé qui monte au-dessus --- */
+  .field { position: relative; margin-bottom: 8px; }
+  .field input {
+    width: 100%;
+    height: 56px;
+    border: 1px solid #cacacb;
+    border-radius: 8px;
+    padding: 22px 48px 6px 16px;
+    font-size: 16px;
+    color: #111;
+    background: #fff;
+    outline: none;
+    transition: border-color 0.15s ease, box-shadow 0.15s ease;
+  }
+  .field input:focus { border-color: #111; box-shadow: 0 0 0 1px #111; }
+  .field label {
+    position: absolute;
+    left: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 16px;
+    color: #757575;
+    pointer-events: none;
+    transition: all 0.15s ease;
+  }
+  .field input:focus + label,
+  .field input:not(:placeholder-shown) + label {
+    top: 16px;
+    font-size: 12px;
+  }
+  .field.has-error input { border-color: #d43f21; box-shadow: none; }
+  .field-error {
+    display: none;
+    color: #d43f21;
+    font-size: 13px;
+    margin: 6px 0 0 2px;
+  }
+  .field.has-error + .field-error { display: block; }
 
-/* Optionnel : accentuer le contour au focus */
-.form-control:focus {
-    border-color: #000 !important;        /* garde contour noir */
-}
+  .toggle-pass {
+    position: absolute;
+    right: 8px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    padding: 8px;
+    cursor: pointer;
+    color: #555;
+    display: flex;
+  }
 
-  
+  .login-legal {
+    font-size: 13px;
+    color: #757575;
+    line-height: 1.5;
+    margin: 20px 0 28px;
+  }
+
+  .login-options {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    margin: 18px 0 28px;
+    font-size: 14px;
+  }
+  .login-options label { display: flex; align-items: center; gap: 8px; cursor: pointer; color: #333; }
+  .login-options input { width: 18px; height: 18px; accent-color: #111; }
+  .link-btn {
+    background: none;
+    border: none;
+    padding: 0;
+    font: inherit;
+    font-size: 14px;
+    color: #111;
+    text-decoration: underline;
+    cursor: pointer;
+  }
+
+  .login-actions { display: flex; justify-content: flex-end; }
+  .btn-main {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    background: #111;
+    color: #fff;
+    border: none;
+    border-radius: 30px;
+    padding: 14px 28px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.15s ease;
+  }
+  .btn-main:hover { background: #333; }
+  .btn-main:disabled { background: #757575; cursor: wait; }
+  .spinner {
+    display: none;
+    width: 16px;
+    height: 16px;
+    border: 2px solid rgba(255, 255, 255, 0.4);
+    border-top-color: #fff;
+    border-radius: 50%;
+    animation: spin 0.7s linear infinite;
+  }
+  .btn-main.loading .spinner { display: inline-block; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  .login-signup {
+    margin-top: 40px;
+    padding-top: 24px;
+    border-top: 1px solid #eee;
+    font-size: 15px;
+    color: #555;
+    text-align: center;
+  }
+  .login-signup a { color: #111; font-weight: 600; }
+
+  .step { display: none; }
+  .step.active { display: block; animation: fadeStep 0.25s ease; }
+  @keyframes fadeStep { from { opacity: 0; transform: translateX(12px); } to { opacity: 1; transform: none; } }
+
+  @media (max-width: 480px) {
+    .login-box { padding-top: 40px; }
+    .login-title { font-size: 22px; }
+    .login-actions .btn-main { width: 100%; justify-content: center; }
+  }
 </style>
 </head>
 <body>
-<div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-6">
-            <div class="card">
-                <h3 class="text-center mb-4">S'identifier</h3>
-                <form id="loginForm">
-                    <div class="mb-3">
-                        <label for="loginEmail" class="form-label">
-Saisis ton adresse e-mail pour nous rejoindre ou te connecter.</label>
-             <input type="email" class="form-control" id="loginEmail" placeholder="exemple@gmail.coom" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="loginPassword" class="form-label">Mot de passe</label>
-                        <input type="password" class="form-control" id="loginPassword" required>
-                        
-                    </div>
-                    <div class="d-grid mb-3">
-                        <button type="submit" class="btn btn-dark">Se connecter</button>
-                        <p style="text-align:center; color:black; margin-top:11px;">Tu n'as pas de compte ? <a id="inscription" href="signup.html" style="color: #1a56db; font-weight: 600;">Inscris-toi</a></p>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
+
+<div class="login-top">
+  <a href="index.html" class="login-logo" aria-label="Retour à l'accueil Varenba">VARENBA</a>
 </div>
+
+<main class="login-box">
+
+  <!-- Étape 1 : e-mail -->
+  <form id="stepEmail" class="step active" novalidate>
+    <h1 class="login-title">Saisis ton adresse e-mail pour te connecter.</h1>
+
+    <div class="field" id="fieldEmail">
+      <input type="email" id="loginEmail" placeholder=" " autocomplete="email" required>
+      <label for="loginEmail">Adresse e-mail</label>
+    </div>
+    <p class="field-error" id="errorEmail">Saisis une adresse e-mail valide.</p>
+
+    <p class="login-legal">
+      En continuant, tu acceptes les <a href="cgu.html">Conditions générales</a>
+      et la <a href="confidentialite.html">Politique de confidentialité</a> de Varenba.
+    </p>
+
+    <div class="login-actions">
+      <button type="submit" class="btn-main">Continuer</button>
+    </div>
+  </form>
+
+  <!-- Étape 2 : mot de passe -->
+  <form id="stepPassword" class="step" novalidate>
+    <h1 class="login-title">Saisis ton mot de passe</h1>
+    <p class="login-email-recap"><span id="recapEmail"></span> · <button type="button" id="editEmail">Modifier</button></p>
+
+    <div class="field" id="fieldPassword">
+      <input type="password" id="loginPassword" placeholder=" " autocomplete="current-password" required>
+      <label for="loginPassword">Mot de passe</label>
+      <button type="button" class="toggle-pass" id="togglePass" aria-label="Afficher le mot de passe">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg>
+      </button>
+    </div>
+    <p class="field-error" id="errorPassword">Mot de passe incorrect.</p>
+
+    <div class="login-options">
+      <label><input type="checkbox" id="rememberMe"> Rester connecté</label>
+      <button type="button" class="link-btn" id="forgotPassword">Mot de passe oublié ?</button>
+    </div>
+
+    <div class="login-actions">
+      <button type="submit" class="btn-main" id="loginBtn"><span class="spinner"></span><span>Se connecter</span></button>
+    </div>
+  </form>
+
+  <p class="login-signup">Pas encore de compte ? <a href="signup.html" id="signupLink">Rejoins VB MMBRS</a></p>
+</main>
 
 <script src="notif.js"></script>
 <script>
-// ---------- Login ----------
-document.getElementById("loginForm").addEventListener("submit", async (e) => {
-    e.preventDefault();
-    const email = document.getElementById("loginEmail").value;
-    const password = document.getElementById("loginPassword").value;
+const stepEmail = document.getElementById("stepEmail");
+const stepPassword = document.getElementById("stepPassword");
+const emailInput = document.getElementById("loginEmail");
+const passInput = document.getElementById("loginPassword");
+const fieldEmail = document.getElementById("fieldEmail");
+const fieldPassword = document.getElementById("fieldPassword");
+const errorPassword = document.getElementById("errorPassword");
+const loginBtn = document.getElementById("loginBtn");
+const signupLink = document.getElementById("signupLink");
 
+function afficherEtape(etape) {
+  stepEmail.classList.toggle("active", etape === stepEmail);
+  stepPassword.classList.toggle("active", etape === stepPassword);
+  (etape === stepEmail ? emailInput : passInput).focus();
+}
+
+// Le lien d'inscription reprend l'e-mail déjà tapé
+emailInput.addEventListener("input", () => {
+  fieldEmail.classList.remove("has-error");
+  const email = emailInput.value.trim();
+  signupLink.href = email ? "signup.html?email=" + encodeURIComponent(email) : "signup.html";
+});
+
+// ---------- Étape 1 : e-mail ----------
+stepEmail.addEventListener("submit", (e) => {
+  e.preventDefault();
+  if (!emailInput.value.trim() || !emailInput.checkValidity()) {
+    fieldEmail.classList.add("has-error");
+    emailInput.focus();
+    return;
+  }
+  document.getElementById("recapEmail").textContent = emailInput.value.trim();
+  afficherEtape(stepPassword);
+});
+
+document.getElementById("editEmail").addEventListener("click", () => afficherEtape(stepEmail));
+
+// ---------- Afficher / masquer le mot de passe ----------
+document.getElementById("togglePass").addEventListener("click", (e) => {
+  const visible = passInput.type === "text";
+  passInput.type = visible ? "password" : "text";
+  e.currentTarget.setAttribute("aria-label", visible ? "Afficher le mot de passe" : "Masquer le mot de passe");
+  passInput.focus();
+});
+
+passInput.addEventListener("input", () => fieldPassword.classList.remove("has-error"));
+
+// ---------- Étape 2 : connexion ----------
+stepPassword.addEventListener("submit", async (e) => {
+  e.preventDefault();
+  if (!passInput.value) {
+    errorPassword.textContent = "Saisis ton mot de passe.";
+    fieldPassword.classList.add("has-error");
+    passInput.focus();
+    return;
+  }
+
+  loginBtn.disabled = true;
+  loginBtn.classList.add("loading");
+  try {
     const res = await fetch("/login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, password })
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        email: emailInput.value.trim(),
+        password: passInput.value,
+        remember: document.getElementById("rememberMe").checked
+      })
     });
     const result = await res.json();
-    if (result.success && result.redirect) window.location.href = result.redirect;
-    else notif(result.message, "erreur");
+    if (result.success && result.redirect) {
+      window.location.href = result.redirect;
+      return;
+    }
+    errorPassword.textContent = result.message || "Email ou mot de passe incorrect.";
+    fieldPassword.classList.add("has-error");
+    passInput.select();
+  } catch (err) {
+    console.error(err);
+    notif("Impossible de contacter le serveur. Réessaie dans un instant.", "erreur");
+  }
+  loginBtn.disabled = false;
+  loginBtn.classList.remove("loading");
 });
 
 // ---------- Mot de passe oublié ----------
 document.getElementById("forgotPassword").addEventListener("click", async () => {
-    const email = document.getElementById("loginEmail").value;
-    if (!email) return notif("Veuillez entrer votre email avant de continuer.", "erreur");
-
-    try {
-        const res = await fetch("/send-reset-mail", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ email })
-        });
-        const text = await res.text();
-        notif(text, res.ok ? "succes" : "erreur");
-    } catch (err) {
-        console.error(err);
-        notif("Erreur lors de l'envoi de l'email", "erreur");
-    }
-});
-
-
-document.getElementById("forgotPassword").addEventListener("click", function(event) {
-    const emailInput = document.getElementById("loginEmail");
-
-    if (!emailInput.value) {
-        event.preventDefault();
-        emailInput.reportValidity(); // Montre le message "Veuillez renseigner ce champ"
-    }
+  const email = emailInput.value.trim();
+  try {
+    const res = await fetch("/send-reset-mail", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email })
+    });
+    const text = await res.text();
+    notif(text, res.ok ? "succes" : "erreur");
+  } catch (err) {
+    console.error(err);
+    notif("Erreur lors de l'envoi de l'email", "erreur");
+  }
 });
 </script>
 </body>
 </html>
-

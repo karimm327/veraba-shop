@@ -1,4 +1,6 @@
-  ========================================================= */
+/* =========================================================
+   Compteur des favoris (badge de la navbar) mis à jour en direct
+   ========================================================= */
 (function () {
   const CLE = "vigoblue_favorites";
   const BADGES = ["real-favorite-count", "favorite-count"];

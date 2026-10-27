@@ -619,7 +619,7 @@ body {
   stroke: #dc3545;
 }
 .parallax-2 {
-  background-image: url('sprr.png') !important;
+  background-image: url('dddd.png') !important;
   height: 60vh !important;
   min-height: 60vh !important;
   background-position: center !important;
@@ -640,7 +640,7 @@ body {
     background-size: cover !important;
     background-position: center center !important;
     position: relative;
-      background-image: url('sprr.png');
+      background-image: url('dddd.png');
   }
 }
   
@@ -696,7 +696,7 @@ body {
 }
 
 .parallax-2 {
-  background-image: url('ves.png');
+  background-image: url('dddd.png');
   height: 44vh;
   background-position: center;
   background-repeat: no-repeat;
@@ -1009,7 +1009,7 @@ body {
   }
   
   .parallax-2 {
-    background-image: url('bb.png');
+    background-image: url('dddd.png');
     height: 7vh;
     background-position: center;
     background-repeat: no-repeat;

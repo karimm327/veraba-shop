@@ -1,0 +1,245 @@
+/* =========================================================
+   Menu mobile (écrans < 992px), même style que la barre PC (nav-pc.css)
+   Les catégories et sous-menus sont lus dans la barre PC par menu-mobile.js
+   ========================================================= */
+.vbm-menu {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  color: #111;
+}
+.vbm-menu a { color: inherit; text-decoration: none; }
+
+.vbm-logo { font-weight: 900; font-size: 17px; letter-spacing: 0.26em; margin-right: -0.26em; }
+.vbm-icon {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  background: none;
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  color: #111;
+}
+.vbm-icon:active { background: #f0f0f0; }
+.vbm-badge {
+  min-width: 17px;
+  background: #111;
+  color: #fff;
+  font-size: 10px;
+  font-weight: 700;
+  line-height: 1;
+  border-radius: 20px;
+  padding: 3px 5px;
+  text-align: center;
+}
+
+/* --- Panneau du menu --- */
+.vbm-menu.offcanvas {
+  width: 100% !important;
+  max-width: 420px !important;
+  border-right: none !important;
+  background: #fff;
+}
+.vbm-panels { position: relative; height: 100%; overflow: hidden; }
+.vbm-panel {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  background: #fff;
+  transition: transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+.vbm-sub { transform: translateX(100%); }
+.vbm-sub.open { transform: none; }
+.vbm-main.behind { transform: translateX(-30%); }
+
+.vbm-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  min-height: 60px;
+  padding: 0 8px 0 20px;
+  flex-shrink: 0;
+}
+.vbm-back {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin-left: -10px;
+  padding: 8px 10px;
+  background: none;
+  border: none;
+  font-size: 15px;
+  font-weight: 600;
+  color: #111;
+  cursor: pointer;
+}
+
+.vbm-body { padding: 0 20px 28px; flex: 1; display: flex; flex-direction: column; }
+
+.vbm-search {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  background: #f2f2f2;
+  border: none;
+  border-radius: 24px;
+  padding: 12px 16px;
+  margin-bottom: 18px;
+  font-size: 15px;
+  color: #757575;
+  text-align: left;
+  cursor: text;
+}
+
+/* Univers : même principe que la barre PC */
+.vbm-univ { display: flex; gap: 24px; border-bottom: 1px solid #eee; margin-bottom: 6px; }
+.vbm-univ button {
+  background: none;
+  border: none;
+  border-bottom: 3px solid transparent;
+  padding: 10px 0 9px;
+  margin-bottom: -1px;
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: #777;
+  cursor: pointer;
+}
+.vbm-univ button.active { color: #111; border-bottom-color: #111; }
+
+/* Catégories */
+.vbm-cats { list-style: none; margin: 0; padding: 0; }
+.vbm-cat {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  padding: 13px 0;
+  background: none;
+  border: none;
+  font-size: 21px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: #111;
+  text-align: left;
+  cursor: pointer;
+}
+.vbm-cat em {
+  font-style: normal;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  background: #111;
+  color: #fff;
+  border-radius: 20px;
+  padding: 3px 7px;
+  margin-left: 9px;
+  vertical-align: 4px;
+}
+.vbm-cat em.hot { background: #e5243b; }
+.vbm-cat.promo { color: #d6001c; }
+.vbm-cat svg { flex-shrink: 0; }
+
+/* Liens utiles */
+.vbm-links { border-top: 1px solid #eee; margin-top: 14px; padding-top: 8px; }
+.vbm-link { display: flex; align-items: center; gap: 14px; padding: 11px 0; font-size: 15px; font-weight: 500; }
+.vbm-link span { flex: 1; }
+
+/* Bas du menu : visiteur / membre */
+.vbm-foot { margin-top: auto; padding-top: 22px; }
+.vbm-foot p { font-size: 13px; color: #555; line-height: 1.45; margin: 0 0 14px; }
+.vbm-btns { display: flex; gap: 8px; }
+.vbm-btn {
+  flex: 1;
+  display: block;
+  text-align: center;
+  padding: 12px 0;
+  border: 1.5px solid #111;
+  border-radius: 30px;
+  font-size: 15px;
+  font-weight: 600;
+}
+.vbm-btn.dark { background: #111; color: #fff !important; }
+.vbm-member { display: none; }
+.vbm-menu.is-member .vbm-guest { display: none; }
+.vbm-menu.is-member .vbm-member { display: block; }
+.vbm-member .vbm-link { border-top: 1px solid #f0f0f0; }
+.vbm-member .vbm-btn { margin-top: 16px; }
+
+/* Sous-menu */
+.vbm-sub-title { font-size: 28px; font-weight: 800; letter-spacing: -0.02em; margin: 4px 0 18px; }
+.vbm-group { margin-bottom: 22px; }
+.vbm-group h4 {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #757575;
+  margin: 0 0 4px;
+}
+.vbm-group a {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 0;
+  border-bottom: 1px solid #f0f0f0;
+  font-size: 16px;
+}
+.vbm-group a.red { color: #d6001c; font-weight: 600; }
+
+
+/* =========================================================
+   Panneau "Mon compte" mobile (#accountMenu), même style que le menu
+   ========================================================= */
+#accountMenu.vba {
+  max-width: 420px;
+  border-right: none;
+  background: #fff;
+  color: #111;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+}
+#accountMenu.vba a { color: inherit; text-decoration: none; }
+.vba-inner { display: flex; flex-direction: column; height: 100%; overflow-y: auto; }
+.vba-body { flex: 1; display: flex; flex-direction: column; padding: 4px 20px 24px; }
+.vba-title { font-size: 26px; font-weight: 800; letter-spacing: -0.02em; margin: 0 0 6px; }
+#accountMenu.vba .vba-who { margin: 0 0 18px; font-size: 15px; font-weight: 700; line-height: 1.4; color: #111; }
+.vba-who small { display: block; font-size: 13px; font-weight: 400; color: #666; }
+.vba-intro { margin: 0 0 16px; font-size: 13px; color: #666; line-height: 1.5; }
+
+.vba-last {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  background: #f4f4f4;
+  padding: 12px 14px;
+  margin-bottom: 8px;
+}
+.vba-last small { display: block; font-size: 10px; font-weight: 700; letter-spacing: 0.08em; color: #777; }
+.vba-last b { font-size: 14px; }
+
+.vba-list { margin-top: 4px; }
+.vba-list.vba-help { border-top: 1px solid #eee; margin-top: 10px; padding-top: 2px; }
+.vba-row { display: flex; align-items: center; gap: 14px; padding: 14px 0; border-bottom: 1px solid #f0f0f0; font-size: 15px; font-weight: 500; }
+.vba-help .vba-row { border-bottom: none; }
+.vba-row span { flex: 1; }
+.vba-row svg { flex-shrink: 0; }
+
+.vba-club { background: #111; color: #fff; padding: 14px 16px; margin: 16px 0 10px; }
+.vba-club b { display: block; font-size: 13px; letter-spacing: 0.1em; }
+.vba-club small { display: block; font-size: 12px; opacity: 0.8; margin-top: 4px; line-height: 1.4; }
+
+.vba-foot { margin-top: auto; padding-top: 22px; }
+
+/* Visiteur / membre */
+.vba-member { display: none; }
+#accountMenu.vba.is-member .vba-guest { display: none; }
+#accountMenu.vba.is-member .vba-member { display: block; }
+#accountMenu.vba.is-member .vba-member.vba-flex { display: flex; }
+#accountMenu.vba [hidden] { display: none !important; }

@@ -11,209 +11,147 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
   <link rel="icon" type="image/png" href="aaa.png">
+  <link href="nav-pc.css" rel="stylesheet">
+  <link href="menu-mobile.css" rel="stylesheet">
 </head>
 
 <body>
 
 
-<nav class="navbar navbar-black bg-white shadow-sm sticky-top py-0 d-none d-lg-flex" style="z-index: 1030;">
-    <div class="container d-flex justify-content-between align-items-center position-relative py-2"> 
-        
-        <a class="navbar-brand logo m-0" href="site.html"> 
-            <img src="a1.png" alt="BrandName" width="70" height="70" class="me-1"> 
-        </a>  
-      
-        <div class="d-flex align-items-center gap-3">
-            
-            <div class="nav-item-dropdown position-static">
-                <a href="#Tshirt" class="text-dark text-decoration-none fw-bold h6 mb-0 px-2 py-2 d-inline-block menu-link">Nouveau</a>
-                <div class="mega-menu shadow-sm bg-white border-top position-absolute top-100 start-0 w-100">
-                    <div class="container py-4">
-                        <div class="row">
-                            <div class="col-md-3">
-                                <h6 class="fw-bold mb-3">Dernières Sorties</h6>
-                                <ul class="list-unstyled d-flex flex-column gap-2">
-                                    <li><a href="#" class="text-muted text-decoration-none small">Toutes les nouveautés</a></li>
-                                    <li><a href="#" class="text-muted text-decoration-none small">Dernier Drop</a></li>
-                                    <li><a href="#" class="text-muted text-decoration-none small">Éditions Limitées</a></li>
-                                </ul>
-                            </div>
-                            <div class="col-md-3">
-                                <h6 class="fw-bold mb-3">Tendances</h6>
-                                <ul class="list-unstyled d-flex flex-column gap-2">
-                                    <li><a href="#" class="text-muted text-decoration-none small">Les Incontournables</a></li>
-                                    <li><a href="#" class="text-muted text-decoration-none small">Sélection Eco-responsable</a></li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+<!-- ========== Navigation PC (style Zalando / ASOS) : styles dans nav-pc.css, script dans nav-pc.js ========== -->
+<header class="vbnav">
 
-            <div class="nav-item-dropdown position-static">
-                <a href="#Tshirt" class="text-dark text-decoration-none fw-bold h6 mb-0 px-2 py-2 d-inline-block menu-link">Homme</a>
-                <div class="mega-menu shadow-sm bg-white border-top position-absolute top-100 start-0 w-100">
-                    <div class="container py-4">
-                        <div class="row">
-                            <div class="col-md-3">
-                                <h6 class="fw-bold mb-3">Guides Homme</h6>
-                                <ul class="list-unstyled d-flex flex-column gap-2">
-                                    <li><a href="#" class="text-muted text-decoration-none small">Lookbook VigoBlue</a></li>
-                                    <li><a href="#" class="text-muted text-decoration-none small">Guide des tailles</a></li>
-                                </ul>
-                            </div>
-                            <div class="col-md-3">
-                                <h6 class="fw-bold mb-3">Vêtements</h6>
-                                <ul class="list-unstyled d-flex flex-column gap-2">
-                                    <li><a href="#" class="text-muted text-decoration-none small">Tous les vêtements</a></li>
-                                    <li><a href="#" class="text-muted text-decoration-none small">T-shirts</a></li>
-                                    <li><a href="#" class="text-muted text-decoration-none small">Joggings</a></li>
-                                    <li><a href="#" class="text-muted text-decoration-none small">Vestes</a></li>
-                                </ul>
-                            </div>
-                            <div class="col-md-3">
-                                <h6 class="fw-bold mb-3">Collections</h6>
-                                <ul class="list-unstyled d-flex flex-column gap-2">
-                                    <li><a href="#" class="text-muted text-decoration-none small">Toutes les collections</a></li>
-                                    <li><a href="#" class="text-muted text-decoration-none small">Classic Series</a></li>
-                                </ul>
-                            </div>
-                            <div class="col-md-3">
-                                <h6 class="fw-bold mb-3">Choisis ta couleur</h6>
-                                <ul class="list-unstyled d-flex flex-column gap-2">
-                                    <li><a href="#" class="text-muted text-decoration-none small">Noir Obsidienne</a></li>
-                                    <li><a href="#" class="text-muted text-decoration-none small">Blanc Pur</a></li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="nav-item-dropdown position-static">
-                <a href="#page2" class="text-dark text-decoration-none fw-bold h6 mb-0 px-2 py-2 d-inline-block menu-link">Femme</a>
-                <div class="mega-menu shadow-sm bg-white border-top position-absolute top-100 start-0 w-100">
-                    <div class="container py-4">
-                        <div class="row">
-                            <div class="col-md-3">
-                                <h6 class="fw-bold mb-3">Guides Femme</h6>
-                                <ul class="list-unstyled d-flex flex-column gap-2">
-                                    <li><a href="#" class="text-muted text-decoration-none small">Lookbook Femme</a></li>
-                                    <li><a href="#" class="text-muted text-decoration-none small">Guide des tailles</a></li>
-                                </ul>
-                            </div>
-                            <div class="col-md-3">
-                                <h6 class="fw-bold mb-3">Vêtements</h6>
-                                <ul class="list-unstyled d-flex flex-column gap-2">
-                                    <li><a href="#" class="text-muted text-decoration-none small">Tous les articles</a></li>
-                                    <li><a href="#" class="text-muted text-decoration-none small">Tops & T-shirts</a></li>
-                                    <li><a href="#" class="text-muted text-decoration-none small">Pantalons & Leggings</a></li>
-                                    <li><a href="#" class="text-muted text-decoration-none small">Vestes & Manteaux</a></li>
-                                </ul>
-                            </div>
-                            <div class="col-md-3">
-                                <h6 class="fw-bold mb-3">Collections</h6>
-                                <ul class="list-unstyled d-flex flex-column gap-2">
-                                    <li><a href="#" class="text-muted text-decoration-none small">Soft Comfort</a></li>
-                                    <li><a href="#" class="text-muted text-decoration-none small">Essentials</a></li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="nav-item-dropdown position-static">
-                <a href="#page2" class="text-dark text-decoration-none fw-bold h6 mb-0 px-2 py-2 d-inline-block menu-link">Enfants</a>
-                <div class="mega-menu shadow-sm bg-white border-top position-absolute top-100 start-0 w-100">
-                    <div class="container py-4">
-                        <div class="row">
-                            <div class="col-md-3">
-                                <h6 class="fw-bold mb-3">Sélection Kids</h6>
-                                <ul class="list-unstyled d-flex flex-column gap-2">
-                                    <li><a href="#" class="text-muted text-decoration-none small">Tous les produits Enfant</a></li>
-                                    <li><a href="#" class="text-muted text-decoration-none small">Garçons</a></li>
-                                    <li><a href="#" class="text-muted text-decoration-none small">Filles</a></li>
-                                </ul>
-                            </div>
-                            <div class="col-md-3">
-                                <h6 class="fw-bold mb-3">Accessoires & Plus</h6>
-                                <ul class="list-unstyled d-flex flex-column gap-2">
-                                    <li><a href="#" class="text-muted text-decoration-none small">Mini Joggings</a></li>
-                                    <li><a href="#" class="text-muted text-decoration-none small">Packs Famille</a></li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="nav-item-dropdown position-static">
-                <a href="#page3" class="text-dark text-decoration-none fw-bold h6 mb-0 px-2 py-2 d-inline-block menu-link">VB MMBRS</a>
-                <div class="mega-menu shadow-sm bg-white border-top position-absolute top-100 start-0 w-100">
-                    <div class="container py-4">
-                        <div class="row">
-                            <div class="col-md-3">
-                                <h6 class="fw-bold mb-3">Espace Membres</h6>
-                                <ul class="list-unstyled d-flex flex-column gap-2">
-                                    <li><a href="#" class="text-muted text-decoration-none small">Rejoindre le club</a></li>
-                                    <li><a href="#" class="text-muted text-decoration-none small">Avantages Exclusifs</a></li>
-                                </ul>
-                            </div>
-                            <div class="col-md-3">
-                                <h6 class="fw-bold mb-3">Mon Espace</h6>
-                                <ul class="list-unstyled d-flex flex-column gap-2">
-                                    <li><a href="#" class="text-muted text-decoration-none small">Mes Commandes</a></li>
-                                    <li><a href="#" class="text-muted text-decoration-none small">Programme de Fidélité</a></li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-        </div>
-
-        <div class="d-flex align-items-center gap-4">
-    
-            <div class="position-relative" style="width: 200px;">
-                <input type="text" class="form-control form-control-sm shadow-none" placeholder="Rechercher" style="background-color: whitesmoke; border: none; border-radius: 30px; padding: 7px 15px 7px 38px; font-size: 0.85rem; color: #111;">
-                <div class="position-absolute rounded-circle d-flex align-items-center justify-content-center" style="width: 24px; height: 24px; top: 50%; left: 7px; transform: translateY(-50%); background-color: whitesmoke;">
-                    <i class="fas fa-search text-dark" style="font-size: 0.9rem;"></i>
-                </div>
-            </div>
-                
-            <button class="btn btn-outline-dark d-lg-none fw-bold" type="button" data-bs-toggle="offcanvas" data-bs-target="#mobileMenu" aria-controls="mobileMenu"> Menu </button>
-                
-            <ul class="navbar-nav align-items-center d-flex flex-row gap-4 mb-0">
-                <li class="nav-item">
-                    <a class="nav-link d-flex align-items-center position-relative p-0" href="panier.html">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="black" class="bi bi-bag" viewBox="0 0 16 16"> <path d="M8 1a2.5 2.5 0 0 1 2.5 2.5V4h-5v-.5A2.5 2.5 0 0 1 8 1m3.5 3v-.5a3.5 3.5 0 1 0-7 0V4H1v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V4zM2 5h12v9a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1z"/> </svg>
-                        <span id="cart-count" class="position-absolute badge rounded-pill bg-dark" style="top: 10px; left: 13px; font-size: 0.60rem; padding: 0.25em 0.4em; display: none;">0</span>
-                    </a>
-                </li>  
-
-               <li class="nav-item">  
-    <a class="nav-link d-flex align-items-center position-relative p-0" href="favoris.html">  
-        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="21" fill="black" class="bi bi-emoji-heart-eyes" viewBox="0 0 16 16"> <path fill-rule="evenodd" d="m8 2.748-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143q.09.083.176.171a3 3 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15"/> </svg>  
-        <span id="favorite-count" class="position-absolute badge rounded-pill bg-dark" style="top: 10px; left: 13px; font-size: 0.60rem; padding: 0.25em 0.4em; display: none;">0</span>
-    </a>  
-</li>
-
-                <li class="nav-item">
-                    <a class="nav-link d-flex align-items-center p-0" href="#">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 3 2">
-                            <rect width="1" height="2" fill="#002395"/>
-                            <rect x="1" width="1" height="2" fill="#fff"/>
-                            <rect x="2" width="1" height="2" fill="#ed2939"/>
-                        </svg>
-                    </a>
-                </li>
-            </ul>  
-        </div>
-
+  <div class="vbnav-info">
+    <span>Livraison offerte dès 50 € · Retours gratuits sous 30 jours</span>
+    <div class="vbnav-info-links">
+      <a href="aide.html">Aide</a><span>·</span><a href="localisation.html">Trouver un magasin</a>
     </div>
-</nav>
+  </div>
+
+  <div class="vbnav-main">
+    <div class="vbnav-univ">
+      <button type="button" data-univ="femme">FEMME</button>
+      <button type="button" data-univ="homme">HOMME</button>
+      <button type="button" data-univ="enfants">ENFANTS</button>
+    </div>
+
+    <a href="index.html" class="vbnav-logo">VARENBA</a>
+
+    <div class="vbnav-right">
+      <button type="button" class="vbnav-search" aria-label="Rechercher">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#666" stroke-width="2.2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.6" y2="16.6"/></svg>
+        <span>Rechercher un produit</span>
+      </button>
+
+      <div class="vbnav-account">
+        <a href="login.html" class="vbnav-icon" aria-label="Mon compte">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#111" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c1.5-4 4.5-6 8-6s6.5 2 8 6"/></svg>
+        </a>
+        <div class="vbnav-account-menu">
+          <div class="vbnav-guest">
+            <span class="vbnav-account-title">Bienvenue chez Varenba</span>
+            <a href="login.html" class="vbnav-btn dark">Se connecter</a>
+            <a href="signup.html" class="vbnav-btn">S'inscrire</a>
+            <a href="commandes.html" class="vbnav-row">Mes commandes</a>
+            <a href="favoris.html" class="vbnav-row">Mes favoris</a>
+            <a href="aide.html" class="vbnav-row">Aide</a>
+          </div>
+          <div class="vbnav-member">
+            <a href="compte.html" class="vbnav-row">Mon compte</a>
+            <a href="commandes.html" class="vbnav-row">Mes commandes</a>
+            <a href="favoris.html" class="vbnav-row">Mes favoris</a>
+            <a href="adresses.html" class="vbnav-row">Mes adresses</a>
+            <a href="/logout" class="vbnav-btn dark vbnav-logout">Déconnexion</a>
+          </div>
+        </div>
+      </div>
+
+      <a href="favoris.html" class="vbnav-icon" aria-label="Favoris">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#111" stroke-width="1.8" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78L12 21.23l8.84-8.84a5.5 5.5 0 0 0 0-7.78z"/></svg>
+        <span id="favorite-count" class="vbnav-badge" style="display: none;">0</span>
+      </a>
+
+      <a href="panier.html" class="vbnav-icon" aria-label="Panier">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#111" stroke-width="1.8" stroke-linejoin="round"><path d="M6 7h12l-1 13H7L6 7z"/><path d="M9 7a3 3 0 0 1 6 0"/></svg>
+        <span id="cart-count" class="vbnav-badge" style="display: none;">0</span>
+      </a>
+    </div>
+  </div>
+
+  <nav class="vbnav-cats" aria-label="Catégories">
+    <a href="index.html" class="vbnav-mini-logo">VARENBA</a>
+
+    <div class="vbnav-cat">
+      <a href="shop.html">Nouveautés <em class="hot">HOT DROP</em></a>
+      <div class="vbnav-mega">
+        <div class="vbnav-col"><h4>Dernières sorties</h4>
+          <a href="shop.html">Toutes les nouveautés</a><a href="shop.html">Dernier drop</a><a href="shop.html">Éditions limitées</a></div>
+        <div class="vbnav-col"><h4>Tendances</h4>
+          <a href="shop.html">Les incontournables</a><a href="shop.html">Sélection éco-responsable</a></div>
+        <div class="vbnav-col"><h4>À la une</h4>
+          <a href="shop.html">→ Best-sellers</a><a href="shop.html" class="red">→ -30 % sur tout</a></div>
+      </div>
+    </div>
+
+    <div class="vbnav-cat">
+      <a href="shop.html">Vêtements</a>
+      <div class="vbnav-mega">
+        <div class="vbnav-col"><h4>Vêtements <span class="vbnav-univ-label"></span></h4>
+          <a href="shop.html">Tout voir</a><a href="shop.html">Nouveautés</a><a href="shop.html">Best-sellers</a></div>
+        <div class="vbnav-col"><h4>Hauts</h4>
+          <a href="shop.html">T-shirts</a><a href="shop.html">Sweats</a><a href="shop.html">Vestes</a><a href="shop.html">Chemises</a></div>
+        <div class="vbnav-col"><h4>Bas</h4>
+          <a href="shop.html">Pantalons</a><a href="shop.html">Jeans</a><a href="shop.html">Shorts</a><a href="shop.html">Joggings</a></div>
+        <div class="vbnav-col"><h4>À la une</h4>
+          <a href="shop.html">→ Nouveautés</a><a href="shop.html">→ Best-sellers</a><a href="shop.html">→ Éco-responsable</a><a href="shop.html" class="red">→ -30 % sur tout</a></div>
+      </div>
+    </div>
+
+    <div class="vbnav-cat">
+      <a href="shop.html">Chaussures</a>
+      <div class="vbnav-mega">
+        <div class="vbnav-col"><h4>Chaussures <span class="vbnav-univ-label"></span></h4>
+          <a href="shop.html">Tout voir</a><a href="shop.html">Baskets</a><a href="shop.html">Lifestyle</a><a href="shop.html">Running</a></div>
+        <div class="vbnav-col"><h4>À la une</h4>
+          <a href="shop.html">→ Nouveautés</a><a href="shop.html">→ Best-sellers</a></div>
+      </div>
+    </div>
+
+    <div class="vbnav-cat">
+      <a href="shop.html">Accessoires</a>
+      <div class="vbnav-mega">
+        <div class="vbnav-col"><h4>Accessoires <span class="vbnav-univ-label"></span></h4>
+          <a href="shop.html">Tout voir</a><a href="shop.html">Casquettes</a><a href="shop.html">Sacs</a><a href="shop.html">Chaussettes</a></div>
+      </div>
+    </div>
+
+    <div class="vbnav-cat">
+      <a href="signup.html">VB MMBRS <em>CLUB</em></a>
+      <div class="vbnav-mega">
+        <div class="vbnav-col"><h4>Espace membres</h4>
+          <a href="signup.html">Rejoindre le club gratuitement</a><a href="signup.html">Avantages exclusifs</a></div>
+        <div class="vbnav-col"><h4>Mon compte</h4>
+          <a href="commandes.html">Mes commandes en cours</a><a href="compte.html">Programme de fidélité</a></div>
+      </div>
+    </div>
+
+    <div class="vbnav-cat promo"><a href="shop.html">PROMOS</a></div>
+
+    <div class="vbnav-mini-icons">
+      <button type="button" class="vbnav-icon vbnav-search-mini" aria-label="Rechercher">
+        <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="#111" stroke-width="2.2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.6" y2="16.6"/></svg>
+      </button>
+      <a href="favoris.html" class="vbnav-icon" aria-label="Favoris">
+        <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="#111" stroke-width="1.8" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78L12 21.23l8.84-8.84a5.5 5.5 0 0 0 0-7.78z"/></svg>
+        <span class="vbnav-badge" data-mirror="favorite-count" style="display: none;">0</span>
+      </a>
+      <a href="panier.html" class="vbnav-icon" aria-label="Panier">
+        <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="#111" stroke-width="1.8" stroke-linejoin="round"><path d="M6 7h12l-1 13H7L6 7z"/><path d="M9 7a3 3 0 0 1 6 0"/></svg>
+        <span class="vbnav-badge" data-mirror="cart-count" style="display: none;">0</span>
+      </a>
+    </div>
+  </nav>
+</header>
 
 <div id="search-overlay" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.5); z-index: 1050; backdrop-filter: blur(3px); align-items: center; justify-content: center;">
     <div class="bg-white p-4 shadow-lg w-100 mx-3" style="max-width: 500px; border: none; border-radius: 1px;">
@@ -258,6 +196,7 @@
   }
 </style>
 
+<!-- ========== Barre + menu mobile : styles dans menu-mobile.css, script dans menu-mobile.js ========== -->
 <nav class="navbar navbar-tech-2026 fixed-top d-lg-none py-2" style="position: fixed !important; top: 0 !important; bottom: auto !important;" aria-label="Navigation mobile">
   <div class="container-fluid d-flex justify-content-between align-items-center px-3">
     
@@ -310,7 +249,7 @@
       <a class="nav-item-2026 text-decoration-none d-flex flex-column align-items-center position-relative" href="panier.html">
         <div class="icon-wrapper">
          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="black" class="bi bi-bag" viewBox="0 0 16 16"> <path d="M8 1a2.5 2.5 0 0 1 2.5 2.5V4h-5v-.5A2.5 2.5 0 0 1 8 1m3.5 3v-.5a3.5 3.5 0 1 0-7 0V4H1v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V4zM2 5h12v9a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1z"/> </svg>
-          <span class="position-absolute translate-middle badge rounded-pill bg-dark border border-dark" style="font-size: 0.65rem; top: px; right: -11px; padding: 0.3em 0.5em;">2</span>
+          <span class="cart-count-badge position-absolute translate-middle badge rounded-pill bg-dark border border-dark" style="font-size: 0.65rem; top: px; right: -11px; padding: 0.3em 0.5em; display: none;">0</span>
         </div>
       </a>
       
@@ -339,173 +278,71 @@
   </div>
 </nav>
 
-<div class="offcanvas offcanvas-start mobile-megamenu-2026" tabindex="-1" id="mobileMenu" aria-labelledby="mobileMenuLabel" style="width: 400px !important; max-width: 90vw !important;">
-  
- 
- <div class="offcanvas-header border-bottom px-4 py-3 align-items-center" style="background-image: url('ee.png'); background-size: cover; background-position: center;">
-    <div class="d-flex align-items-center gap-2">
-      <span class="badge bg-black text-white px-2 py-1 rounded-pill" style="font-size: 0.6rem; letter-spacing: 0.05em;"></span>
-      <h5 class="offcanvas-title fw-bold text-white fs-6 mb-0 tracking-tight" id="mobileMenuLabel">Explorer</h5>
-    </div>
+<div class="offcanvas offcanvas-start vbm-menu" tabindex="-1" id="mobileMenu" aria-labelledby="mobileMenuLabel">
+  <div class="vbm-panels">
+    <section class="vbm-panel vbm-main">
+      <div class="vbm-head">
+        <a href="index.html" class="vbm-logo" id="mobileMenuLabel">VARENBA</a>
+        <button type="button" class="vbm-icon" data-bs-dismiss="offcanvas" aria-label="Fermer le menu">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#111" stroke-width="2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
 
-  </div>
- 
- 
-  <!-- Barre de recherche intégrée (ton design exact) -->
-  <div class="px-4 pt-3 pb-2 border-bottom bg-white">
-    <div class="position-relative mb-0">
-      <input type="text" id="overlay-search-input" class="form-control form-control-md shadow-none" placeholder="Rechercher un produit..." style="padding-left: 40px; font-size: 0.85rem;">
-      <i class="fas fa-search position-absolute text-muted" style="top: 50%; left: 15px; transform: translateY(-50%); font-size: 0.9rem;"></i>
-    </div>
-  </div>
+      <div class="vbm-body">
+        <button type="button" class="vbm-search">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#757575" stroke-width="2.2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.6" y2="16.6"/></svg>
+          <span>Rechercher un produit</span>
+        </button>
 
-  <div class="offcanvas-body d-flex flex-column justify-content-between px-0 py-3">
-    
-    <div class="accordion accordion-flush" id="techMegaMenuAccordion">
+        <div class="vbm-univ">
+          <button type="button" data-univ="femme">FEMME</button>
+          <button type="button" data-univ="homme">HOMME</button>
+          <button type="button" data-univ="enfants">ENFANTS</button>
+        </div>
 
-      <div class="accordion-item border-0 bg-transparent">
-        <h2 class="accordion-header" id="headingNouveau">
-          <button class="accordion-button collapsed fw-bold text-dark shadow-none bg-transparent py-3 px-4 fs-6 menu-item-trigger" type="button" data-bs-toggle="collapse" data-bs-target="#collapseNouveau" aria-expanded="false" aria-controls="collapseNouveau">
-            <span class="d-flex align-items-center gap-2 w-100 justify-content-between pe-2">
-              <span>Nouveau</span>
-              <span class="badge bg-danger text-white rounded-pill px-2 py-0.5" style="font-size: 0.5rem; letter-spacing: 0.05em;">HOT DROP</span>
-            </span>
-          </button>
-        </h2>
-        <div id="collapseNouveau" class="accordion-collapse collapse" aria-labelledby="headingNouveau" data-bs-parent="#techMegaMenuAccordion">
-          <div class="accordion-body bg-light bg-opacity-40 py-3 px-4">
-            <p class="category-subtitle">Dernières Sorties</p>
-            <ul class="list-unstyled ps-0 mb-3 d-flex flex-column gap-2">
-              <li><a href="#" class="sub-link-2026">Toutes les nouveautés</a></li>
-              <li><a href="#" class="sub-link-2026">Dernier Drop Exclusif</a></li>
-              <li><a href="#" class="sub-link-2026">Éditions Limitées <span class="text-muted small">/ 500 ex.</span></a></li>
-            </ul>
-            <p class="category-subtitle">Tendances Actuelles</p>
-            <ul class="list-unstyled ps-0 mb-0 d-flex flex-column gap-2">
-              <li><a href="#" class="sub-link-2026">Les Incontournables de la Saison</a></li>
-              <li><a href="#" class="sub-link-2026">Sélection Eco-responsable</a></li>
-            </ul>
+        <!-- Rempli par menu-mobile.js avec les catégories de la barre PC -->
+        <ul class="vbm-cats"></ul>
+
+        <div class="vbm-links">
+          <a href="favoris.html" class="vbm-link">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#111" stroke-width="1.8" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78L12 21.23l8.84-8.84a5.5 5.5 0 0 0 0-7.78z"/></svg>
+            <span>Favoris</span><b class="vbm-badge" data-mirror="favorite-count" style="display: none;">0</b>
+          </a>
+          <a href="panier.html" class="vbm-link">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#111" stroke-width="1.8" stroke-linejoin="round"><path d="M6 7h12l-1 13H7L6 7z"/><path d="M9 7a3 3 0 0 1 6 0"/></svg>
+            <span>Panier</span><b class="vbm-badge" data-mirror="cart-count" style="display: none;">0</b>
+          </a>
+          <a href="localisation.html" class="vbm-link">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#111" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-6.2-7-11a7 7 0 0 1 14 0c0 4.8-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/></svg>
+            <span>Trouver un magasin</span>
+          </a>
+          <a href="aide.html" class="vbm-link">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#111" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M9.5 9.5a2.5 2.5 0 1 1 3.5 2.3c-.6.3-1 .9-1 1.6v.6"/><circle cx="12" cy="17" r=".6" fill="#111"/></svg>
+            <span>Aide</span>
+          </a>
+        </div>
+
+        <div class="vbm-foot">
+          <div class="vbm-guest">
+            <p>Rejoins <b>VB MMBRS</b> et profite des drops en avant-première.</p>
+            <div class="vbm-btns">
+              <a href="login.html" class="vbm-btn dark">Se connecter</a>
+              <a href="signup.html" class="vbm-btn">S'inscrire</a>
+            </div>
+          </div>
+          <div class="vbm-member">
+            <a href="compte.html" class="vbm-link"><span>Mon compte</span></a>
+            <a href="commandes.html" class="vbm-link"><span>Mes commandes</span></a>
+            <a href="adresses.html" class="vbm-link"><span>Mes adresses</span></a>
+            <a href="/logout" class="vbm-btn dark">Déconnexion</a>
           </div>
         </div>
       </div>
-
-      <div class="accordion-item border-0 bg-transparent">
-        <h2 class="accordion-header" id="headingHomme">
-          <button class="accordion-button collapsed fw-bold text-dark shadow-none bg-transparent py-3 px-4 fs-6 menu-item-trigger" type="button" data-bs-toggle="collapse" data-bs-target="#collapseHomme" aria-expanded="false" aria-controls="collapseHomme">
-            Homme
-          </button>
-        </h2>
-        <div id="collapseHomme" class="accordion-collapse collapse" aria-labelledby="headingHomme" data-bs-parent="#techMegaMenuAccordion">
-          <div class="accordion-body bg-light bg-opacity-40 py-3 px-4">
-            <p class="category-subtitle">Vêtements</p>
-            <ul class="list-unstyled ps-0 mb-3 d-flex flex-column gap-2">
-              <li><a href="#" class="sub-link-2026">Tous les vêtements</a></li>
-              <li><a href="#" class="sub-link-2026">T-shirts & Tops</a></li>
-              <li><a href="#" class="sub-link-2026">Joggings & Pants</a></li>
-              <li><a href="#" class="sub-link-2026">Vestes & Outerwear</a></li>
-            </ul>
-            <p class="category-subtitle">Collections</p>
-            <ul class="list-unstyled ps-0 mb-3 d-flex flex-column gap-2">
-              <li><a href="#" class="sub-link-2026">Classic Series</a></li>
-              <li><a href="#" class="sub-link-2026">Techwear Line</a></li>
-            </ul>
-            <p class="category-subtitle">Par Coloris</p>
-            <ul class="list-unstyled ps-0 mb-0 d-flex flex-column gap-2">
-              <li><a href="#" class="sub-link-2026">Noir Obsidienne</a></li>
-              <li><a href="#" class="sub-link-2026">Blanc Pur Minimal</a></li>
-            </ul>
-          </div>
-        </div>
-      </div>
-
-      <div class="accordion-item border-0 bg-transparent">
-        <h2 class="accordion-header" id="headingFemme">
-          <button class="accordion-button collapsed fw-bold text-dark shadow-none bg-transparent py-3 px-4 fs-6 menu-item-trigger" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFemme" aria-expanded="false" aria-controls="collapseFemme">
-            Femme
-          </button>
-        </h2>
-        <div id="collapseFemme" class="accordion-collapse collapse" aria-labelledby="headingFemme" data-bs-parent="#techMegaMenuAccordion">
-          <div class="accordion-body bg-light bg-opacity-40 py-3 px-4">
-            <p class="category-subtitle">Vêtements</p>
-            <ul class="list-unstyled ps-0 mb-3 d-flex flex-column gap-2">
-              <li><a href="#" class="sub-link-2026">Tous les articles</a></li>
-              <li><a href="#" class="sub-link-2026">Tops & T-shirts</a></li>
-              <li><a href="#" class="sub-link-2026">Pantalons & Leggings</a></li>
-              <li><a href="#" class="sub-link-2026">Vestes & Manteaux</a></li>
-            </ul>
-            <p class="category-subtitle">Collections</p>
-            <ul class="list-unstyled ps-0 mb-0 d-flex flex-column gap-2">
-              <li><a href="#" class="sub-link-2026">Soft Comfort Line</a></li>
-              <li><a href="#" class="sub-link-2026">Essentials Collection</a></li>
-            </ul>
-          </div>
-        </div>
-      </div>
-
-      <div class="accordion-item border-0 bg-transparent">
-        <h2 class="accordion-header" id="headingEnfants">
-          <button class="accordion-button collapsed fw-bold text-dark shadow-none bg-transparent py-3 px-4 fs-6 menu-item-trigger" type="button" data-bs-toggle="collapse" data-bs-target="#collapseEnfants" aria-expanded="false" aria-controls="collapseEnfants">
-            Enfants
-          </button>
-        </h2>
-        <div id="collapseEnfants" class="accordion-collapse collapse" aria-labelledby="headingEnfants" data-bs-parent="#techMegaMenuAccordion">
-          <div class="accordion-body bg-light bg-opacity-40 py-3 px-4">
-            <p class="category-subtitle">Sélection Kids</p>
-            <ul class="list-unstyled ps-0 mb-3 d-flex flex-column gap-2">
-              <li><a href="#" class="sub-link-2026">Tous les produits Enfant</a></li>
-              <li><a href="#" class="sub-link-2026">Garçons</a></li>
-              <li><a href="#" class="sub-link-2026">Filles</a></li>
-            </ul>
-            <p class="category-subtitle">Spécial</p>
-            <ul class="list-unstyled ps-0 mb-0 d-flex flex-column gap-2">
-              <li><a href="#" class="sub-link-2026">Mini Joggings</a></li>
-              <li><a href="#" class="sub-link-2026">Packs Famille</a></li>
-            </ul>
-          </div>
-        </div>
-      </div>
-
-      <div class="accordion-item border-0 bg-transparent">
-        <h2 class="accordion-header" id="headingMembers">
-          <button class="accordion-button collapsed fw-bold text-dark shadow-none bg-transparent py-3 px-4 fs-6 menu-item-trigger" type="button" data-bs-toggle="collapse" data-bs-target="#collapseMembers" aria-expanded="false" aria-controls="collapseMembers">
-            <span class="d-flex align-items-center gap-2">
-              VB MMBRS <span class="badge bg-black text-white rounded-pill px-1.5 py-0.5" style="font-size: 0.5rem;">CLUB</span>
-            </span>
-          </button>
-        </h2>
-        <div id="collapseMembers" class="accordion-collapse collapse" aria-labelledby="headingMembers" data-bs-parent="#techMegaMenuAccordion">
-          <div class="accordion-body bg-light bg-opacity-40 py-3 px-4">
-            <p class="category-subtitle">Espace Membres</p>
-            <ul class="list-unstyled ps-0 mb-3 d-flex flex-column gap-2">
-              <li><a href="#" class="sub-link-2026 fw-semibold text-primary">Rejoindre le club gratuitement</a></li>
-              <li><a href="#" class="sub-link-2026">Avantages Exclusifs</a></li>
-            </ul>
-            <p class="category-subtitle">Mon Compte</p>
-            <ul class="list-unstyled ps-0 mb-0 d-flex flex-column gap-2">
-              <li><a href="#" class="sub-link-2026">Mes Commandes en cours</a></li>
-              <li><a href="#" class="sub-link-2026">Programme de Fidélité</a></li>
-            </ul>
-          </div>
-        </div>
-      </div>
-
-    </div>
-
-    <div class="px-4 py-3 bg-white border-top d-flex align-items-center justify-content-between shadow-sm">
-      <a href="#" class="d-flex align-items-center text-dark text-decoration-none gap-3">
-        <img src="logop.png" alt="VigoBlue" width="38" height="38" class="rounded-circle border object-fit-cover shadow-2xs">
-        <div>
-          <h6 class="mb-0 fw-bold fs-7">Veraba Studio</h6>
-          <span class="text-muted d-block" style="font-size: 0.7rem;">Paramètres & Connexion</span>
-        </div>
-      </a>
-      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" class="text-muted">
-        <polyline points="9 18 15 12 9 6"/>
-      </svg>
-    </div>
-
+    </section>
   </div>
 </div>
+<script src="notif.js"></script>
+
 
 
 <style>
@@ -688,7 +525,7 @@
 <div class="container py-5 my-4">
   <div class="row mb-5 text-center">
     <div class="col-12 mx-auto" style="max-width: 600px;">
-      <h1 class="fw-bold text-uppercase mt-2 mb-3" style="font-size: 2rem; letter-spacing: 0.05em;">Trouver un magasin Veraba</h1>
+      <h1 class="fw-bold text-uppercase mt-2 mb-3" style="font-size: 2rem; letter-spacing: 0.05em;">Trouver un magasin Varenba</h1>
       <p class="text-secondary" style="font-size: 0.9rem;">Découvrez nos espaces physiques, essayez nos dernières collections exclusives et profitez d'un accompagnement personnalisé en boutique.</p>
     </div>
   </div>
@@ -750,110 +587,78 @@
 
 
 <!-- OFFCANVAS COMPTE -->
-<div class="offcanvas offcanvas-start border-0 shadow-lg"
-     tabindex="-1"
-     id="accountMenu"
-     aria-labelledby="accountMenuLabel"
-     data-bs-scroll="true" 
-     data-bs-backdrop="true">
-
-  <!-- En-tête du panneau -->
-  <div class="offcanvas-header border-bottom px-4 py-4">
-    <div class="d-flex align-items-center">
-      <div class="account-avatar bg-black text-white rounded-circle d-flex align-items-center justify-content-center me-3 fw-bold" style="width: 40px; height: 40px; font-size: 0.9rem;">
-        VB
-      </div>
-      <div>
-        <h6 class="offcanvas-title fw-bold m-0 text-uppercase tracking-wide" id="accountMenuLabel" style="font-size: 0.95rem; letter-spacing: 1px;">
-          Mon Espace VigoBlue
-        </h6>
-        <small class="text-muted" style="font-size: 0.8rem;">Bienvenue sur votre compte</small>
-      </div>
+<!-- ========== Panneau "Mon compte" mobile : styles et script dans menu-mobile.css / menu-mobile.js ========== -->
+<div class="offcanvas offcanvas-start vba" tabindex="-1" id="accountMenu" aria-labelledby="accountMenuLabel">
+  <div class="vba-inner">
+    <div class="vbm-head">
+      <a href="index.html" class="vbm-logo">VARENBA</a>
+      <button type="button" class="vbm-icon" data-bs-dismiss="offcanvas" aria-label="Fermer">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#111" stroke-width="2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
     </div>
-  </div>
 
-  <!-- Corps du panneau -->
-  <div class="offcanvas-body d-flex flex-column justify-content-between px-4 py-4" style="background-color:whitesmoke;">
+    <div class="vba-body">
+      <h2 class="vba-title" id="accountMenuLabel">Mon compte</h2>
 
-    <!-- MENU COMPTE -->
-    <ul class="list-unstyled m-0">
-
-      <!-- Commandes -->
-      <li class="mb-2">
-        <a href="/commandes.html" class="account-link d-flex justify-content-between align-items-center p-3 rounded-3 text-decoration-none">
-          <div class="d-flex align-items-center">
-            <span class="icon-box me-3 text-dark">
-              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path><line x1="3" y1="6" x2="21" y2="6"></line><path d="M16 10a4 4 0 0 1-8 0"></path></svg>
-            </span>
-            <span class="fw-medium text-dark" style="font-size: 0.9rem;">Mes commandes & retours</span>
-          </div>
-          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#777" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
-        </a>
-      </li>
-
-      <!-- pay -->
-      <li class="mb-2">
-        <a href="/portefeuille.html" class="account-link d-flex justify-content-between align-items-center p-3 rounded-3 text-decoration-none">
-          <div class="d-flex align-items-center">
-            <span class="icon-box me-3 text-dark">
-              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>
-            </span>
-            <span class="fw-medium text-dark" style="font-size: 0.9rem;">Mes cartes & paiements</span>
-          </div>
-          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#777" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
-        </a>
-      </li>
-
-      <!-- Informations personnelles -->
-      <li class="mb-2">
-        <a href="/compte.html" class="account-link d-flex justify-content-between align-items-center p-3 rounded-3 text-decoration-none">
-          <div class="d-flex align-items-center">
-            <span class="icon-box me-3 text-dark">
-              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
-            </span>
-            <span class="fw-medium text-dark" style="font-size: 0.9rem;">Informations personnelles</span>
-          </div>
-          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#777" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
-        </a>
-      </li>
-
-      <!-- Adresses de livraison -->
-      <li class="mb-2">
-        <a href="/adresses.html" class="account-link d-flex justify-content-between align-items-center p-3 rounded-3 text-decoration-none">
-          <div class="d-flex align-items-center">
-            <span class="icon-box me-3 text-dark">
-              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
-            </span>
-            <span class="fw-medium text-dark" style="font-size: 0.9rem;">Adresses enregistrées</span>
-          </div>
-          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#777" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
-        </a>
-      </li>
-
-      <!-- Aide / Contact -->
-      <li class="mb-2">
-        <a href="/aide.html" class="account-link d-flex justify-content-between align-items-center p-3 rounded-3 text-decoration-none">
-          <div class="d-flex align-items-center">
-            <span class="icon-box me-3 text-dark">
-              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
-            </span>
-            <span class="fw-medium text-dark" style="font-size: 0.9rem;">Aide & Service client</span>
-          </div>
-          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#777" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
-        </a>
-      </li>
-
-    </ul>
-
-    <!-- BAS DU MENU (Déconnexion) -->
-    <div class="pt-3 border-top">
-      <a href="/logout"
-         class="btn btn-light w-100 d-flex align-items-center justify-content-center py-3 text-dark text-decoration-none fw-bold rounded-0 text-uppercase" style="font-size: 0.85rem; letter-spacing: 1px;">
-        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="me-2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
-        <span>Déconnexion</span>
+      <!-- Membre -->
+      <p class="vba-who vba-member"><span class="vba-name"></span><small class="vba-email"></small></p>
+      <a href="commandes.html" class="vba-last vba-member vba-flex" hidden>
+        <div><small>DERNIÈRE COMMANDE</small><b class="vba-last-txt"></b></div>
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#111" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
       </a>
-    </div>
 
+      <!-- Visiteur -->
+      <p class="vba-intro vba-guest">Connecte-toi pour suivre tes commandes, gérer tes adresses et retrouver tes favoris.</p>
+      <div class="vbm-btns vba-guest">
+        <a href="login.html" class="vbm-btn dark">Se connecter</a>
+        <a href="signup.html" class="vbm-btn">S'inscrire</a>
+      </div>
+      <div class="vba-club vba-guest">
+        <b>VB MMBRS</b>
+        <small>Drops en avant-première et offres réservées aux membres. C'est gratuit.</small>
+      </div>
+
+      <nav class="vba-list" aria-label="Mon compte">
+        <a href="commandes.html" class="vba-row vba-member vba-flex">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#111" stroke-width="1.8" stroke-linejoin="round"><path d="M6 7h12l-1 13H7L6 7z"/><path d="M9 7a3 3 0 0 1 6 0"/></svg>
+          <span>Mes commandes et retours</span>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#111" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+        </a>
+        <a href="compte.html" class="vba-row vba-member vba-flex">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#111" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c1.5-4 4.5-6 8-6s6.5 2 8 6"/></svg>
+          <span>Mes informations</span>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#111" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+        </a>
+        <a href="adresses.html" class="vba-row vba-member vba-flex">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#111" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-6.2-7-11a7 7 0 0 1 14 0c0 4.8-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/></svg>
+          <span>Mes adresses</span>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#111" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+        </a>
+        <a href="portefeuille.html" class="vba-row vba-member vba-flex">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#111" stroke-width="1.8" stroke-linejoin="round"><rect x="2.5" y="5" width="19" height="14" rx="2"/><line x1="2.5" y1="10" x2="21.5" y2="10"/></svg>
+          <span>Portefeuille</span>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#111" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+        </a>
+        <a href="favoris.html" class="vba-row">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#111" stroke-width="1.8" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78L12 21.23l8.84-8.84a5.5 5.5 0 0 0 0-7.78z"/></svg>
+          <span>Mes favoris</span>
+          <b class="vbm-badge" data-mirror="favorite-count" style="display: none;">0</b>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#111" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+        </a>
+      </nav>
+
+      <nav class="vba-list vba-help" aria-label="Aide">
+        <a href="aide.html" class="vba-row">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#111" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M9.5 9.5a2.5 2.5 0 1 1 3.5 2.3c-.6.3-1 .9-1 1.6v.6"/><circle cx="12" cy="17" r=".6" fill="#111"/></svg>
+          <span>Aide et service client</span>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#111" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+        </a>
+      </nav>
+
+      <div class="vba-foot vba-member">
+        <a href="/logout" class="vbm-btn dark">Déconnexion</a>
+      </div>
+    </div>
   </div>
 </div>
 
@@ -1027,10 +832,10 @@
 
       <!-- Bloc VigoBlue MMBRS -->
       <div class="col-12 col-md-6 col-lg-3 footer-section">
-        <h3 class="footer-title fs-6 fw-bold text-uppercase mb-2" style="letter-spacing: 0.5px;">Veraba MMBRS</h3>
+        <h3 class="footer-title fs-6 fw-bold text-uppercase mb-2" style="letter-spacing: 0.5px;">Varenba MMBRS</h3>
         <ul class="footer-links list-unstyled small" style="font-size: 0.85rem;">
           <li class="mb-1"><a href="#" class="text-decoration-none text-muted">Me désabonner</a></li>
-          <li class="mb-1"><a href="#" class="text-decoration-none text-muted">Nous sommes Veraba</a></li>
+          <li class="mb-1"><a href="#" class="text-decoration-none text-muted">Nous sommes Varenba</a></li>
           <li class="mb-1"><a href="#" class="text-decoration-none text-muted">Durabilité</a></li>
           <li class="mb-1"><a href="#" class="text-decoration-none text-muted">Travaille avec nous</a></li>
           <li class="mb-1"><a href="#" class="text-decoration-none text-muted">Nos magasins</a></li>
@@ -1066,7 +871,7 @@
   </div>
    <div class="footer-bottom">
     <div class="container">
-      <p>&copy; 2025 Veraba. Tous droits réservés.</p>
+      <p>&copy; 2025 Varenba. Tous droits réservés.</p>
     </div>
   </div>
 </footer>
@@ -1077,6 +882,9 @@
 
 </script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="nav-pc.js"></script>
+<script src="menu-mobile.js"></script>
+<script src="favoris-badge.js"></script>
 </body>
 </html>
 
