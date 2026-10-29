@@ -178,6 +178,25 @@
     .rules { grid-template-columns: 1fr; }
     .signup-actions .btn-main { width: 100%; justify-content: center; }
   }
+
+  /* --- Écran de bienvenue après l'inscription --- */
+  .bv-hero { text-align: center; padding: 0 6px 22px; }
+  .bv-kick { display: block; font-size: 11px; font-weight: 800; letter-spacing: 0.14em; color: #1f9d74; margin: 14px 0 6px; }
+  .bv-title { font-size: 30px; font-weight: 900; letter-spacing: -0.01em; margin: 0 0 8px; }
+  .bv-hero p { font-size: 15px; color: #555; line-height: 1.55; margin: 0; }
+  .bv-box { border: 1px solid #e8e8e8; padding: 16px 18px; margin-bottom: 12px; }
+  .bv-bt { display: flex; justify-content: space-between; font-size: 11px; font-weight: 800; letter-spacing: 0.08em; color: #777; margin: 0 0 8px; }
+  .bv-bt span { font-weight: 500; letter-spacing: 0; color: #999; }
+  .bv-row { display: flex; align-items: center; gap: 14px; padding: 9px 0; text-decoration: none; color: #111; }
+  .bv-row div { flex: 1; }
+  .bv-row b { display: block; font-size: 14px; }
+  .bv-row small { font-size: 12px; color: #666; }
+  .bv-link + .bv-link { border-top: 1px solid #f0f0f0; }
+  .bv-ic { width: 42px; height: 42px; flex-shrink: 0; border-radius: 50%; background: #f4f4f4; display: flex; align-items: center; justify-content: center; }
+  .bv-ctas { display: flex; flex-direction: column; align-items: center; gap: 14px; margin-top: 22px; }
+  .bv-btn { width: 100%; justify-content: center; text-decoration: none; }
+  .bv-lnk { font-size: 14px; font-weight: 600; color: #111; text-underline-offset: 3px; }
+  @media (max-width: 480px) { .bv-title { font-size: 26px; } }
 </style>
 </head>
 <body>
@@ -383,11 +402,11 @@ registerForm.addEventListener("submit", async (e) => {
       })
     });
     const data = await res.json();
-    notif(data.message, data.success ? "succes" : "erreur", data.success ? "Bienvenue chez Varenba" : undefined);
-    if (data.success && data.redirect) {
-      setTimeout(() => window.location.href = data.redirect, 1800);
+    if (data.success) {
+      afficherBienvenue(data.prenom || champ("prenom").value.trim());
       return;
     }
+    notif(data.message, "erreur");
     if (/email/i.test(data.message || "")) {
       champ("wrapEmail").classList.add("has-error");
       champ("wrapEmail").querySelector(".field-error").textContent = data.message;
@@ -399,6 +418,39 @@ registerForm.addEventListener("submit", async (e) => {
   btnInscription.disabled = false;
   btnInscription.classList.remove("loading");
 });
+
+/* -------------------- Écran de bienvenue (le client est déjà connecté par le serveur) -------------------- */
+function afficherBienvenue(prenom) {
+  const icone = d => `<span class="bv-ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#111" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">${d}</svg></span>`;
+  const chevron = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#111" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>';
+  const boite = document.querySelector(".signup-box");
+  boite.innerHTML = `
+    <div class="bv-hero">
+      <svg width="64" height="64" viewBox="0 0 34 34" aria-hidden="true"><circle cx="17" cy="17" r="16" fill="#e3f4ee"/><path d="M10 17.5l4.5 4.5L24 12.5" fill="none" stroke="#1f9d74" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <span class="bv-kick">BIENVENUE DANS VB MMBRS</span>
+      <h1 class="bv-title"></h1>
+      <p>Ton compte est créé et tu es déjà connecté. Tu peux commander tout de suite.</p>
+    </div>
+    <div class="bv-box">
+      <p class="bv-bt">TES AVANTAGES MEMBRE</p>
+      <div class="bv-row">${icone('<path d="M13 2L4 14h7l-1 8 9-12h-7z"/>')}<div><b>Drops en avant-première</b><small>Accède aux nouvelles collections avant tout le monde.</small></div></div>
+      <div class="bv-row">${icone('<path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78L12 21.23l8.84-8.84a5.5 5.5 0 0 0 0-7.78z"/>')}<div><b>Tes favoris enregistrés</b><small>Garde de côté les articles qui te plaisent.</small></div></div>
+      <div class="bv-row">${icone('<path d="M6 7h12l-1 13H7L6 7z"/><path d="M9 7a3 3 0 0 1 6 0"/>')}<div><b>Suivi de commandes</b><small>Suis tes colis et commande à nouveau en un clic.</small></div></div>
+    </div>
+    <div class="bv-box">
+      <p class="bv-bt">POUR COMMANDER PLUS VITE <span>facultatif</span></p>
+      <a href="adresses.html" class="bv-row bv-link">${icone('<path d="M12 21s-7-6.2-7-11a7 7 0 0 1 14 0c0 4.8-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/>')}<div><b>Ajouter une adresse de livraison</b><small>Pour commander plus vite</small></div>${chevron}</a>
+      <a href="portefeuille.html" class="bv-row bv-link">${icone('<rect x="2.5" y="5" width="19" height="14" rx="2"/><line x1="2.5" y1="10" x2="21.5" y2="10"/>')}<div><b>Enregistrer une carte</b><small>Paiement en un clic, sécurisé par Stripe</small></div>${chevron}</a>
+    </div>
+    <div class="bv-ctas">
+      <a href="shop.html" class="btn-main bv-btn">Découvrir la boutique</a>
+      <a href="compte.html" class="bv-lnk">Aller à mon compte</a>
+    </div>`;
+  boite.querySelector(".bv-title").textContent = prenom ? `Bienvenue, ${prenom} !` : "Bienvenue !";
+  document.querySelector(".signup-logo").href = "site.html";
+  document.title = "Bienvenue - Varenba";
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
 </script>
 </body>
 </html>

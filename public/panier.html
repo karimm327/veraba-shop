@@ -1058,10 +1058,9 @@ document.addEventListener("DOMContentLoaded", () => {
 <!-- ========== Panneau "Mon compte" mobile : styles et script dans menu-mobile.css / menu-mobile.js ========== -->
 <div class="offcanvas offcanvas-start vba" tabindex="-1" id="accountMenu" aria-labelledby="accountMenuLabel">
   <div class="vba-inner">
-    <div class="vbm-head">
-      <a href="index.html" class="vbm-logo">VARENBA</a>
-      <button type="button" class="vbm-icon" data-bs-dismiss="offcanvas" aria-label="Fermer">
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#111" stroke-width="2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+    <div class="vba-banner" role="img" aria-label="Varenba">
+      <button type="button" class="vbm-icon vba-close" data-bs-dismiss="offcanvas" aria-label="Fermer">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
       </button>
     </div>
 
@@ -1080,10 +1079,6 @@ document.addEventListener("DOMContentLoaded", () => {
       <div class="vbm-btns vba-guest">
         <a href="login.html" class="vbm-btn dark">Se connecter</a>
         <a href="signup.html" class="vbm-btn">S'inscrire</a>
-      </div>
-      <div class="vba-club vba-guest">
-        <b>VB MMBRS</b>
-        <small>Drops en avant-première et offres réservées aux membres. C'est gratuit.</small>
       </div>
 
       <nav class="vba-list" aria-label="Mon compte">
@@ -1762,7 +1757,6 @@ document.addEventListener("DOMContentLoaded", function() {
       }
 
       localStorage.setItem('userCart', JSON.stringify(cart));
-      notif(`${product.ref || product.name || "Article"}${product.size ? " · taille " + product.size : ""}`, "succes", "Ajouté au panier", product.image);
     });
   }
 });
@@ -1853,7 +1847,6 @@ document.addEventListener("DOMContentLoaded", function() {
       localStorage.setItem('userCart', JSON.stringify(cart));
       console.log("🛒 Produit ajouté :", product);
       console.log("📦 Panier actuel :", cart);
-      notif(`${product.ref || product.name || "Article"}${product.size ? " · taille " + product.size : ""}`, "succes", "Ajouté au panier", product.image);
     });
   }
 });

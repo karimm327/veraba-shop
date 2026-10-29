@@ -227,7 +227,7 @@ app.post("/register", async (req, res) => {
  
     const hashedPassword = await bcrypt.hash(password, 10);
  
-    await db.promise().query(
+    const [resultat] = await db.promise().query(
       "INSERT INTO users (email, password, nom, prenom, jour_naissance, mois_naissance, annee_naissance, stripe_customer_id, cgu_acceptees_le, newsletter) VALUES (?, ?, ?, ?, ?, ?, ?, ?, NOW(), ?)",
       [email, hashedPassword, nom, prenom, parseInt(jour) || null, parseInt(mois) || null, parseInt(annee) || null, stripeCustomerId, newsletter === true ? 1 : 0]
     );
@@ -251,7 +251,9 @@ app.post("/register", async (req, res) => {
     //   </div>`
     // });
  
-    res.json({ success: true, message: "Inscription réussie ! Vous pouvez vous connecter.", redirect: "/login.html" });
+    // Connecté directement après l'inscription (plus besoin de retaper e-mail et mot de passe)
+    req.session.userId = resultat.insertId;
+    res.json({ success: true, message: "Inscription réussie !", prenom });
   } catch (err) {
     console.error("Erreur /register :", err);
     res.status(500).json({ success: false, message: "Erreur serveur : " + err.message });

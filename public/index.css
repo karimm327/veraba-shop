@@ -1128,3 +1128,78 @@ body {
     aspect-ratio: 16 / 9;
   }
 }
+
+/* ==========================================
+   En-tête des sections produits ("Nos tee-shirts") : style Zalando
+   ========================================== */
+.vb-sec-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 16px;
+  margin-bottom: 20px;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+}
+.vb-sec-title {
+  margin: 0;
+  font-size: 30px;
+  font-weight: 900;
+  letter-spacing: -0.01em;
+  color: #111;
+}
+.vb-sec-sub { margin: 4px 0 0 !important; font-size: 14px !important; color: #666 !important; }
+.vb-sec-count { font-weight: 700; color: #444; }
+.vb-sec-actions { display: flex; align-items: center; gap: 10px; flex-shrink: 0; }
+.vb-sec-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #111 !important;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  white-space: nowrap;
+}
+.vb-sec-link:hover { text-decoration-thickness: 2px; }
+.vb-sec-sep { width: 1px; height: 24px; background: #e0e0e0; margin: 0 6px; }
+.vb-sec-arrow {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 1px solid #111;
+  background: #111;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  cursor: pointer;
+  transition: background-color 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+}
+.vb-sec-arrow:hover:not(:disabled) { background: #333; border-color: #333; }
+.vb-sec-arrow:disabled { background: #fff; color: #bbb; border-color: #e0e0e0; cursor: default; }
+
+/* Mobile : on fait défiler au doigt, donc pas de flèches ; titre plus petit */
+@media (max-width: 991.98px) {
+  .vb-sec-sep, .vb-sec-arrow { display: none; }
+  .vb-sec-title { font-size: 20px; }
+  .vb-sec-sub { font-size: 12px !important; }
+  .vb-sec-link { font-size: 13px; }
+  .vb-sec-head { margin-bottom: 14px; }
+}
+
+/* ==========================================
+   Cartes produits des carrousels : toutes les images au même format sur mobile / tablette
+   (sinon une photo un peu plus haute, comme c.png, décale le nom et le prix de sa carte)
+   ========================================== */
+@media (max-width: 991.98px) {
+  #Tshirt .productContainer .product-custom-img,
+  .productContainer .product-custom-img {
+    width: 100% !important;
+    height: auto !important;
+    max-height: none !important;
+    aspect-ratio: 1 / 1 !important;
+    object-fit: cover !important;
+  }
+}
