@@ -1203,3 +1203,145 @@ body {
     object-fit: cover !important;
   }
 }
+
+/* ==========================================
+   Grandes images sous la bannière (d.png / ddd.png) : petit espace régulier, style Nike
+   Placé en fin de fichier : remplace les anciens réglages de .rose-container / .rose-grid
+   ========================================== */
+.rose-container {
+  max-width: none !important;
+  width: 100% !important;
+  margin: 0 !important;
+  padding: 8px !important;
+}
+.rose-grid {
+  gap: 8px !important;
+}
+
+/* ==========================================
+   Pub de l'accueil (sous la 1re section "Nos tee-shirts")
+   Pour changer de pub : remplace pub-accueil.webp (PC) et pub-accueil-mobile.webp (téléphone)
+   ========================================== */
+.vb-pub { margin: 24px 0; }
+.vb-pub-lien {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 70vh;
+  min-height: 420px;
+  max-height: 760px;
+  background: #222 url('pub-accueil.webp') center / cover no-repeat;
+  text-decoration: none;
+  color: #fff;
+}
+/* léger dégradé pour que le texte reste lisible sur n'importe quelle image */
+.vb-pub-lien::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, rgba(0, 0, 0, 0.55) 0%, rgba(0, 0, 0, 0.15) 50%, rgba(0, 0, 0, 0) 75%);
+}
+.vb-pub-texte {
+  position: absolute;
+  left: 6%;
+  bottom: 12%;
+  max-width: 560px;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+}
+.vb-pub-titre { margin: 0 0 8px; font-size: 44px; font-weight: 900; letter-spacing: -0.02em; line-height: 1.05; color: #fff; }
+.vb-pub-sous { margin: 0 0 20px !important; font-size: 16px !important; color: rgba(255, 255, 255, 0.9) !important; }
+.vb-pub-btn {
+  display: inline-block;
+  background: #fff;
+  color: #111;
+  font-size: 15px;
+  font-weight: 700;
+  padding: 13px 28px;
+  border-radius: 30px;
+  transition: background-color 0.15s ease;
+}
+.vb-pub-lien:hover .vb-pub-btn { background: #e9e9e9; }
+
+/* Téléphone / tablette : image en 4:3 (pas de zoom excessif), texte en bas */
+@media (max-width: 991.98px) {
+  .vb-pub { margin: 16px 0; }
+  .vb-pub-lien {
+    height: auto;
+    min-height: 0;
+    max-height: none;
+    aspect-ratio: 4 / 3;
+    background-image: url('pub-accueil-mobile.webp');
+  }
+  .vb-pub-lien::before { background: linear-gradient(180deg, rgba(0, 0, 0, 0) 35%, rgba(0, 0, 0, 0.6) 100%); }
+  .vb-pub-texte { left: 16px; right: 16px; bottom: 16px; }
+  .vb-pub-titre { font-size: 24px; }
+  .vb-pub-sous { font-size: 13px !important; margin-bottom: 12px !important; }
+  .vb-pub-btn { font-size: 13px; padding: 10px 20px; }
+}
+
+/* ==========================================
+   Bandeau exclusivité "Les sacs Varenba" (3 sacs à 30 €) — version noire : texte à gauche, sacs à droite
+   ========================================== */
+.vb-bags { margin: 24px 0 0; } /* collé à la newsletter en dessous : noir → gris → noir (footer) */
+.vb-bags-dark {
+  display: flex;
+  align-items: center;
+  gap: 40px;
+  padding: 44px 40px;
+  background: #111;
+  color: #fff;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+}
+.vb-bags-side { width: 270px; flex-shrink: 0; }
+.vb-bags-kick { display: block; margin-bottom: 8px; font-size: 11px; font-weight: 800; letter-spacing: 0.16em; color: #999; }
+.vb-bags-title { margin: 0 0 14px; font-size: 40px; font-weight: 900; line-height: 1; letter-spacing: -0.01em; color: #fff; }
+.vb-bags-text { margin: 0 0 22px !important; font-size: 14px !important; line-height: 1.5; color: #aaa !important; }
+.vb-bags-btn {
+  display: inline-block;
+  padding: 12px 26px;
+  border-radius: 30px;
+  background: #fff;
+  color: #111 !important;
+  font-size: 14px;
+  font-weight: 800;
+  text-decoration: none;
+  transition: background-color 0.15s ease;
+}
+.vb-bags-btn:hover { background: #e5e5e5; }
+.vb-bags-grid { flex: 1; min-width: 0; display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+.vb-bag-card { border: 1px solid #2a2a2a; border-radius: 4px; overflow: hidden; background: #1a1a1a; }
+.vb-bag-img { position: relative; aspect-ratio: 1 / 1; background: #e9e9e9; overflow: hidden; }
+.vb-bag-img img { display: block; width: 100%; height: 100%; object-fit: cover; transition: transform 0.3s ease; }
+.vb-bag-card:hover .vb-bag-img img { transform: scale(1.03); }
+.vb-bag-card .btn-favorite {
+  position: absolute;
+  right: 10px;
+  bottom: 10px;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  border: none;
+  background: #fff;
+  color: #111;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+  cursor: pointer;
+}
+.vb-bag-card .btn-favorite.active svg { fill: #dc3545; stroke: #dc3545; }
+.vb-bag-info { padding: 12px 14px 14px; }
+.vb-bag-name { display: block; font-size: 15px; font-weight: 700; color: #fff !important; text-decoration: none; }
+.vb-bag-desc { display: block; margin: 2px 0 8px; font-size: 12px; color: #999; }
+.vb-bag-price { font-size: 16px; font-weight: 800; color: #fff; }
+
+/* Mobile : texte en haut, les sacs défilent au doigt */
+@media (max-width: 991.98px) {
+  .vb-bags-dark { flex-direction: column; align-items: stretch; gap: 18px; padding: 28px 0 30px 16px; }
+  .vb-bags-side { width: auto; padding-right: 16px; }
+  .vb-bags-title { font-size: 28px; }
+  .vb-bags-text { margin-bottom: 14px !important; }
+  .vb-bags-grid { display: flex; overflow-x: auto; gap: 10px; padding-right: 16px; scrollbar-width: none; }
+  .vb-bags-grid::-webkit-scrollbar { display: none; }
+  .vb-bag-card { flex: 0 0 62%; }
+}

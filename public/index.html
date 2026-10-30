@@ -13,6 +13,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
   <link rel="icon" type="image/png" href="aaa.png">
+  <link href="footer.css" rel="stylesheet">
 </head>
 
 <body>
@@ -878,6 +879,18 @@ window.addEventListener('DOMContentLoaded', () => {
 
 </section>
 
+<!-- ========== Pub de l'accueil : remplace l'image pub-accueil.webp (et pub-accueil-mobile.webp) par la tienne ========== -->
+<section class="vb-pub">
+  <a href="shop.html" class="vb-pub-lien" aria-label="Voir la collection">
+    <div class="vb-pub-texte">
+      <h2 class="vb-pub-titre">LIBÈRE TON POTENTIEL</h2>
+      <p class="vb-pub-sous">Découvre les nouveautés conçues pour surpasser tes limites.</p>
+      <span class="vb-pub-btn">Découvrir</span>
+    </div>
+  </a>
+</section>
+
+
 <section id="Tshirt">
 
 <div class="container-fluid mt-5 position-relative product-slider">
@@ -974,6 +987,52 @@ window.addEventListener('DOMContentLoaded', () => {
 </div>
 
 </section>
+
+<!-- ========== Bandeau exclusivité : les sacs. Pour mettre tes photos, remplace sac-1.svg, sac-2.svg et sac-3.svg ========== -->
+<section class="vb-bags vb-bags-dark">
+  <div class="vb-bags-side">
+    <span class="vb-bags-kick">EXCLUSIVITÉ</span>
+    <h2 class="vb-bags-title">LES SACS<br>VARENBA</h2>
+    <p class="vb-bags-text">3 modèles en édition limitée.<br>30 € chacun.</p>
+    <a href="shop.html" class="vb-bags-btn">Tout voir</a>
+  </div>
+  <div class="vb-bags-grid">
+      <div class="vb-bag-card">
+        <div class="vb-bag-img">
+          <a href="shop.html"><img src="sac-1.svg" alt="Sac de sport VB" loading="lazy"></a>
+          <button class="btn-favorite" data-id="sac-1" data-name="Sac de sport VB" data-price="30.00€" data-img="sac-1.svg" aria-label="Ajouter aux favoris"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg></button>
+        </div>
+        <div class="vb-bag-info">
+          <a href="shop.html" class="vb-bag-name">Sac de sport VB</a>
+          <span class="vb-bag-desc">Noir · 40 L</span>
+          <span class="vb-bag-price">30,00 €</span>
+        </div>
+      </div>
+      <div class="vb-bag-card">
+        <div class="vb-bag-img">
+          <a href="shop.html"><img src="sac-2.svg" alt="Tote bag VB" loading="lazy"></a>
+          <button class="btn-favorite" data-id="sac-2" data-name="Tote bag VB" data-price="30.00€" data-img="sac-2.svg" aria-label="Ajouter aux favoris"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg></button>
+        </div>
+        <div class="vb-bag-info">
+          <a href="shop.html" class="vb-bag-name">Tote bag VB</a>
+          <span class="vb-bag-desc">Noir · coton épais</span>
+          <span class="vb-bag-price">30,00 €</span>
+        </div>
+      </div>
+      <div class="vb-bag-card">
+        <div class="vb-bag-img">
+          <a href="shop.html"><img src="sac-3.svg" alt="Sac banane VB" loading="lazy"></a>
+          <button class="btn-favorite" data-id="sac-3" data-name="Sac banane VB" data-price="30.00€" data-img="sac-3.svg" aria-label="Ajouter aux favoris"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg></button>
+        </div>
+        <div class="vb-bag-info">
+          <a href="shop.html" class="vb-bag-name">Sac banane VB</a>
+          <span class="vb-bag-desc">Noir · bandoulière réglable</span>
+          <span class="vb-bag-price">30,00 €</span>
+        </div>
+      </div>
+  </div>
+</section>
+
 <script>
 document.addEventListener("DOMContentLoaded", () => {
   let favorites = JSON.parse(localStorage.getItem("vigoblue_favorites")) || [];
@@ -1192,7 +1251,6 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 </style>
 
-<br><br><br>
 
 
 <!-- OFFCANVAS COMPTE -->
@@ -1369,72 +1427,22 @@ document.addEventListener("DOMContentLoaded", () => {
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css">
 
   <!-- About Section (Vidéo insérée entre le texte et les boutons) -->
-<section id="about" class="py-4 py-lg-5">
-    <div class="container px-3 px-lg-5">
-        <div class="row align-items-center g-4 g-lg-5 mb-5 flex-column-reverse flex-lg-row">
-            
-            <!-- Partie Texte et Vidéo -->
-            <div class="col-12 col-lg-6 text-start">
-                <h1 class="display-6 display-lg-5 fw-bold mb-3 text-uppercase" style="letter-spacing: 1px;">Varenba</h1>
-                <p class="lead text-muted mb-4" style="font-size: 0.9rem; line-height: 1.5;">
-                    Varenba réunit l’énergie sport, l’héritage de ses collections et une vraie culture streetwear. Sur La Boutique Officielle, la marque se décline en baskets Varenba homme, t-shirts, joggings, vestes, ensembles, sweats, shorts, accessoires et pièces lifestyle. <br><br>Entre silhouettes running, sneakers rétro, coupes classiques, survêtements coordonnés, logos brodés et détails signature, Varenba permet de composer un look urbain aussi confortable que visuel. Avec un très large choix, des nouveautés, des promotions, des exclusivités et des gammes Varenba Originals ou Varenba Sportswear, LBO s’impose comme une destination de référence pour shopper Varenba homme.
-                </p>
-                
-                <!-- Vidéo positionnée exactement entre le paragraphe et les boutons -->
-                <div class="my-4 text-center d-lg-none">
-                    <video autoplay muted loop playsinline class="w-100 rounded shadow-sm object-fit-cover" style="max-height: 300px;">
-                        <source src="Blue1.mp4" type="video/mp4">
-                        Ton navigateur ne supporte pas la vidéo.
-                    </video>
-                </div>
+ 
 
-          
-            </div>
-
-            <!-- Colonne visuelle secondaire (optionnelle sur grand écran si besoin, ou vide) -->
-            <div class="col-10 col-sm-8 col-md-7 col-lg-6 mx-auto text-center d-none d-lg-block">
-                <video autoplay muted loop playsinline class="w-100 rounded shadow-sm object-fit-cover" style="max-height: 400px;">
-                    <source src="Blue1.mp4" type="video/mp4">
-                    Ton navigateur ne supporte pas la vidéo.
-                </video>
-            </div>
-
-        </div>
-    </div>
-</section> 
-
-<section class="newsletter-section py-4" >
-  <div class="container py-2"style="background-color: whitesmoke;">
-    <div class="row justify-content-center">
-      <div class="col-lg-8 text-center text-lg-start">
-        
-        <!-- Titre -->
-        <h3 class="newsletter-title text-dark text-uppercase fw-bold mb-3">
-          Inscris-toi et profite de 15% maximum sur ta première commande*
-        </h3>
-
-        <!-- Formulaire -->
-        <form class="d-flex flex-column flex-sm-row gap-2 mb-3">
-          <input 
-            type="email" 
-            class="form-control newsletter-input rounded-0 border px-3" 
-            placeholder="Entre ton adresse e-mail" 
-            required
-          >
-          <button 
-            type="submit" 
-            class="btn btn-dark newsletter-btn rounded-0 px-4 text-uppercase fw-bold text-white" style="font-size:11px;"
-          >S'inscrire
-          </button>
-        </form>
-
-        <!-- Mentions légales -->
-        <p class="newsletter-legal m-0">
-          * Sous réserve des conditions générales. En entrant ton adresse e-mail, tu acceptes de recevoir des e-mails marketing de la part de <strong>VigoBlue</strong>, conformément à notre <a href="#" class="text-decoration-underline">Politique de confidentialité</a> et à nos <a href="#" class="text-decoration-underline">Conditions générales</a>. Tu peux te désinscrire à tout moment à l'aide du lien « Se désinscrire » en bas de nos e-mails.
-        </p>
-
-      </div>
-    </div>
+<!-- ========== Newsletter : styles dans footer.css, envoi dans footer.js ========== -->
+<section class="vbf-news">
+  <div class="vbf-news-left">
+    <span class="vbf-kick">NEWSLETTER</span>
+    <h2>Reçois les drops en avant-première</h2>
+    <p>Nouveautés, éditions limitées et offres réservées aux inscrits. Un e-mail de temps en temps, pas plus.</p>
+  </div>
+  <div class="vbf-news-right">
+    <form class="vbf-form" id="vbfNewsForm" novalidate>
+      <input type="email" placeholder="Ton adresse e-mail" aria-label="Ton adresse e-mail" autocomplete="email" required>
+      <button type="submit">S'inscrire</button>
+    </form>
+    <p class="vbf-msg" id="vbfNewsMsg" role="status"></p>
+    <p class="vbf-legal">Tu peux te désinscrire à tout moment. Voir notre <a href="confidentialite.html">Politique de confidentialité</a>.</p>
   </div>
 </section>
 
@@ -1496,115 +1504,53 @@ document.addEventListener("DOMContentLoaded", () => {
 
  
 <section id="aide">
-<footer class="footer-style py-4" style="background-color: whitesmoke; color: #000000;">
-  <div class="container px-3">
-
-    <div class="row g-4">
-    
-    <!-- Barre supérieure : Réseaux sociaux et Logos de paiement alignés -->
-  <div class="container pb-4 mb-3 border-bottom border-dark">
-    <div class="row align-items-center justify-content-between g-3">
-      <!-- Réseaux sociaux à gauche -->
-     
-      <!-- Moyens de paiement à droite -->
-      <div class="col-auto">
-        <div class="d-flex flex-wrap align-items-center gap-2">
-          <div class="bg-light border rounded px-2 py-1 d-flex align-items-center justify-content-center" style="height: 24px;">
-            <span class="fw-bold text-primary" style="font-size: 0.6rem; font-style: italic;">VISA</span>
-          </div>
-          <div class="bg-light border rounded px-2 py-1 d-flex align-items-center justify-content-center" style="height: 24px;">
-            <div class="d-flex" style="transform: scale(0.5); margin: -4px;">
-              <div class="rounded-circle bg-danger" style="width: 14px; height: 14px;"></div>
-              <div class="rounded-circle bg-warning" style="width: 14px; height: 14px; margin-left: -6px;"></div>
-            </div>
-          </div>
-          <div class="bg-light border rounded px-2 py-1 d-flex align-items-center justify-content-center" style="height: 24px;">
-            <span class="fw-bold text-primary" style="font-size: 0.55rem; font-style: italic;">PayPal</span>
-          </div>
-          <div class="rounded px-2 py-1 d-flex align-items-center justify-content-center" style="height: 24px; background-color: #ffb3c6;">
-            <span class="fw-bold text-dark" style="font-size: 0.45rem;">Klarna.</span>
-          </div>
-          <div class="bg-light border rounded px-2 py-1 d-flex align-items-center justify-content-center" style="height: 24px;">
-            <span class="fw-bold text-dark" style="font-size: 0.5rem;">CB</span>
-          </div>
-          <div class="bg-light border rounded px-2 py-1 d-flex align-items-center justify-content-center" style="height: 24px;">
-            <span class="fw-bold text-primary" style="font-size: 0.5rem;">AM EX</span>
-          </div>
-          <div class="bg-light border rounded px-2 py-1 d-flex align-items-center justify-content-center text-dark" style="height: 24px;">
-            <i class="fab fa-apple" style="font-size: 0.75rem;"></i>
-          </div>
-        </div>
+<!-- ========== Footer : styles dans footer.css ========== -->
+<footer class="vbf-foot">
+  <div class="vbf-cols">
+    <div class="vbf-col">
+      <button type="button" class="vbf-col-title" aria-expanded="false">AIDE<span>+</span></button>
+      <div class="vbf-col-links">
+        <a href="aide.html#faq">Questions fréquentes</a>
+        <a href="aide.html">Livraison et suivi</a>
+        <a href="aide.html">Retours et remboursements</a>
+        <a href="aide.html#contact">Nous contacter</a>
+      </div>
+    </div>
+    <div class="vbf-col">
+      <button type="button" class="vbf-col-title" aria-expanded="false">MON COMPTE<span>+</span></button>
+      <div class="vbf-col-links">
+        <a href="compte.html">Mes informations</a>
+        <a href="commandes.html">Mes commandes</a>
+        <a href="favoris.html">Mes favoris</a>
+        <a href="login.html">Se connecter</a>
+      </div>
+    </div>
+    <div class="vbf-col">
+      <button type="button" class="vbf-col-title" aria-expanded="false">BOUTIQUE<span>+</span></button>
+      <div class="vbf-col-links">
+        <a href="shop.html">Nouveautés</a>
+        <a href="shop.html">T-shirts</a>
+        <a href="shop.html">Sweats et joggings</a>
+        <a href="shop.html">Les sacs</a>
+      </div>
+    </div>
+    <div class="vbf-col">
+      <button type="button" class="vbf-col-title" aria-expanded="false">VARENBA<span>+</span></button>
+      <div class="vbf-col-links">
+        <a href="localisation.html">Trouver un magasin</a>
+        <a href="cgu.html">Conditions générales</a>
+        <a href="confidentialite.html">Confidentialité</a>
       </div>
     </div>
   </div>
-      <!-- Bloc Besoin d'aide -->
-      <div class="col-12 col-md-6 col-lg-3 footer-section">
-        <h3 class="footer-title fs-6 fw-bold text-uppercase mb-2" style="letter-spacing: 0.5px;">Besoin d'aide ?</h3>
-        <ul class="footer-links list-unstyled small text-muted">
-          <li class="mb-2"><strong>Commencer chat</strong><br><span class="badge bg-secondary text-white" style="font-size: 10px;">Hors service</span><br><span style="font-size: 0.8rem;">Lundi à vendredi de 10:00 à 16:00.</span></li>
-          <li class="mb-2"><strong>Appeler <a href="tel:0144323334" class="text-decoration-none text-dark">01 44 32 33 34</a></strong><br><span class="badge bg-secondary text-white" style="font-size: 10px;">Hors service</span><br><span style="font-size: 0.8rem;">Lundi à vendredi de 09:00 à 18:00.</span><br><small class="text-muted" style="font-size: 0.7rem;">Appel non surtaxé.</small></li>
-        </ul>
-      </div>
-
-      <!-- Bloc Aide -->
-      <div class="col-12 col-md-6 col-lg-3 footer-section">
-        <h3 class="footer-title fs-6 fw-bold text-uppercase mb-2" style="letter-spacing: 0.5px;">Aide</h3>
-        <ul class="footer-links list-unstyled small" style="font-size: 0.85rem;">
-          <li class="mb-1"><a href="#" class="text-decoration-none text-muted">Acheter en ligne</a></li>
-          <li class="mb-1"><a href="#" class="text-decoration-none text-muted">Paiements</a></li>
-          <li class="mb-1"><a href="#" class="text-decoration-none text-muted">Livraisons & suivi</a></li>
-          <li class="mb-1"><a href="#" class="text-decoration-none text-muted">Retours</a></li>
-          <li class="mb-1"><a href="#" class="text-decoration-none text-muted">Retour invité</a></li>
-          <li class="mb-1"><a href="#" class="text-decoration-none text-muted">Carte cadeau</a></li>
-          <li class="mb-1"><a href="#" class="text-decoration-none text-muted">Ticket cadeau</a></li>
-          <li class="mb-1"><a href="#" class="text-decoration-none text-muted">Rechercher un ticket</a></li>
-          <li class="mb-1"><a href="#" class="text-decoration-none text-muted">Achat invité</a></li>
-          <li class="mb-1"><a href="#" class="text-decoration-none text-muted">Ticket électronique</a></li>
-        </ul>
-      </div>
-
-      <!-- Bloc VigoBlue MMBRS -->
-      <div class="col-12 col-md-6 col-lg-3 footer-section">
-        <h3 class="footer-title fs-6 fw-bold text-uppercase mb-2" style="letter-spacing: 0.5px;">Varenba MMBRS</h3>
-        <ul class="footer-links list-unstyled small" style="font-size: 0.85rem;">
-          <li class="mb-1"><a href="#" class="text-decoration-none text-muted">Me désabonner</a></li>
-          <li class="mb-1"><a href="#" class="text-decoration-none text-muted">Nous sommes Varenba</a></li>
-          <li class="mb-1"><a href="#" class="text-decoration-none text-muted">Durabilité</a></li>
-          <li class="mb-1"><a href="#" class="text-decoration-none text-muted">Travaille avec nous</a></li>
-          <li class="mb-1"><a href="\localisation.html" class="text-decoration-none text-muted">Nos magasins</a></li>
-          <li class="mb-1"><a href="#" class="text-decoration-none text-muted">Infos légales</a></li>
-        </ul>
-      </div>
-
-      <!-- Bloc Cela peut t'intéresser -->
-      <div class="col-12 col-md-6 col-lg-3 footer-section">
-        <h3 class="footer-title fs-6 fw-bold text-uppercase mb-2" style="letter-spacing: 0.5px;">Cela peut t’intéresser</h3>
-        <ul class="footer-links list-unstyled small" style="font-size: 0.85rem;">
-          <li class="mb-1"><a href="#" class="text-decoration-none text-muted">Vestes</a></li>
-          <li class="mb-1"><a href="#" class="text-decoration-none text-muted">T-shirts</a></li>
-          <li class="mb-1"><a href="#" class="text-decoration-none text-muted">Pantalons</a></li>
-          <li class="mb-1"><a href="#" class="text-decoration-none text-muted">Sweats</a></li>
-        </ul>
-      </div>
+  <div class="vbf-bottom">
+    <div class="vbf-brand">
+      <a href="index.html" class="vbf-logo">VARENBA</a>
+      <span class="vbf-copy">© 2026 Varenba. Tous droits réservés.</span>
     </div>
-
-  </div>
-
-  <!-- Bas du footer : Réseaux sociaux & Copyright -->
- <!-- Bas du footer -->
-  <div class="footer-bottom">
-    <div class="container">
-    <div class="social-links">
-                    <a href="#" class="social-icon bg-info"><i class="fab fa-twitter"></i></a>
-                    <a href="#" class="social-icon bg-danger"><i class="fab fa-instagram"></i></a>
-                    <a href="#" class="social-icon bg-primary"><i class="fab fa-linkedin-in"></i></a>
-                </div>
-            </div>
-    </div>
-  </div>
-   <div class="footer-bottom">
-    <div class="container">
-      <p>&copy; 2025 Varenba. Tous droits réservés.</p>
+    <div class="vbf-pay">
+      <span class="vbf-secure"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#aaa" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="4.5" y="10.5" width="15" height="10" rx="2"/><path d="M8 10.5V7a4 4 0 0 1 8 0v3.5"/></svg>Paiement sécurisé par Stripe</span>
+      <div class="vbf-cards" aria-label="Cartes acceptées"><span class="visa">VISA</span><span class="mc"><i></i><i></i></span><span>CB</span><span class="amex">AMEX</span></div>
     </div>
   </div>
 </footer>
@@ -2087,6 +2033,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 </script>
 <script src="nav-pc.js"></script>
+<script src="footer.js"></script>
 <script src="menu-mobile.js"></script>
 <script src="favoris-badge.js"></script>
 </body>

@@ -85,6 +85,14 @@ db.getConnection((err, conn) => {
     traite TINYINT(1) DEFAULT 0,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
   )`, e => { if (e) console.error("❌ Table messages_support :", e.message); });
+
+  // Inscriptions à la newsletter (formulaire du bas de page)
+  db.query(`CREATE TABLE IF NOT EXISTS newsletter (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    email VARCHAR(255) NOT NULL UNIQUE,
+    user_id BIGINT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+  )`, e => { if (e) console.error("❌ Table newsletter :", e.message); });
 });
  
 // Vérifie et nettoie l'adresse de livraison envoyée par la page paiement
@@ -784,6 +792,20 @@ app.post("/pay", async (req, res) => {
  
 // ---------------------- Formulaire de contact (page Aide) ---------------------- //
 const envoisContact = new Map(); // limite anti-spam : 5 messages / 10 min par adresse IP
+// ---------------------- Newsletter ---------------------- //
+app.post("/newsletter", (req, res) => {
+  const email = String(req.body.email || "").trim().toLowerCase().slice(0, 255);
+  if (!isValidEmail(email)) return res.status(400).json({ success: false, message: "Adresse e-mail invalide" });
+
+  const userId = req.session.userId || null;
+  // Déjà inscrit : on répond pareil (on ne révèle pas quels e-mails sont inscrits)
+  db.query("INSERT IGNORE INTO newsletter (email, user_id) VALUES (?, ?)", [email, userId], err => {
+    if (err) return res.status(500).json({ success: false, message: "Erreur serveur" });
+    if (userId) db.query("UPDATE users SET newsletter = 1 WHERE id = ?", [userId], () => {});
+    res.json({ success: true });
+  });
+});
+
 app.post("/api/contact", (req, res) => {
   const { nom, email, sujet, message, site } = req.body;
   if (site) return res.json({ success: true }); // champ piège rempli = robot, on ignore

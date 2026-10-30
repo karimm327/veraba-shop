@@ -1,0 +1,120 @@
+/* =========================================================
+   Newsletter + footer du site (script : footer.js)
+   ========================================================= */
+.vbf-news,
+.vbf-foot {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+}
+
+/* --- Newsletter --- */
+.vbf-news {
+  display: flex;
+  align-items: center;
+  gap: 60px;
+  padding: 48px 60px;
+  background: #f4f4f4;
+  color: #111;
+}
+.vbf-news-left { flex: 1; }
+.vbf-news-right { flex: 1.1; }
+.vbf-kick { display: block; margin-bottom: 6px; font-size: 11px; font-weight: 800; letter-spacing: 0.16em; color: #777; }
+.vbf-news h2 { margin: 0 0 8px; font-size: 28px; font-weight: 900; letter-spacing: -0.01em; color: #111; }
+.vbf-news p { margin: 0; font-size: 14px; line-height: 1.5; color: #555; }
+.vbf-form { display: flex; gap: 8px; }
+.vbf-form input {
+  flex: 1;
+  min-width: 0;
+  height: 50px;
+  padding: 0 20px;
+  border: 1px solid #ccc;
+  border-radius: 30px;
+  background: #fff;
+  font-size: 15px;
+  color: #111;
+  outline: none;
+}
+.vbf-form input:focus { border-color: #111; }
+.vbf-form button {
+  height: 50px;
+  padding: 0 26px;
+  border: none;
+  border-radius: 30px;
+  background: #111;
+  color: #fff;
+  font-size: 14px;
+  font-weight: 800;
+  cursor: pointer;
+}
+.vbf-form button:hover { background: #333; }
+.vbf-form button:disabled { background: #777; cursor: wait; }
+.vbf-msg { display: none; margin-top: 10px !important; font-size: 14px !important; font-weight: 700; }
+.vbf-msg.ok { display: block; color: #1f7a3d !important; }
+.vbf-msg.err { display: block; color: #d43f21 !important; }
+.vbf-legal { margin-top: 10px !important; font-size: 12px !important; color: #888 !important; }
+.vbf-legal a { color: #888; }
+
+/* --- Footer --- */
+.vbf-foot { padding: 44px 60px 26px; background: #111; color: #fff; }
+.vbf-cols { display: grid; grid-template-columns: repeat(4, 1fr); gap: 30px; padding-bottom: 30px; border-bottom: 1px solid #2c2c2c; }
+.vbf-col-title {
+  display: block;
+  width: 100%;
+  margin: 0 0 14px;
+  padding: 0;
+  border: none;
+  background: none;
+  color: #fff;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-align: left;
+  cursor: default;
+}
+.vbf-col-title span { display: none; }
+.vbf-col a { display: block; margin-bottom: 10px; font-size: 14px; color: #aaa; text-decoration: none; }
+.vbf-col a:hover { color: #fff; }
+.vbf-bottom { display: flex; justify-content: space-between; align-items: center; gap: 20px; padding-top: 22px; }
+.vbf-brand { display: flex; flex-direction: column; gap: 6px; }
+.vbf-logo { font-size: 16px; font-weight: 900; letter-spacing: 0.26em; color: #fff; text-decoration: none; }
+.vbf-copy { font-size: 12px; color: #777; }
+.vbf-pay { display: flex; flex-direction: column; align-items: flex-end; gap: 8px; }
+.vbf-secure { display: flex; align-items: center; gap: 6px; font-size: 12px; color: #aaa; }
+.vbf-cards { display: flex; gap: 6px; }
+.vbf-cards span {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 42px;
+  height: 26px;
+  padding: 0 6px;
+  border-radius: 4px;
+  background: #fff;
+  color: #111;
+  font-size: 10px;
+  font-weight: 800;
+}
+.vbf-cards .visa { color: #1a1f71; font-size: 12px; font-style: italic; }
+.vbf-cards .amex { color: #2e77bc; }
+.vbf-cards .mc i { display: block; width: 12px; height: 12px; border-radius: 50%; background: #eb001b; }
+.vbf-cards .mc i + i { margin-left: -5px; background: #f79e1b; opacity: 0.9; }
+
+/* --- Mobile : newsletter empilée, colonnes du footer en rubriques à ouvrir --- */
+@media (max-width: 991.98px) {
+  .vbf-news { flex-direction: column; align-items: stretch; gap: 16px; padding: 30px 20px; }
+  .vbf-news h2 { font-size: 22px; }
+  .vbf-form { flex-direction: column; }
+  /* !important : d'anciennes règles mobiles de la page écrasaient la hauteur du champ */
+  .vbf-form input,
+  .vbf-form button { height: 48px !important; min-height: 48px !important; padding-top: 0 !important; padding-bottom: 0 !important; font-size: 15px !important; }
+
+  .vbf-foot { padding: 10px 20px 24px; }
+  .vbf-cols { grid-template-columns: 1fr; gap: 0; padding-bottom: 0; border-bottom: none; }
+  .vbf-col { border-bottom: 1px solid #2c2c2c; }
+  .vbf-col-title { display: flex; justify-content: space-between; margin: 0; padding: 16px 0; font-size: 13px; cursor: pointer; }
+  .vbf-col-title span { display: inline; font-size: 16px; font-weight: 400; }
+  .vbf-col-links { display: none; padding-bottom: 8px; }
+  .vbf-col.open .vbf-col-links { display: block; }
+  .vbf-bottom { flex-direction: column; text-align: center; padding-top: 24px; }
+  .vbf-brand { align-items: center; }
+  .vbf-pay { align-items: center; }
+}
