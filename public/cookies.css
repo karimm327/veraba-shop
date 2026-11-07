@@ -1,0 +1,102 @@
+/* =========================================================
+   Bandeau cookies + panneau de réglages (script : cookies.js)
+   ========================================================= */
+.vbc-banner,
+.vbc-modal {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  color: #111;
+}
+
+/* --- Bandeau en bas à gauche (ne bloque pas la page) --- */
+.vbc-banner {
+  position: fixed;
+  left: 20px;
+  bottom: 20px;
+  z-index: 10000;
+  width: 420px;
+  max-width: calc(100vw - 40px);
+  padding: 22px;
+  background: #fff;
+  border: 1px solid #e5e5e5;
+  border-radius: 14px;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.18);
+  transform: translateY(20px);
+  opacity: 0;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+}
+.vbc-banner.show { transform: none; opacity: 1; }
+.vbc-banner h2 { display: flex; align-items: center; gap: 8px; margin: 0 0 8px; font-size: 17px; font-weight: 800; color: #111; }
+.vbc-banner p { margin: 0 0 16px !important; font-size: 13px !important; line-height: 1.5; color: #555 !important; }
+.vbc-banner p a { color: #111; }
+.vbc-actions { display: flex; gap: 8px; }
+.vbc-btn {
+  flex: 1;
+  padding: 12px 10px;
+  border: 1.5px solid #111;
+  border-radius: 30px;
+  background: #fff;
+  color: #111;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+}
+.vbc-btn.dark { background: #111; color: #fff; }
+.vbc-btn:hover { background: #f2f2f2; }
+.vbc-btn.dark:hover { background: #333; }
+.vbc-link {
+  display: block;
+  margin: 12px auto 0;
+  padding: 0;
+  border: none;
+  background: none;
+  font-size: 13px;
+  font-weight: 600;
+  color: #111;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+/* --- Panneau de réglages --- */
+.vbc-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 10001;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  background: rgba(0, 0, 0, 0.45);
+}
+.vbc-modal.show { display: flex; }
+.vbc-box {
+  width: 100%;
+  max-width: 520px;
+  max-height: 90vh;
+  overflow-y: auto;
+  padding: 26px;
+  background: #fff;
+  border-radius: 14px;
+}
+.vbc-box-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; }
+.vbc-box-head h2 { margin: 0; font-size: 20px; font-weight: 900; }
+.vbc-close { width: 36px; height: 36px; border: none; border-radius: 50%; background: #f2f2f2; font-size: 20px; cursor: pointer; }
+.vbc-intro { margin: 0 0 14px !important; font-size: 13px !important; color: #666 !important; line-height: 1.5; }
+.vbc-cat { padding: 14px 0; border-top: 1px solid #eee; }
+.vbc-cat-head { display: flex; justify-content: space-between; align-items: center; gap: 12px; }
+.vbc-cat-head b { font-size: 15px; }
+.vbc-cat p { margin: 6px 0 0 !important; font-size: 13px !important; color: #666 !important; line-height: 1.5; }
+.vbc-always { font-size: 12px; font-weight: 700; color: #1f7a3d; white-space: nowrap; }
+/* interrupteur */
+.vbc-switch { position: relative; width: 46px; height: 26px; flex-shrink: 0; }
+.vbc-switch input { position: absolute; opacity: 0; width: 100%; height: 100%; margin: 0; cursor: pointer; z-index: 1; }
+.vbc-switch span { position: absolute; inset: 0; border-radius: 26px; background: #ccc; transition: background 0.2s; }
+.vbc-switch span::after { content: ""; position: absolute; top: 3px; left: 3px; width: 20px; height: 20px; border-radius: 50%; background: #fff; transition: transform 0.2s; box-shadow: 0 1px 3px rgba(0, 0, 0, 0.25); }
+.vbc-switch input:checked + span { background: #111; }
+.vbc-switch input:checked + span::after { transform: translateX(20px); }
+.vbc-switch input:focus-visible + span { box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.2); }
+.vbc-box .vbc-actions { margin-top: 18px; }
+
+@media (max-width: 576px) {
+  .vbc-banner { left: 10px; right: 10px; bottom: 10px; width: auto; max-width: none; padding: 18px; }
+  .vbc-actions { flex-direction: column-reverse; }
+}

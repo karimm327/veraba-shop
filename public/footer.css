@@ -55,6 +55,8 @@
 
 /* --- Footer --- */
 .vbf-foot { padding: 44px 60px 26px; background: #111; color: #fff; }
+/* Certaines pages (panier) forcent tous les <footer> en gris clair : on garde le noir */
+footer.vbf-foot { background-color: #111 !important; }
 .vbf-cols { display: grid; grid-template-columns: repeat(4, 1fr); gap: 30px; padding-bottom: 30px; border-bottom: 1px solid #2c2c2c; }
 .vbf-col-title {
   display: block;
@@ -118,3 +120,28 @@
   .vbf-brand { align-items: center; }
   .vbf-pay { align-items: center; }
 }
+
+/* ==========================================
+   État vide (panier vide, favoris vides) avec le dessin du désert
+   ========================================== */
+.vb-empty {
+  max-width: 460px;
+  margin: 0 auto;
+  padding: 40px 16px 56px;
+  text-align: center;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+}
+.vb-empty-img { display: block; width: 100%; max-width: 340px; height: auto; margin: 0 auto 22px; }
+.vb-empty-title { margin: 0 0 8px; font-size: 24px; font-weight: 900; letter-spacing: -0.01em; color: #111; }
+.vb-empty-text { margin: 0 0 22px !important; font-size: 15px !important; line-height: 1.5; color: #666 !important; }
+.vb-empty-btn {
+  display: inline-block;
+  padding: 13px 28px;
+  border-radius: 30px;
+  background: #111;
+  color: #fff !important;
+  font-size: 15px;
+  font-weight: 700;
+  text-decoration: none;
+}
+.vb-empty-btn:hover { background: #333; }

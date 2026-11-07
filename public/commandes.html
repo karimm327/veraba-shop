@@ -403,35 +403,106 @@
     </nav>
   </aside>
   <div class="vbacc-content">
-  <main class="container py-4 py-md-5" style="max-width: 920px;">
-    <h2 class="fw-bold mb-1 page-titre">Mes commandes</h2>
-    <p class="page-sous mb-4">Suis tes colis, retrouve tes achats et commande à nouveau en un clic.</p>
+  <main class="vbo">
+    <style>
+      .vbo { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; color: #111; }
+      .vbo-top { display: flex; justify-content: space-between; align-items: center; gap: 16px; margin-bottom: 14px; }
+      .vbo-top h2 { margin: 0; font-size: 26px; font-weight: 900; }
+      .vbo-search { width: 360px; max-width: 100%; height: 42px; padding: 0 16px; border: 1px solid #ccc; border-radius: 30px; font-size: 14px; outline: none; background: #fff; }
+      .vbo-search:focus { border-color: #111; }
+      .vbo-tabs { display: flex; gap: 26px; border-bottom: 1px solid #e3e3e3; margin-bottom: 14px; overflow-x: auto; scrollbar-width: none; }
+      .vbo-tabs::-webkit-scrollbar { display: none; }
+      .vbo-tabs button { flex-shrink: 0; padding: 10px 0; border: none; border-bottom: 3px solid transparent; background: none; font-size: 14px; color: #666; cursor: pointer; white-space: nowrap; }
+      .vbo-tabs button.on { color: #111; font-weight: 700; border-bottom-color: #111; }
+      .vbo-count { margin: 0 0 14px; font-size: 14px; }
+      .vbo-count select { margin-left: 4px; padding: 3px 8px; border: 1px solid #ccc; border-radius: 6px; background: #fff; font-weight: 600; }
 
-    <div class="filtres" id="barreFiltres" hidden>
-      <div class="puces" id="puces" role="tablist" aria-label="Filtrer les commandes"></div>
-      <div class="tri" id="triBoite">
-        <button type="button" class="tri-btn" id="triBtn" aria-haspopup="listbox" aria-expanded="false">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 6h18M6 12h12M10 18h4"/></svg>
-          <span class="tri-lib">Trier</span>
-          <strong id="triTexte">Plus récentes</strong>
-          <svg class="tri-fleche" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M6 9l6 6 6-6"/></svg>
-        </button>
-        <ul class="tri-menu" id="triMenu" role="listbox" aria-label="Trier les commandes">
-          <li role="option" data-valeur="recent" aria-selected="true">Plus récentes</li>
-          <li role="option" data-valeur="ancien" aria-selected="false">Plus anciennes</li>
-          <li role="option" data-valeur="montant" aria-selected="false">Montant le plus élevé</li>
-        </ul>
-        <select id="tri" hidden>
-          <option value="recent">Plus récentes</option>
-          <option value="ancien">Plus anciennes</option>
-          <option value="montant">Montant le plus élevé</option>
-        </select>
-      </div>
-    </div>
+      .vbo-card { background: #fff; border: 1px solid #ddd; border-radius: 8px; overflow: hidden; margin-bottom: 16px; }
+      .vbo-head { display: flex; flex-wrap: wrap; gap: 14px 40px; align-items: flex-start; padding: 12px 20px; background: #f3f3f3; border-bottom: 1px solid #ddd; }
+      .vbo-head small { display: block; font-size: 11px; letter-spacing: 0.04em; color: #666; text-transform: uppercase; }
+      .vbo-head b { font-size: 14px; }
+      .vbo-head-right { margin-left: auto; text-align: right; }
+      .vbo-links { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 8px; margin-top: 2px; font-size: 13px; }
+      .vbo-links button { display: inline-flex; align-items: center; gap: 4px; padding: 0; border: none; background: none; font: inherit; font-weight: 600; text-decoration: underline; cursor: pointer; color: #111; }
+      .vbo-links span { color: #bbb; }
+      .vbo-body { display: flex; gap: 30px; padding: 18px 20px; }
+      .vbo-left { flex: 1; min-width: 0; }
+      .vbo-status { margin: 0; font-size: 17px; font-weight: 800; }
+      .vbo-status.payee, .vbo-status.preparee { color: #b45309; }
+      .vbo-status.expediee { color: #1d4ed8; }
+      .vbo-status.livree { color: #1f7a3d; }
+      .vbo-status.annulee { color: #777; }
+      .vbo-phrase { margin: 2px 0 14px; font-size: 13px; color: #555; }
+      .vbo-item { display: flex; gap: 14px; align-items: flex-start; margin-bottom: 12px; }
+      .vbo-item img { width: 80px; height: 80px; flex-shrink: 0; object-fit: cover; background: #f2f2f2; border-radius: 4px; }
+      .vbo-item-name { display: block; font-size: 15px; font-weight: 700; color: #111; text-decoration: underline; text-underline-offset: 3px; }
+      .vbo-item small { display: block; font-size: 13px; color: #666; }
+      .vbo-mini { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px; }
+      .vbo-pill { display: inline-flex; align-items: center; gap: 5px; padding: 5px 12px; border: 1px solid #ccc; border-radius: 20px; background: #fff; color: #111; font-size: 12px; font-weight: 600; text-decoration: none; cursor: pointer; }
+      .vbo-pill:hover, .vbo-btn:hover { border-color: #111; }
+      .vbo-actions { width: 250px; flex-shrink: 0; display: flex; flex-direction: column; gap: 8px; }
+      .vbo-btn { display: flex; align-items: center; justify-content: center; gap: 7px; padding: 10px; border: 1px solid #ccc; border-radius: 30px; background: #fff; color: #111; font-size: 13px; font-weight: 700; text-decoration: none; cursor: pointer; }
+      .vbo-btn.dark { background: #111; border-color: #111; color: #fff; }
+      .vbo-btn.dark:hover { background: #333; }
 
-    <div id="listeCommandes">
-      <div class="squelette"></div><div class="squelette"></div><div class="squelette"></div>
+      .vbo-details { display: none; padding: 4px 20px 20px; border-top: 1px solid #eee; }
+      /* Commande repliée : seulement le résumé ; + / − pour ouvrir ou fermer */
+      .vbo-card.replie .vbo-body, .vbo-card.replie .vbo-details { display: none !important; }
+      .vbo-card.replie .vbo-head { border-bottom: none; }
+      .vbo-head { cursor: pointer; }
+      .vbo-head-right { display: flex; align-items: center; gap: 14px; }
+      .vbo-head-right > div { text-align: right; }
+      .vbo-toggle { width: 36px; height: 36px; flex-shrink: 0; border: 1px solid #ccc; border-radius: 50%; background: #fff; font-size: 20px; line-height: 1; color: #111; cursor: pointer; }
+      .vbo-toggle:hover { border-color: #111; }
+      .vbo-resume { display: none; align-items: center; gap: 8px; }
+      .vbo-card.replie .vbo-resume { display: flex; }
+      .vbo-resume img { width: 34px; height: 34px; object-fit: cover; border-radius: 4px; background: #e9e9e9; }
+      .vbo-pastille { padding: 3px 10px; border-radius: 20px; font-size: 12px; font-weight: 700; background: #fff3e0; color: #b45309; }
+      .vbo-pastille.expediee { background: #e8efff; color: #1d4ed8; } .vbo-pastille.livree { background: #e8f3ec; color: #1f7a3d; } .vbo-pastille.annulee { background: #eee; color: #777; }
+      .vbo-chev { display: inline-block; margin-left: 3px; font-size: 17px; line-height: 1; font-weight: 700; text-decoration: none; } /* pas souligné, sinon on dirait un point */
+      .vbo-card.open .vbo-details { display: block; }
+      .vbo-steps { position: relative; display: flex; justify-content: space-between; margin: 18px 4px 20px; }
+      .vbo-steps::before { content: ""; position: absolute; left: 6px; right: 6px; top: 5px; height: 2px; background: #e3e3e3; }
+      .vbo-steps i { position: absolute; left: 6px; top: 5px; height: 2px; background: #111; }
+      .vbo-step { position: relative; z-index: 1; display: flex; flex-direction: column; align-items: center; gap: 6px; width: 90px; font-size: 12px; color: #999; }
+      .vbo-step:first-child { align-items: flex-start; } .vbo-step:last-child { align-items: flex-end; }
+      .vbo-step b { width: 12px; height: 12px; border-radius: 50%; border: 2px solid #cfcfcf; background: #fff; }
+      .vbo-step.done { color: #111; font-weight: 600; } .vbo-step.done b { background: #111; border-color: #111; }
+      .vbo-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+      .vbo-box { padding: 14px 16px; background: #f7f7f7; border-radius: 6px; font-size: 13px; line-height: 1.55; }
+      .vbo-box p { margin: 0; }
+      .vbo-box .lib { font-size: 11px; font-weight: 800; letter-spacing: 0.08em; color: #777; margin-bottom: 6px; }
+      .vbo-row { display: flex; justify-content: space-between; }
+      .vbo-row.tot { margin-top: 6px; padding-top: 6px; border-top: 1px solid #e3e3e3; font-size: 15px; font-weight: 800; }
+
+      .vbo-empty { padding: 50px 20px; text-align: center; background: #fff; border: 1px solid #ddd; border-radius: 8px; }
+      .vbo-empty p { margin: 0 0 6px; }
+
+      @media (max-width: 767.98px) {
+        .vbo-top { flex-direction: column; align-items: stretch; }
+        .vbo-top h2 { font-size: 22px; }
+        .vbo-search { width: 100%; }
+        .vbo-head { gap: 10px 22px; padding: 12px 14px; }
+        .vbo-head-right { margin-left: 0; text-align: left; width: 100%; }
+        .vbo-links { justify-content: flex-start; }
+        .vbo-body { flex-direction: column; gap: 14px; padding: 14px; }
+        .vbo-actions { width: auto; display: grid; grid-template-columns: 1fr 1fr; }
+        .vbo-actions .dark { grid-column: 1 / -1; }
+        .vbo-actions > a.vbo-btn:last-child { grid-column: 1 / -1; } /* « Besoin d'aide ? » sur toute la largeur */
+        .vbo-item img { width: 64px; height: 64px; }
+        .vbo-details { padding: 4px 14px 16px; }
+        .vbo-grid { grid-template-columns: 1fr; }
+        .vbo-step { width: 64px; font-size: 10px; }
+      }
+    </style>
+
+    <div class="vbo-top">
+      <h2>Mes commandes</h2>
+      <input type="search" class="vbo-search" id="vboSearch" placeholder="Rechercher une commande, un article…" aria-label="Rechercher une commande">
     </div>
+    <div class="vbo-tabs" id="vboTabs" role="tablist"></div>
+    <p class="vbo-count" id="vboCount" hidden></p>
+    <div id="listeCommandes"><div class="vbo-empty"><p>Chargement de tes commandes…</p></div></div>
   </main>
   </div>
 </div>
@@ -441,175 +512,247 @@
   <script>
     const ETAPES = ["Payée", "En préparation", "Expédiée", "Livrée"];
     const INDEX_STATUT = { payee: 0, preparee: 1, expediee: 2, livree: 3 };
-    const LIBELLES = { payee: "Payée", preparee: "En préparation", expediee: "Expédiée", livree: "Livrée", annulee: "Annulée" };
-    const FILTRES = [
-      { id: "toutes", nom: "Toutes", test: () => true },
-      { id: "encours", nom: "En cours", test: c => ["payee", "preparee", "expediee"].includes(c.statut) },
+    const STATUTS = {
+      payee: ["Commande confirmée", "Ton paiement est validé, on prépare ta commande."],
+      preparee: ["En préparation", "Ta commande est en cours de préparation."],
+      expediee: ["Expédiée", "Ton colis est en route."],
+      livree: ["Livrée", "Ton colis a été livré."],
+      annulee: ["Annulée", "Cette commande a été annulée."]
+    };
+    const ONGLETS = [
+      { id: "toutes", nom: "Commandes", test: () => true },
+      { id: "racheter", nom: "Acheter à nouveau" },
+      { id: "nonexp", nom: "Pas encore expédiées", test: c => ["payee", "preparee"].includes(c.statut) },
       { id: "livrees", nom: "Livrées", test: c => c.statut === "livree" },
       { id: "annulees", nom: "Annulées", test: c => c.statut === "annulee" }
     ];
 
     const euros = centimes => (centimes / 100).toFixed(2).replace(".", ",") + " €";
-    const eurosDec = n => n.toFixed(2).replace(".", ",") + " €";
+    const eurosDec = n => Number(n).toFixed(2).replace(".", ",") + " €";
     const dateFr = d => new Date(d).toLocaleDateString("fr-FR", { day: "numeric", month: "long", year: "numeric" });
     const echapper = t => String(t ?? "").replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
-    const coche = '<svg viewBox="0 0 12 12" fill="none" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M2.5 6.2l2.3 2.3 4.7-4.9"/></svg>';
+    const ico = p => `<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${p}</svg>`;
+    const I = {
+      dl: ico('<path d="M12 3v12M7 10l5 5 5-5M5 21h14"/>'),
+      rb: ico('<path d="M3 12a9 9 0 1 0 3-6.7"/><polyline points="3 3 3 9 9 9"/>'),
+      eye: ico('<path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/>'),
+      truck: ico('<path d="M2.5 6.5h11v9h-11z"/><path d="M13.5 9.5h4l3 3v3h-7z"/><circle cx="6.5" cy="17.5" r="1.7"/><circle cx="17" cy="17.5" r="1.7"/>'),
+      help: ico('<circle cx="12" cy="12" r="9"/><path d="M9.5 9.5a2.5 2.5 0 1 1 3.5 2.3c-.6.3-1 .9-1 1.6v.6"/>')
+    };
 
     let commandes = [];
-    let filtre = "toutes";
-    let tri = "recent";
-    const ouvertes = new Set(); // numéros des commandes dépliées
+    let onglet = "toutes";
+    let annee = "toutes";
+    let recherche = "";
+    let idsProduits = {}; // nom du produit -> id, pour le lien "Voir l'article"
+    const ouvertes = new Set(); // commandes dont le suivi détaillé est affiché
+    const deplies = new Set();  // commandes ouvertes (+ / −) ; les autres ne montrent que le résumé
 
-    /* ---------- Puces de filtre ---------- */
-    function afficherPuces() {
-      document.getElementById("puces").innerHTML = FILTRES.map(f => {
-        const nb = commandes.filter(f.test).length;
-        if (nb === 0 && f.id !== "toutes" && f.id !== filtre) return "";
-        return `<button class="puce ${f.id === filtre ? "actif" : ""}" data-filtre="${f.id}">${f.nom}<span class="nb">${nb}</span></button>`;
-      }).join("");
-      document.querySelectorAll(".puce").forEach(b => b.addEventListener("click", () => { filtre = b.dataset.filtre; afficherPuces(); afficherListe(); }));
+    const lienArticle = a => idsProduits[String(a.ref || "").toLowerCase()] ? `article.html?id=${idsProduits[String(a.ref).toLowerCase()]}` : "shop.html";
+    const sousTotal = c => c.articles.reduce((s, a) => s + a.prix * a.quantite, 0);
+    // Lien de suivi du colis selon le transporteur (rempli depuis la page admin)
+    const NOMS_TRANSPORTEURS = { mondialrelay: "Mondial Relay", colissimo: "Colissimo", chronopost: "Chronopost", autre: "Transporteur" };
+    const LIENS_SUIVI = {
+      mondialrelay: n => "https://www.mondialrelay.fr/suivi-de-colis/?numeroExpedition=" + encodeURIComponent(n),
+      colissimo: n => "https://www.laposte.fr/outils/suivre-vos-envois?code=" + encodeURIComponent(n),
+      chronopost: n => "https://www.chronopost.fr/tracking-no-cms/suivi-page?listeNumerosLT=" + encodeURIComponent(n)
+    };
+    const lienSuivi = c => c.numeroSuivi && LIENS_SUIVI[c.transporteur] ? LIENS_SUIVI[c.transporteur](c.numeroSuivi) : null;
+
+    /* ---------- Onglets et année ---------- */
+    function afficherOnglets() {
+      document.getElementById("vboTabs").innerHTML = ONGLETS.map(o =>
+        `<button type="button" role="tab" class="${o.id === onglet ? "on" : ""}" data-onglet="${o.id}">${o.nom}</button>`).join("");
+      document.querySelectorAll("#vboTabs button").forEach(b => b.addEventListener("click", () => { onglet = b.dataset.onglet; afficherOnglets(); afficherListe(); }));
     }
 
     /* ---------- Une commande ---------- */
     function blocSuivi(c) {
       if (c.statut === "annulee") return "";
       const actuel = INDEX_STATUT[c.statut] ?? 0;
-      const etapes = ETAPES.map((nom, i) => {
-        const classe = i <= actuel ? "faite" : (i === actuel + 1 ? "encours" : "");
-        return `<div class="etape ${classe}"><span class="pastille">${coche}</span><span class="etape-lib">${nom}</span></div>`;
-      }).join("");
-      return `<div class="suivi"><div class="etapes" data-progression="${actuel / (ETAPES.length - 1)}"><div class="progression"></div>${etapes}</div></div>`;
+      return `<div class="vbo-steps"><i style="width:calc((100% - 12px) * ${actuel / 3})"></i>${ETAPES.map((n, i) => `<div class="vbo-step ${i <= actuel ? "done" : ""}"><b></b>${n}</div>`).join("")}</div>`;
     }
 
-    function carteCommande(c, rang) {
+    function carteCommande(c) {
       const index = commandes.indexOf(c);
-      const nbArticles = c.articles.reduce((n, a) => n + a.quantite, 0);
-      const ouvert = ouvertes.has(c.numero);
-
-      const miniatures = c.articles.slice(0, 3).map(a => `<img src="${echapper(a.image || "vigo1.png")}" alt="" loading="lazy">`).join("")
-        + (c.articles.length > 3 ? `<span>+${c.articles.length - 3}</span>` : "");
-
-      const articles = c.articles.length
-        ? c.articles.map(a => `
-            <div class="article">
-              <div class="article-img"><img src="${echapper(a.image || "vigo1.png")}" alt="${echapper(a.ref)}" loading="lazy"></div>
-              <div>
-                <p class="article-nom">${echapper(a.ref)}</p>
-                <p class="article-info">${a.taille ? "Taille <b>" + echapper(a.taille) + "</b> · " : ""}Quantité <b>${a.quantite}</b> · ${eurosDec(a.prix)} / pièce</p>
-              </div>
-              <div class="article-prix">${eurosDec(a.prix * a.quantite)}</div>
-            </div>`).join("")
-        : `<p class="text-muted py-3 mb-0" style="font-size: .85rem;">Détail des articles non disponible.</p>`;
-
-      const livraison = c.livraison ? `
-        <div class="livraison">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="flex-shrink:0;margin-top:2px"><path d="M12 21s7-6.2 7-11.5A7 7 0 0 0 5 9.5C5 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg>
-          <div><div class="lib">Livraison à</div>
-            ${echapper(c.livraison.prenom + " " + c.livraison.nom)} · ${echapper(c.livraison.adresse)}, ${echapper(c.livraison.code_postal)} ${echapper(c.livraison.ville)}, ${echapper(c.livraison.pays)}
-            ${c.livraison.telephone ? `<span class="text-muted"> · ${echapper(c.livraison.telephone)}</span>` : ""}</div>
-        </div>` : "";
+      const [titre, phrase] = STATUTS[c.statut] || [c.statut, ""];
+      const livre = c.statut === "livree";
+      const L = c.livraison;
+      const articles = c.articles.map(a => `
+        <div class="vbo-item">
+          <a href="${lienArticle(a)}"><img src="${echapper(a.image || "1.png")}" alt="" loading="lazy"></a>
+          <div>
+            <a href="${lienArticle(a)}" class="vbo-item-name">${echapper(a.ref)}</a>
+            <small>${a.taille ? "Taille " + echapper(a.taille) + " · " : ""}Quantité ${a.quantite} · ${eurosDec(a.prix)}</small>
+            <div class="vbo-mini">
+              <button type="button" class="vbo-pill" data-racheter-article="${index}|${c.articles.indexOf(a)}">${I.rb} Acheter à nouveau</button>
+              <a href="${lienArticle(a)}" class="vbo-pill">${I.eye} Voir l'article</a>
+            </div>
+          </div>
+        </div>`).join("") || `<p class="vbo-phrase">Détail des articles non disponible.</p>`;
+      const frais = Math.max(0, c.total / 100 - sousTotal(c));
 
       return `
-        <article class="cmd ${echapper(c.statut)} ${ouvert ? "ouvert" : ""}" data-numero="${echapper(c.numero)}" style="animation-delay:${Math.min(rang, 8) * 60}ms">
-          <button class="cmd-tete" aria-expanded="${ouvert}">
-            <div class="cmd-infos">
-              <div class="cmd-num">Commande <strong>#${echapper(c.numero || "")}</strong></div>
-              <div class="cmd-date">${dateFr(c.date)}</div>
-              <span class="statut ${echapper(c.statut)}">${LIBELLES[c.statut] || echapper(c.statut)}</span>
+        <article class="vbo-card ${ouvertes.has(c.numero) ? "open" : ""} ${deplies.has(c.numero) ? "" : "replie"}" data-numero="${echapper(c.numero)}">
+          <div class="vbo-head">
+            <div><small>Commande passée le</small><b>${dateFr(c.date)}</b></div>
+            <div><small>Total</small><b>${euros(c.total)}</b></div>
+            ${L ? `<div><small>Livrée à</small><b>${echapper(L.prenom + " " + L.nom)}</b></div>` : ""}
+            <div class="vbo-resume"><span class="vbo-pastille ${echapper(c.statut)}">${echapper(titre)}</span>${c.articles.slice(0, 3).map(a => `<img src="${echapper(a.image || "1.png")}" alt="" loading="lazy">`).join("")}</div>
+            <div class="vbo-head-right">
+              <div>
+                <small>N° ${echapper(c.numero || "")}</small>
+                <div class="vbo-links">
+                  <button type="button" data-details>${I.eye} Détails de la commande <span class="vbo-chev">›</span></button><span>|</span>
+                  <button type="button" data-recu="${index}">${I.dl} Télécharger le reçu <span class="vbo-chev">›</span></button>
+                </div>
+              </div>
+              <button type="button" class="vbo-toggle" data-plier aria-expanded="${deplies.has(c.numero)}" aria-label="${deplies.has(c.numero) ? "Fermer" : "Ouvrir"} la commande">${deplies.has(c.numero) ? "−" : "+"}</button>
             </div>
-            <div class="miniatures" aria-hidden="true">${miniatures}</div>
-            <div class="cmd-total"><div class="val">${euros(c.total)}</div><div class="lib">${nbArticles} article${nbArticles > 1 ? "s" : ""}</div></div>
-            <span class="signe" aria-hidden="true"></span>
-          </button>
-          <div class="cmd-corps"><div><div class="cmd-interieur">
+          </div>
+          <div class="vbo-body">
+            <div class="vbo-left">
+              <p class="vbo-status ${echapper(c.statut)}">${echapper(titre)}</p>
+              <p class="vbo-phrase">${echapper(phrase)}${c.numeroSuivi ? ` ${NOMS_TRANSPORTEURS[c.transporteur] || ""} · n° ${lienSuivi(c) ? `<a href="${lienSuivi(c)}" target="_blank" rel="noopener">${echapper(c.numeroSuivi)}</a>` : echapper(c.numeroSuivi)}` : ""}</p>
+              ${articles}
+            </div>
+            <div class="vbo-actions">
+              ${lienSuivi(c) && c.statut === "expediee" ? `<a href="${lienSuivi(c)}" target="_blank" rel="noopener" class="vbo-btn dark">${I.truck} Suivre le colis</a>`
+                : c.statut !== "annulee" ? `<button type="button" class="vbo-btn dark" data-details>${I.truck} ${livre ? "Voir le suivi" : "Suivre ma commande"}</button>` : ""}
+              ${c.articles.length ? `<button type="button" class="vbo-btn" data-racheter="${index}">${I.rb} Tout racheter</button>` : ""}
+              <button type="button" class="vbo-btn" data-recu="${index}">${I.dl} Reçu</button>
+              <a href="aide.html#contact" class="vbo-btn">${I.help} Besoin d'aide ?</a>
+            </div>
+          </div>
+          <div class="vbo-details">
             ${blocSuivi(c)}
-            <div class="articles">${articles}</div>
-            ${livraison}
-            <div class="cmd-bas">
-              <a href="/aide.html" class="btn-o">Besoin d'aide ?</a>
-              ${c.statut === "expediee" ? `<a href="#" class="btn-o">Suivre le colis</a>` : ""}
-              ${c.articles.length ? `<button class="btn-orange" data-racheter="${index}">↻ Commander à nouveau</button>` : ""}
+            <div class="vbo-grid">
+              <div class="vbo-box"><p class="lib">LIVRAISON${L && L.mode ? " · " + (L.mode === "domicile" ? "À DOMICILE" : "POINT RELAIS") : ""}</p>${L && L.point_relais ? `<p>Point relais : ${echapper(L.point_relais)}</p>` : ""}${L ? `<p><b>${echapper(L.prenom + " " + L.nom)}</b><br>${echapper(L.adresse)}<br>${echapper(L.code_postal + " " + L.ville + ", " + L.pays)}${L.telephone ? "<br>" + echapper(L.telephone) : ""}</p>` : "<p>Adresse non disponible.</p>"}</div>
+              <div class="vbo-box"><p class="lib">RÉCAPITULATIF</p>
+                <div class="vbo-row"><span>Articles</span><span>${eurosDec(sousTotal(c))}</span></div>
+                <div class="vbo-row"><span>Livraison</span><span>${frais > 0.004 ? eurosDec(frais) : "Offerte"}</span></div>
+                <div class="vbo-row tot"><span>Total payé</span><span>${euros(c.total)}</span></div>
+              </div>
             </div>
-          </div></div></div>
+          </div>
         </article>`;
     }
 
-    function animerSuivi(carte) {
-      const e = carte.querySelector(".etapes");
-      if (e) e.querySelector(".progression").style.width = `calc((100% - 26px) * ${e.dataset.progression})`;
+    /* ---------- Onglet « Acheter à nouveau » : chaque article acheté, une seule fois ---------- */
+    function listeRacheter(liste) {
+      const vus = new Map();
+      liste.forEach(c => c.articles.forEach((a, i) => {
+        const cle = (a.ref + "|" + (a.taille || "")).toLowerCase();
+        if (!vus.has(cle)) vus.set(cle, { a, ref: `${commandes.indexOf(c)}|${i}`, date: c.date });
+      }));
+      if (!vus.size) return `<div class="vbo-empty"><p><b>Aucun article à racheter</b></p></div>`;
+      return `<div class="vbo-card"><div class="vbo-body"><div class="vbo-left">${[...vus.values()].map(({ a, ref, date }) => `
+        <div class="vbo-item">
+          <a href="${lienArticle(a)}"><img src="${echapper(a.image || "1.png")}" alt="" loading="lazy"></a>
+          <div>
+            <a href="${lienArticle(a)}" class="vbo-item-name">${echapper(a.ref)}</a>
+            <small>${a.taille ? "Taille " + echapper(a.taille) + " · " : ""}${eurosDec(a.prix)} · acheté le ${dateFr(date)}</small>
+            <div class="vbo-mini"><button type="button" class="vbo-pill" data-racheter-article="${ref}">${I.rb} Acheter à nouveau</button></div>
+          </div>
+        </div>`).join("")}</div></div></div>`;
     }
 
-    /* ---------- Liste (filtre + tri) ---------- */
+    /* ---------- Liste ---------- */
     function afficherListe() {
       const zone = document.getElementById("listeCommandes");
-      const test = FILTRES.find(f => f.id === filtre).test;
-      const liste = commandes.filter(test).sort((a, b) =>
-        tri === "ancien" ? new Date(a.date) - new Date(b.date)
-        : tri === "montant" ? b.total - a.total
-        : new Date(b.date) - new Date(a.date));
+      const o = ONGLETS.find(x => x.id === onglet);
+      const q = recherche.trim().toLowerCase();
+      let liste = commandes
+        .filter(c => annee === "toutes" || new Date(c.date).getFullYear() === +annee)
+        .filter(c => !q || String(c.numero).toLowerCase().includes(q) || c.articles.some(a => String(a.ref).toLowerCase().includes(q)))
+        .sort((a, b) => new Date(b.date) - new Date(a.date));
 
-      if (!liste.length) {
-        zone.innerHTML = `<div class="vide"><p class="fw-bold mb-1">Aucune commande dans cette catégorie</p>
-          <button class="btn-o mt-2" onclick="document.querySelector('[data-filtre=toutes]').click()">Voir toutes les commandes</button></div>`;
-        return;
+      if (onglet === "racheter") {
+        document.getElementById("vboCount").hidden = true;
+        zone.innerHTML = listeRacheter(liste);
+      } else {
+        liste = liste.filter(o.test);
+        const annees = [...new Set(commandes.map(c => new Date(c.date).getFullYear()))].sort((a, b) => b - a);
+        const compte = document.getElementById("vboCount");
+        compte.hidden = false;
+        compte.innerHTML = `<b>${liste.length} commande${liste.length > 1 ? "s" : ""}</b> passée${liste.length > 1 ? "s" : ""} en
+          <select id="vboAnnee"><option value="toutes">toutes les années</option>${annees.map(a => `<option value="${a}" ${String(a) === String(annee) ? "selected" : ""}>${a}</option>`).join("")}</select>`;
+        document.getElementById("vboAnnee").value = annee;
+        document.getElementById("vboAnnee").addEventListener("change", e => { annee = e.target.value; afficherListe(); });
+        zone.innerHTML = liste.length ? liste.map(carteCommande).join("")
+          : `<div class="vbo-empty"><p><b>Aucune commande ici</b></p><p style="color:#666;font-size:14px">Change d'onglet, d'année ou de recherche.</p></div>`;
       }
-      zone.innerHTML = liste.map(carteCommande).join("");
 
-      zone.querySelectorAll(".cmd").forEach(carte => {
-        if (carte.classList.contains("ouvert")) requestAnimationFrame(() => animerSuivi(carte));
-        carte.querySelector(".cmd-corps").inert = !carte.classList.contains("ouvert");
-        carte.querySelector(".cmd-tete").addEventListener("click", () => {
-          const ouvert = carte.classList.toggle("ouvert");
-          carte.querySelector(".cmd-tete").setAttribute("aria-expanded", ouvert);
-          carte.querySelector(".cmd-corps").inert = !ouvert;
-          ouvert ? ouvertes.add(carte.dataset.numero) : ouvertes.delete(carte.dataset.numero);
-          if (ouvert) animerSuivi(carte);
+      zone.querySelectorAll(".vbo-card[data-numero]").forEach(carte => {
+        const num = carte.dataset.numero;
+        const plier = (ouvrir) => {
+          carte.classList.toggle("replie", !ouvrir);
+          ouvrir ? deplies.add(num) : deplies.delete(num);
+          const t = carte.querySelector("[data-plier]");
+          t.textContent = ouvrir ? "−" : "+";
+          t.setAttribute("aria-expanded", ouvrir);
+          t.setAttribute("aria-label", (ouvrir ? "Fermer" : "Ouvrir") + " la commande");
+        };
+        // Un clic sur l'en-tête (ailleurs que sur un lien) ouvre ou ferme la commande
+        carte.querySelector(".vbo-head").addEventListener("click", e => {
+          if (e.target.closest("[data-details], [data-recu], a")) return;
+          plier(carte.classList.contains("replie"));
         });
+        carte.querySelectorAll("[data-details]").forEach(b => b.addEventListener("click", e => {
+          e.stopPropagation();
+          plier(true);
+          const ouvert = carte.classList.toggle("open");
+          ouvert ? ouvertes.add(num) : ouvertes.delete(num);
+        }));
       });
-      zone.querySelectorAll("[data-racheter]").forEach(b => b.addEventListener("click", () => racheter(+b.dataset.racheter)));
+      zone.querySelectorAll("[data-racheter]").forEach(b => b.addEventListener("click", () => racheter(commandes[+b.dataset.racheter].articles)));
+      zone.querySelectorAll("[data-racheter-article]").forEach(b => b.addEventListener("click", () => {
+        const [ci, ai] = b.dataset.racheterArticle.split("|").map(Number);
+        racheter([commandes[ci].articles[ai]]);
+      }));
+      zone.querySelectorAll("[data-recu]").forEach(b => b.addEventListener("click", () => telechargerRecu(commandes[+b.dataset.recu])));
     }
 
-    document.getElementById("tri").addEventListener("change", e => { tri = e.target.value; afficherListe(); });
+    document.getElementById("vboSearch").addEventListener("input", e => { recherche = e.target.value; afficherListe(); });
 
-    /* ---------- Menu « Trier » personnalisé ---------- */
-    (function () {
-      const boite = document.getElementById("triBoite"), btn = document.getElementById("triBtn");
-      const items = [...document.querySelectorAll("#triMenu li")], select = document.getElementById("tri");
-      let focus = -1;
-      const ouvrir = o => { boite.classList.toggle("ouvert", o); btn.setAttribute("aria-expanded", o);
-        focus = o ? items.findIndex(li => li.getAttribute("aria-selected") === "true") : -1; marquer(); };
-      const marquer = () => items.forEach((li, i) => li.classList.toggle("focus", i === focus));
-      const choisir = li => {
-        items.forEach(x => x.setAttribute("aria-selected", x === li));
-        document.getElementById("triTexte").textContent = li.textContent;
-        select.value = li.dataset.valeur; select.dispatchEvent(new Event("change"));
-        ouvrir(false); btn.focus();
-      };
-      btn.addEventListener("click", () => ouvrir(!boite.classList.contains("ouvert")));
-      items.forEach(li => li.addEventListener("click", () => choisir(li)));
-      document.addEventListener("click", e => { if (!boite.contains(e.target)) ouvrir(false); });
-      boite.addEventListener("keydown", e => {
-        if (!boite.classList.contains("ouvert")) { if (e.key === "ArrowDown") { e.preventDefault(); ouvrir(true); } return; }
-        if (e.key === "Escape") { ouvrir(false); btn.focus(); }
-        else if (e.key === "ArrowDown") { e.preventDefault(); focus = (focus + 1) % items.length; marquer(); }
-        else if (e.key === "ArrowUp") { e.preventDefault(); focus = (focus - 1 + items.length) % items.length; marquer(); }
-        else if (e.key === "Enter" && focus >= 0) { e.preventDefault(); choisir(items[focus]); }
-      });
-    })();
-
-    /* ---------- Commander à nouveau ---------- */
-    function racheter(index) {
-      const c = commandes[index];
+    /* ---------- Acheter à nouveau ---------- */
+    function racheter(articles) {
       const panier = JSON.parse(localStorage.getItem("userCart")) || [];
-      c.articles.forEach(a => {
+      articles.forEach(a => {
         const id = (a.ref + "-" + (a.taille || "U")).replace(/\s+/g, "-");
         const existant = panier.find(p => p.id === id);
         if (existant) existant.quantity += a.quantite;
         else panier.push({ id, ref: a.ref, price: a.prix, quantity: a.quantite, size: a.taille, color: a.couleur || "Standard", image: a.image });
       });
       localStorage.setItem("userCart", JSON.stringify(panier));
-      notif(`Les articles de la commande #${c.numero} sont dans ton panier.`, "succes", "Ajouté au panier", c.articles[0] && c.articles[0].image);
-      setTimeout(() => window.location.href = "/panier.html", 1600);
+      window.location.href = "/panier.html";
+    }
+
+    /* ---------- Reçu : page imprimable (le navigateur propose « Enregistrer en PDF ») ---------- */
+    function telechargerRecu(c) {
+      const L = c.livraison;
+      const frais = Math.max(0, c.total / 100 - sousTotal(c));
+      const lignes = c.articles.map(a => `<tr><td>${echapper(a.ref)}${a.taille ? " — taille " + echapper(a.taille) : ""}</td><td>${a.quantite}</td><td>${eurosDec(a.prix)}</td><td>${eurosDec(a.prix * a.quantite)}</td></tr>`).join("");
+      const fen = window.open("", "_blank");
+      if (!fen) { notif("Autorise les fenêtres pop-up pour télécharger le reçu.", "erreur"); return; }
+      fen.document.write(`<!doctype html><html lang="fr"><head><meta charset="utf-8"><title>Reçu ${echapper(c.numero)} - Varenba</title><style>
+        body{font-family:-apple-system,"Segoe UI",Roboto,Arial,sans-serif;color:#111;max-width:700px;margin:40px auto;padding:0 20px}
+        h1{letter-spacing:.28em;font-size:24px;margin:0 0 4px} .muted{color:#666;font-size:13px} table{width:100%;border-collapse:collapse;margin:24px 0}
+        th,td{text-align:left;padding:10px 6px;border-bottom:1px solid #e5e5e5;font-size:14px} th{font-size:12px;color:#666;text-transform:uppercase;letter-spacing:.05em}
+        td:nth-child(n+2),th:nth-child(n+2){text-align:right} .tot td{font-weight:800;font-size:16px;border-bottom:none}
+        .grid{display:flex;gap:40px;margin-top:20px;font-size:14px;line-height:1.55} .lib{font-size:11px;font-weight:800;letter-spacing:.08em;color:#777}
+        .print{margin-top:30px;padding:12px 26px;border:none;border-radius:30px;background:#111;color:#fff;font-weight:700;cursor:pointer} @media print{.print{display:none}}
+      </style><\/head><body>
+        <h1>VARENBA</h1><p class="muted">Reçu de commande</p>
+        <div class="grid"><div><div class="lib">COMMANDE</div>N° ${echapper(c.numero)}<br>Passée le ${dateFr(c.date)}</div>
+        ${L ? `<div><div class="lib">LIVRAISON</div>${echapper(L.prenom + " " + L.nom)}<br>${echapper(L.adresse)}<br>${echapper(L.code_postal + " " + L.ville + ", " + L.pays)}</div>` : ""}</div>
+        <table><thead><tr><th>Article</th><th>Qté</th><th>Prix</th><th>Total</th></tr></thead><tbody>${lignes}
+          <tr><td colspan="3">Livraison</td><td>${frais > 0.004 ? eurosDec(frais) : "Offerte"}</td></tr>
+          <tr class="tot"><td colspan="3">Total payé</td><td>${euros(c.total)}</td></tr></tbody></table>
+        <p class="muted">Paiement par carte bancaire, sécurisé par Stripe.</p>
+        <button class="print" onclick="window.print()">Imprimer / Enregistrer en PDF</button>
+      <\/body><\/html>`);
+      fen.document.close();
     }
 
     /* ---------- Chargement ---------- */
@@ -622,27 +765,25 @@
         if (!data.success) throw new Error(data.message);
         commandes = data.commandes;
 
+        // Liens "Voir l'article" : on retrouve l'id du produit à partir de son nom
+        try {
+          const p = await (await fetch("/products")).json();
+          if (p.success) p.products.forEach(x => { idsProduits[String(x.nom).toLowerCase()] = x.id; });
+        } catch (e) {}
+
+        afficherOnglets();
+        const plusRecente = [...commandes].sort((a, b) => new Date(b.date) - new Date(a.date))[0];
+        if (plusRecente) deplies.add(plusRecente.numero);
         if (!commandes.length) {
-          zone.innerHTML = `
-            <div class="vide">
-              <div class="vide-ico"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6 7h12l-1 13H7L6 7z"/><path d="M9 7V5a3 3 0 0 1 6 0v2"/></svg></div>
-              <p class="fw-bold mb-1">Aucune commande pour le moment</p>
-              <p class="text-muted mb-4" style="font-size:.9rem;">Tes commandes apparaîtront ici juste après ton paiement.</p>
-              <a href="/site.html" class="btn-orange px-4">Découvrir la boutique</a>
-            </div>`;
+          zone.innerHTML = `<div class="vbo-empty"><p><b>Aucune commande pour le moment</b></p>
+            <p style="color:#666;font-size:14px;margin-bottom:18px">Tes commandes apparaîtront ici juste après ton paiement.</p>
+            <a href="shop.html" class="vbo-btn dark" style="display:inline-flex;padding:12px 26px">Découvrir la boutique</a></div>`;
           return;
         }
-
-        // La commande la plus récente est ouverte par défaut, les autres sont repliées
-        const plusRecente = [...commandes].sort((a, b) => new Date(b.date) - new Date(a.date))[0];
-        ouvertes.add(plusRecente.numero);
-
-        document.getElementById("barreFiltres").hidden = false;
-        afficherPuces();
         afficherListe();
       } catch (e) {
         console.error(e);
-        zone.innerHTML = `<div class="vide"><p class="fw-bold mb-1">Impossible de charger tes commandes</p><p class="text-muted mb-0" style="font-size:.9rem;">Réessaie dans un instant.</p></div>`;
+        zone.innerHTML = `<div class="vbo-empty"><p><b>Impossible de charger tes commandes</b></p><p style="color:#666;font-size:14px">Réessaie dans un instant.</p></div>`;
       }
     })();
   </script>

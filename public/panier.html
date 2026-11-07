@@ -14,6 +14,7 @@
   <link href="nav-pc.css" rel="stylesheet">
   <link href="menu-mobile.css" rel="stylesheet">
   <link href="footer.css" rel="stylesheet">
+  <link href="cookies.css" rel="stylesheet">
 </head>
 
 <body>
@@ -354,8 +355,10 @@ html, body {
   width: 100%;
   margin: 0;
   padding: 0;
-  overflow-x: hidden;
 }
+/* « clip » coupe le débordement sans transformer la page en zone de défilement :
+   avec « hidden » sur html + body, la barre du haut ne restait plus collée et ne se réduisait plus au scroll */
+body { overflow-x: clip; }
 
 /* Force ton footer à s'étirer sur absolument tout l'écran, sans marges ni bordures */
 footer {
@@ -772,7 +775,7 @@ function loadCart() {
     cartItems.innerHTML = '';
     
     if (cart.length === 0) {
-        cartItems.innerHTML = '<p class="text-muted text-center py-4">Votre panier est vide.</p>';
+        cartItems.innerHTML = '<div class="vb-empty"><img src="desert.svg" alt="" class="vb-empty-img"><h2 class="vb-empty-title">Ton panier est vide</h2><p class="vb-empty-text">Pas un seul article à l&#39;horizon… Trouve ce qui te plaît dans la boutique.</p><a href="shop.html" class="vb-empty-btn">Découvrir la boutique</a></div>';
         updateSummary(0, []);
         return;
     }
@@ -1580,6 +1583,7 @@ document.addEventListener("DOMContentLoaded", () => {
         <a href="localisation.html">Trouver un magasin</a>
         <a href="cgu.html">Conditions générales</a>
         <a href="confidentialite.html">Confidentialité</a>
+        <a href="#" data-cookies-open>Gérer les cookies</a>
       </div>
     </div>
   </div>
@@ -1598,60 +1602,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
 
-<div id="cookie-banner" style="
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0,0,0,0.55);
-    backdrop-filter: blur(1px);
-    display: none; 
-    justify-content: center;
-    align-items: center;
-    z-index: 10000;
-">
 
-    <div style="
-        background: whitesmoke;
-        color: black;
-        padding: 20px;
-        border-radius: 10px;
-        max-width: 650px;
-        width: 90%;
-        box-shadow: 0 5px 25px rgba(0,0,0,0.25);
-    ">
-        <p style="max-width:800px;text-align:left;margin-bottom:10px; color: black; font-size:13px;">
-            En cliquant sur "Accepter tous les cookies", vous acceptez que des cookies soient stockés sur votre appareil afin d'améliorer la navigation sur le site, d'analyser son utilisation et de contribuer à nos efforts de marketing. Les préférences peuvent être ajustées à tout moment dans les paramètres des cookies. Consultez notre 
-            <a href="">Politique d'utilisation des cookies</a>
-        </p>
-
-        <div style="display:flex;gap:10px;flex-wrap:wrap;justify-content:center;">
-            <button id="reject-all" style="font-size:13px;padding:10px 20px;background:whitesmoke;color:black;border:1px solid black;border-radius:4px;cursor:pointer;">
-                Rejeter tous les cookies
-            </button>
-
-            <button id="accept-all" style="font-size:13px;color:white;padding:10px 20px;background:#43D5B0;border-radius:2px;border:none;cursor:pointer;">
-                Accepter tous les cookies
-            </button>
-
-            <button id="customize" style="font-size:13px;padding:10px 20px;background:#2E2E2E;color:white;border:none;border-radius:2px;cursor:pointer;">
-                Paramètres des cookies
-            </button>
-        </div>
-
-        <div id="custom-options" style="display:none;margin-top:10px;text-align:left;">
-            <label><input type="checkbox" id="functional-cookies" checked disabled> Cookies nécessaires (toujours actifs)</label><br>
-            <label><input type="checkbox" id="analytics-cookies"> Cookies analytiques</label><br>
-            <label><input type="checkbox" id="marketing-cookies"> Cookies marketing / recommandations</label><br>
-
-            <button id="save-preferences" style="margin-top:10px;padding:8px 15px;background:#008CBA;color:white;border:none;border-radius:5px;cursor:pointer;">
-                Enregistrer
-            </button>
-        </div>
-    </div>
-
-</div>
 
 
 
@@ -1712,7 +1663,7 @@ document.addEventListener("DOMContentLoaded", function() {
   if (!container) return;
 
   if (cart.length === 0) {
-    container.innerHTML = "<p class='text-muted'>Votre panier est vide.</p>";
+    container.innerHTML = '<div class="vb-empty"><img src="desert.svg" alt="" class="vb-empty-img"><h2 class="vb-empty-title">Ton panier est vide</h2><p class="vb-empty-text">Pas un seul article à l&#39;horizon… Trouve ce qui te plaît dans la boutique.</p><a href="shop.html" class="vb-empty-btn">Découvrir la boutique</a></div>';
     if (totalContainer) totalContainer.innerText = "Total : 0.00€";
     return;
   }
@@ -1960,58 +1911,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 });
-const banner = document.getElementById('cookie-banner');
-const customizeBtn = document.getElementById('customize');
-const customOptions = document.getElementById('custom-options');
-const savePreferences = document.getElementById('save-preferences');
-
-
-// Afficher / cacher les options personnalisées
-customizeBtn.addEventListener('click', () => {
-    console.log('Utilisateur a cliqué sur "Paramètres des cookies"');
-    customOptions.style.display = customOptions.style.display === 'none' ? 'block' : 'none';
-});
-
-// Accepter tous les cookies
-document.getElementById('accept-all').addEventListener('click', () => {
-    console.log('Utilisateur a cliqué sur "Accepter tous les cookies"');
-    localStorage.setItem('cookies', JSON.stringify({
-        necessary: true,
-        analytics: true,
-        marketing: true
-    }));
-    banner.style.display = 'none';
-});
-
-// Refuser tous les cookies sauf nécessaires
-document.getElementById('reject-all').addEventListener('click', () => {
-    console.log('Utilisateur a cliqué sur "Rejeter tous les cookies"');
-    localStorage.setItem('cookies', JSON.stringify({
-        necessary: true,
-        analytics: false,
-        marketing: false
-    }));
-    banner.style.display = 'none';
-});
-
-// Sauvegarder les préférences personnalisées
-savePreferences.addEventListener('click', () => {
-    console.log('Utilisateur a cliqué sur "Enregistrer les préférences"');
-    const preferences = {
-        necessary: true,
-        analytics: document.getElementById('analytics-cookies').checked,
-        marketing: document.getElementById('marketing-cookies').checked
-    };
-    localStorage.setItem('cookies', JSON.stringify(preferences));
-    banner.style.display = 'none';
-});
-
-// Afficher le bandeau UNIQUEMENT si l'utilisateur n'a JAMAIS choisi
-window.addEventListener('load', () => {
-    if(!localStorage.getItem('cookies')){
-        banner.style.display = 'flex';
-    }
-});
+// (ancien bandeau cookies retiré : voir cookies.js)
 </script>
 
 
@@ -2321,6 +2221,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 <script src="nav-pc.js"></script>
 <script src="footer.js"></script>
+<script src="cookies.js"></script>
 <script src="menu-mobile.js"></script>
 <script src="favoris-badge.js"></script>
 </body>

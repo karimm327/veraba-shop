@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex">
+<link rel="icon" type="image/png" href="aaa.png">
+<title>Connexion admin - Varenba</title>
+<style>
+  * { box-sizing: border-box; }
+  body { margin: 0; min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 16px; background: #111; color: #111;
+         font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; }
+  .box { width: 100%; max-width: 380px; padding: 32px 28px; background: #fff; border-radius: 14px; }
+  .logo { margin: 0; font-size: 20px; font-weight: 900; letter-spacing: 0.26em; }
+  .tag { display: inline-block; margin: 6px 0 22px; padding: 3px 10px; border-radius: 20px; background: #f2f2f2; font-size: 12px; font-weight: 700; color: #555; }
+  label { display: block; margin-bottom: 6px; font-size: 13px; font-weight: 600; }
+  input { width: 100%; height: 50px; padding: 0 16px; border: 1px solid #ccc; border-radius: 8px; font-size: 16px; outline: none; }
+  input:focus { border-color: #111; }
+  button { width: 100%; margin-top: 16px; padding: 14px; border: none; border-radius: 30px; background: #111; color: #fff; font-size: 15px; font-weight: 800; cursor: pointer; }
+  button:disabled { background: #777; cursor: wait; }
+  .err { min-height: 20px; margin: 10px 0 0; font-size: 13px; font-weight: 600; color: #d43f21; }
+  .back { display: block; margin-top: 18px; text-align: center; font-size: 13px; color: #666; }
+</style>
+</head>
+<body>
+<form class="box" id="form">
+  <h1 class="logo">VARENBA</h1>
+  <span class="tag">Espace administrateur</span>
+  <label for="pwd">Mot de passe admin</label>
+  <input type="password" id="pwd" autocomplete="current-password" required autofocus>
+  <button type="submit" id="btn">Se connecter</button>
+  <p class="err" id="err" role="alert"></p>
+  <a href="index.html" class="back">← Retour au site</a>
+</form>
+<script>
+  document.getElementById("form").addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const btn = document.getElementById("btn"), err = document.getElementById("err");
+    err.textContent = "";
+    btn.disabled = true;
+    try {
+      const res = await fetch("/api/admin/login", {
+        method: "POST", headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ password: document.getElementById("pwd").value })
+      });
+      const data = await res.json();
+      if (data.success) { window.location.href = "/admin.html"; return; }
+      err.textContent = data.message || "Connexion impossible";
+    } catch (e2) {
+      err.textContent = "Serveur injoignable";
+    }
+    btn.disabled = false;
+  });
+</script>
+</body>
+</html>

@@ -15,6 +15,109 @@
   <link href="nav-pc.css" rel="stylesheet">
   <link href="menu-mobile.css" rel="stylesheet">
   <link href="footer.css" rel="stylesheet">
+<style>
+/* ========== Page produit (infos .vbp-*) ========== */
+#thumbnail-container .thumbnail-item { border: 1px solid #e5e5e5 !important; border-radius: 6px !important; padding: 0 !important; overflow: hidden; opacity: .7; cursor: pointer; transition: opacity .15s; }
+#thumbnail-container .thumbnail-item:hover { opacity: 1; }
+#thumbnail-container .thumbnail-item.active { border: 2px solid #111 !important; opacity: 1; }
+#thumbnail-container .thumbnail-item img { height: auto !important; aspect-ratio: 1 / 1; object-fit: cover; display: block; }
+#mainImage { background: #f3f3f3; border-radius: 8px !important; aspect-ratio: 1 / 1; object-fit: contain !important; }
+.vbp-crumb { margin: 0 0 10px; font-size: 12px; color: #888; }
+.vbp-crumb a { color: #888; text-decoration: none; } .vbp-crumb a:hover { color: #111; text-decoration: underline; }
+.vbp-title { margin: 0; font-size: 28px; font-weight: 900; letter-spacing: -0.01em; color: #111; }
+.vbp-sub { margin: 4px 0 10px !important; font-size: 14px !important; color: #666 !important; }
+.vbp-sub:empty { display: none; }
+.vbp-price { margin-bottom: 20px; font-size: 22px; font-weight: 800; color: #111; }
+.vbp-label { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; font-size: 14px; color: #111; }
+.vbp-label a { font-size: 13px; color: #111; text-decoration: underline; }
+.vbp-sizes { display: grid; grid-template-columns: repeat(6, 1fr); gap: 8px; }
+.vbp-size { position: relative; height: 46px; padding: 0; border: 1px solid #ccc !important; border-radius: 6px !important; background: #fff !important; color: #111 !important; font-size: 14px; font-weight: 600; box-shadow: none !important; }
+.vbp-size:hover:not(:disabled) { border-color: #111 !important; }
+.vbp-size.selected { border: 2px solid #111 !important; }
+.vbp-size:disabled { background: #f6f6f6 !important; color: #bbb !important; text-decoration: line-through; opacity: 1; cursor: not-allowed; }
+.vbp-size.low::after { content: ""; position: absolute; top: 6px; right: 6px; width: 7px; height: 7px; border-radius: 50%; background: #ff8a00; }
+.vbp-hint { margin: 8px 0 0 !important; font-size: 12px !important; color: #b45309 !important; }
+.vbp-cta { display: flex; gap: 10px; margin-top: 20px; }
+.vbp-btn { flex: 1; padding: 16px; border: none; border-radius: 30px; background: #111; color: #fff; font-size: 15px; font-weight: 800; cursor: pointer; transition: background-color .15s; }
+.vbp-btn:hover { background: #333; }
+.vbp-fav { width: 54px; flex-shrink: 0; border: 1px solid #ccc; border-radius: 50%; background: #fff; color: #111; display: flex; align-items: center; justify-content: center; cursor: pointer; }
+.vbp-fav:hover { border-color: #111; }
+.vbp-fav.active svg { fill: #dc3545; stroke: #dc3545; }
+.vbp-added { margin: 10px 0 0 !important; text-align: center; font-size: 13px !important; color: #1f7a3d !important; font-weight: 600; }
+.vbp-added a { color: #111; }
+.vbp-trust { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px 14px; margin-top: 18px; padding-bottom: 14px; border-bottom: 1px solid #eee; font-size: 12px; color: #555; }
+.vbp-trust span { display: inline-flex; align-items: center; gap: 6px; }
+.vbp-acc { border-bottom: 1px solid #eee; }
+.vbp-acc-head { display: flex; justify-content: space-between; align-items: center; width: 100%; padding: 15px 0; border: none; background: none; font-size: 15px; font-weight: 700; color: #111; text-align: left; cursor: pointer; }
+.vbp-acc-head small { margin-left: 8px; font-size: 12px; font-weight: 400; color: #888; }
+.vbp-acc-head svg { transition: transform .2s; flex-shrink: 0; }
+.vbp-acc-head:not(.collapsed) svg { transform: rotate(180deg); }
+.vbp-acc-body { padding-bottom: 14px; font-size: 13px; line-height: 1.7; color: #555; }
+.vb-sec-title { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif !important; }
+.vbp-acc-body p { margin: 0 0 6px; } .vbp-acc-body ul { margin: 0; padding: 0; list-style: none; } .vbp-acc-body a { color: #111; }
+@media (max-width: 576px) { .vbp-title { font-size: 22px; } .vbp-sizes { grid-template-columns: repeat(3, 1fr); } .vbp-trust { flex-direction: column; } }
+/* ==========================================
+   En-tête des sections produits ("Nos tee-shirts") : style Zalando
+   ========================================== */
+.vb-sec-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 16px;
+  margin-bottom: 20px;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+}
+.vb-sec-title {
+  margin: 0;
+  font-size: 30px;
+  font-weight: 900;
+  letter-spacing: -0.01em;
+  color: #111;
+}
+.vb-sec-sub { margin: 4px 0 0 !important; font-size: 14px !important; color: #666 !important; }
+.vb-sec-count { font-weight: 700; color: #444; }
+.vb-sec-actions { display: flex; align-items: center; gap: 10px; flex-shrink: 0; }
+.vb-sec-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #111 !important;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  white-space: nowrap;
+}
+.vb-sec-link:hover { text-decoration-thickness: 2px; }
+.vb-sec-sep { width: 1px; height: 24px; background: #e0e0e0; margin: 0 6px; }
+.vb-sec-arrow {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 1px solid #111;
+  background: #111;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  cursor: pointer;
+  transition: background-color 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+}
+.vb-sec-arrow:hover:not(:disabled) { background: #333; border-color: #333; }
+.vb-sec-arrow:disabled { background: #fff; color: #bbb; border-color: #e0e0e0; cursor: default; }
+
+/* Mobile : on fait défiler au doigt, donc pas de flèches ; titre plus petit */
+@media (max-width: 991.98px) {
+  .vb-sec-sep, .vb-sec-arrow { display: none; }
+  .vb-sec-title { font-size: 20px; }
+  .vb-sec-sub { font-size: 12px !important; }
+  .vb-sec-link { font-size: 13px; }
+  .vb-sec-head { margin-bottom: 14px; }
+}
+
+</style>
+  <link href="cookies.css" rel="stylesheet">
 </head>
 
 <body>
@@ -377,8 +480,10 @@ html, body {
   width: 100%;
   margin: 0;
   padding: 0;
-  overflow-x: hidden;
 }
+/* « clip » coupe le débordement sans transformer la page en zone de défilement :
+   avec « hidden » sur html + body, la barre du haut ne restait plus collée et ne se réduisait plus au scroll */
+body { overflow-x: clip; }
 
 /* Force ton footer à s'étirer sur absolument tout l'écran, sans marges ni bordures */
 footer {
@@ -589,103 +694,53 @@ footer .container-fluid {
     <div class="col-lg-5">
       <div class="ps-lg-3 py-2" style="border-radius: 0 !important;">
 
-        <!-- 1. Titre, Sous-titre & Prix -->
-        <div class="mb-3">
-          <h1 id="product-ref" class="fw-bold fs-4 mb-1 text-dark" style="letter-spacing: -0.02em;">Tee-Shirt Rouge Classic</h1>
-          <p class="text-muted small mb-2" style="font-size: 0.82rem;">Édition Limitée Rouge</p>
-          <div id="product-price" class="fs-5 text-dark">22,99 €</div>
-        </div>
+        <!-- ========== Infos produit (styles .vbp-* en haut de la page) ========== -->
+        <p class="vbp-crumb"><a href="site.html">Accueil</a> / <a href="shop.html">Boutique</a></p>
+        <h1 id="product-ref" class="vbp-title">T-shirt Varenba</h1>
+        <p class="vbp-sub" id="product-desc"></p>
+        <div id="product-price" class="vbp-price">22,99 €</div>
 
-      <!-- Section Tailles carrées sans bordure -->
-<section class="taille mb-4">
-  <div class="d-flex justify-content-between align-items-center mb-2">
-    <span class="fw-bold text-dark" style="font-size: 0.8rem; text-transform: uppercase;">Sélectionner la taille</span>
-    <a href="#" class="text-dark text-decoration-underline small fw-medium" style="font-size: 0.78rem;">Guide des tailles</a>
-  </div>
-
-  <div class="d-flex flex-wrap gap-2 mb-2" id="size-container">
-    
-    <!-- XS : Carré indisponible (grisé avec croix) -->
-    <button type="button" class="btn text-muted position-relative disabled p-0 d-flex align-items-center justify-content-center" style="border: none !important; background-color: #f1f1f1 !important; width: 48px; height: 48px; border-radius: 0 !important;">
-      <span class="position-absolute w-100 border-top border-secondary" style="top: 50%; transform: rotate(-35deg);"></span>
-      <span style="opacity: 0.4;">XS</span>
-    </button>
-
-    <!-- S : Carré sélectionné (Noir) -->
-    <button type="button" class="btn btn-dark p-0 fw-semibold active d-flex align-items-center justify-content-center" style="border: none !important; width: 48px; height: 48px; border-radius: 0 !important;">
-      S
-    </button>
-
-    <!-- M : Carré disponible -->
-    <button type="button" class="btn p-0 fw-normal d-flex align-items-center justify-content-center" style="border: none !important; background-color: #f7f7f7 !important; width: 48px; height: 48px; border-radius: 0 !important;">
-      M
-    </button>
-
-    <!-- L : Carré disponible -->
-    <button type="button" class="btn p-0 fw-normal d-flex align-items-center justify-content-center" style="border: none !important; background-color: #f7f7f7 !important; width: 48px; height: 48px; border-radius: 0 !important;">
-      L
-    </button>
-
-    <!-- XL : Carré indisponible (grisé avec croix) -->
-    <button type="button" class="btn text-muted position-relative disabled p-0 d-flex align-items-center justify-content-center" style="border: none !important; background-color: #f1f1f1 !important; width: 48px; height: 48px; border-radius: 0 !important;">
-      <span class="position-absolute w-100 border-top border-secondary" style="top: 50%; transform: rotate(-35deg);"></span>
-      <span style="opacity: 0.4;">XL</span>
-    </button>
-
-    <!-- XXL : Carré indisponible (grisé avec croix) -->
-    <button type="button" class="btn text-muted position-relative disabled p-0 d-flex align-items-center justify-content-center" style="border: none !important; background-color: #f1f1f1 !important; width: 48px; height: 48px; border-radius: 0 !important;">
-      <span class="position-absolute w-100 border-top border-secondary" style="top: 50%; transform: rotate(-35deg);"></span>
-      <span style="opacity: 0.4;">XXL</span>
-    </button>
-
-  </div>
-</section>
-
-       <button class="btn btn-dark w-100 py-3 fw-semibold text-uppercase shadow-none" id="add-to-cart-btn" type="button" style="border-radius: 0 !important; font-size: 0.85rem; letter-spacing: 0.5px;">
-  Ajouter au panier
-</button>
-
-        <p class="text-muted text-center mb-4" style="font-size: 0.72rem;">
-          Ce produit est exclu des promotions et réductions du site.
-        </p>
-
-        <!-- 5. Retrait gratuit & Magasin -->
-        <div class="py-3 border-top border-bottom mb-4" style="border-color: #eee !important;">
-          <div class="fw-bold text-dark mb-1" style="font-size: 0.85rem;">Retrait gratuit</div>
-          <a href="#" class="text-dark text-decoration-underline fw-semibold d-block mb-2" style="font-size: 0.82rem;">Trouver un magasin</a>
-          <p class="text-muted mb-0" style="font-size: 0.75rem;">Option « click and collect » disponible au moment du paiement</p>
-        </div>
-
-        <div class="mb-4 text-muted" style="font-size: 0.8rem;">
-          <ul class="list-unstyled mb-0 ps-0">
-            <li class="mb-1">Couleur affichée : <span id="product-color-text" class="text-dark fw-medium">Rouge</span></li>
-            <li class="mb-0">Article : <span id="product-article-sku" class="text-dark fw-medium">TS-RED-001</span></li>
-          </ul>
-          <a href="#details" class="text-dark text-decoration-underline fw-medium d-inline-block mt-2" style="font-size: 0.8rem;">Afficher les détails du produit</a>
-        </div>
-
-        <!-- 7. Accordéon Livraison et retours -->
-        <div class="accordion custom-accordion border-0 bg-white mb-4" id="productAccordion">
-          <div class="accordion-item border-0 border-top border-bottom bg-white" style="border-radius: 0 !important; border-color: #eee !important;">
-            <h2 class="accordion-header">
-              <button class="accordion-button bg-white fw-bold shadow-none px-0 py-3 text-dark collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#livraison" style="font-size: 0.85rem; border-radius: 0 !important;">
-                Livraison et retours
-              </button>
-            </h2>
-            <div id="livraison" class="accordion-collapse collapse" data-bs-parent="#productAccordion">
-              <div class="accordion-body text-muted px-0 pt-0 pb-3" style="font-size: 0.78rem; line-height: 1.5;">
-                Pour les personnes n'étant pas membres, la livraison standard coûte 5 € pour les achats de moins de 99 €. Retrait en magasin gratuit et retours gratuits sous 30 jours. <a href="#" class="text-dark text-decoration-underline">Des exclusions s'appliquent.</a>
-              </div>
-            </div>
+        <section class="taille">
+          <div class="vbp-label"><span>Taille : <b id="vbpSizeLabel">S</b></span><a href="guideproduct.html">Guide des tailles</a></div>
+          <div class="vbp-sizes" id="size-container">
+            <button type="button" class="btn vbp-size" data-size="XS">XS</button>
+            <button type="button" class="btn vbp-size" data-size="S">S</button>
+            <button type="button" class="btn vbp-size" data-size="M">M</button>
+            <button type="button" class="btn vbp-size" data-size="L">L</button>
+            <button type="button" class="btn vbp-size" data-size="XL">XL</button>
+            <button type="button" class="btn vbp-size" data-size="XXL">XXL</button>
           </div>
+          <p class="vbp-hint" id="vbpHint" hidden></p>
+        </section>
+
+        <div class="vbp-cta">
+          <button class="vbp-btn" id="add-to-cart-btn" type="button">Ajouter au panier</button>
+          <button type="button" class="vbp-fav" id="vbpFav" aria-label="Ajouter aux favoris"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78L12 21.23l8.84-8.84a5.5 5.5 0 0 0 0-7.78z"/></svg></button>
+        </div>
+        <p class="vbp-added" id="vbpAdded" hidden>✓ Ajouté au panier · <a href="panier.html">Voir mon panier</a></p>
+
+        <div class="vbp-trust">
+          <span><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2.5 6.5h11v9h-11z"/><path d="M13.5 9.5h4l3 3v3h-7z"/><circle cx="6.5" cy="17.5" r="1.7"/><circle cx="17" cy="17.5" r="1.7"/></svg> Livraison offerte dès 50 €</span>
+          <span><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 14L4 9l5-5"/><path d="M4 9h10.5a5.5 5.5 0 0 1 0 11H11"/></svg> Retours gratuits 30 jours</span>
+          <span><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="4.5" y="10.5" width="15" height="10" rx="2"/><path d="M8 10.5V7a4 4 0 0 1 8 0v3.5"/></svg> Paiement sécurisé</span>
         </div>
 
-        <!-- 8. Bloc Avis clients -->
-        <div class="d-flex justify-content-between align-items-center py-3 border-bottom mb-4" style="border-color: #eee !important;">
-          <span class="fw-bold text-dark" style="font-size: 0.85rem;">Avis (0)</span>
-          <div class="d-flex align-items-center gap-2">
-            
-            <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="currentColor" class="bi bi-chevron-down" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708"/></svg>
+        <div class="vbp-accs" id="productAccordion">
+          <div class="vbp-acc">
+            <button type="button" class="vbp-acc-head collapsed" data-bs-toggle="collapse" data-bs-target="#details" aria-expanded="false"><span>Détails du produit</span><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 9l6 6 6-6"/></svg></button>
+            <div id="details" class="collapse"><div class="vbp-acc-body"><p id="vbpDetails">T-shirt Varenba.</p><ul><li id="vbpColorLine" hidden>Couleur : <b id="product-color-text"></b></li><li id="vbpSkuLine" hidden>Référence : <b id="product-article-sku"></b></li></ul></div></div>
+          </div>
+          <div class="vbp-acc">
+            <button type="button" class="vbp-acc-head collapsed" data-bs-toggle="collapse" data-bs-target="#coupe" aria-expanded="false"><span>Taille et coupe</span><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 9l6 6 6-6"/></svg></button>
+            <div id="coupe" class="collapse"><div class="vbp-acc-body">Pas sûr de ta taille ? Consulte notre <a href="guideproduct.html">guide des tailles</a>.</div></div>
+          </div>
+          <div class="vbp-acc">
+            <button type="button" class="vbp-acc-head collapsed" data-bs-toggle="collapse" data-bs-target="#livraison" aria-expanded="false"><span>Livraison et retours</span><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 9l6 6 6-6"/></svg></button>
+            <div id="livraison" class="collapse"><div class="vbp-acc-body">Livraison offerte dès 50 € d'achat, sinon les frais s'affichent au moment du paiement. Retours gratuits sous 30 jours. <a href="aide.html">En savoir plus</a></div></div>
+          </div>
+          <div class="vbp-acc">
+            <button type="button" class="vbp-acc-head collapsed" data-bs-toggle="collapse" data-bs-target="#avis" aria-expanded="false"><span>Avis <small>Sois le premier à donner ton avis</small></span><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 9l6 6 6-6"/></svg></button>
+            <div id="avis" class="collapse"><div class="vbp-acc-body">Aucun avis pour l'instant.</div></div>
           </div>
         </div>
 
@@ -1201,14 +1256,17 @@ document.addEventListener("DOMContentLoaded", () => {
 <section id="Tshirt">
 
 <div class="container-fluid mt-5 position-relative product-slider">
-  <div class="d-flex flex-row justify-content-between align-items-center mb-3 gap-2">
+  <div class="vb-sec-head">
     <div>
-      <h1 class="mb-0 tshirt-main-title">NOS TEE SHIRT</h1>
-      <p class="mb-0 text-muted tshirt-subtitle">Ce qui pourrait vous intéresser</p>
+      <h2 class="vb-sec-title">TU AIMERAS AUSSI</h2>
+      <p class="vb-sec-sub">Complète ton look</p>
     </div>
-    <a href="shop.html" class="btn fw-semibold shop-browse-btn" style="background-color: white; color: #000000; border: 1px solid #000000; border-radius: 0px; transition: all 0.2s ease;">
-      PARCOURIR LA LISTE
-    </a>
+    <div class="vb-sec-actions">
+      <a href="shop.html" class="vb-sec-link">Tout voir <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg></a>
+      <span class="vb-sec-sep"></span>
+      <button type="button" class="vb-sec-arrow scrollLeft" aria-label="Articles précédents"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg></button>
+      <button type="button" class="vb-sec-arrow scrollRight" aria-label="Articles suivants"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg></button>
+    </div>
   </div>
   
   <div class="d-flex overflow-auto gap-3 pb-3 productContainer" style="scroll-behavior: smooth;">
@@ -1287,14 +1345,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
    
 
-<div class="d-none d-lg-flex justify-content-center gap-2 mt-4">
-    <button class="btn p-0 shadow-sm" style="width: 42px; height: 42px; border-radius: 50%; background: #ffffff; border: 1px solid #e5e5e5; display: flex; align-items: center; justify-content: center; cursor: pointer; color: #111111;" onmouseover="this.style.background='#111111'; this.style.color='#ffffff'; this.style.borderColor='#111111';" onmouseout="this.style.background='#ffffff'; this.style.color='#111111'; this.style.borderColor='#e5e5e5';" onclick="this.closest('.product-slider').querySelector('.productContainer').scrollBy({ left: -320, behavior: 'smooth' });">
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
-    </button>
-    <button class="btn p-0 shadow-sm" style="width: 42px; height: 42px; border-radius: 50%; background: #ffffff; border: 1px solid #e5e5e5; display: flex; align-items: center; justify-content: center; cursor: pointer; color: #111111;" onmouseover="this.style.background='#111111'; this.style.color='#ffffff'; this.style.borderColor='#111111';" onmouseout="this.style.background='#ffffff'; this.style.color='#111111'; this.style.borderColor='#e5e5e5';" onclick="this.closest('.product-slider').querySelector('.productContainer').scrollBy({ left: 320, behavior: 'smooth' });">
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
-    </button>
-  </div>
 
 </div>
 
@@ -1647,6 +1697,7 @@ document.addEventListener("DOMContentLoaded", () => {
         <a href="localisation.html">Trouver un magasin</a>
         <a href="cgu.html">Conditions générales</a>
         <a href="confidentialite.html">Confidentialité</a>
+        <a href="#" data-cookies-open>Gérer les cookies</a>
       </div>
     </div>
   </div>
@@ -1663,161 +1714,78 @@ document.addEventListener("DOMContentLoaded", () => {
 </footer>
 </section>
 
-<div id="cookie-banner" style="
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0,0,0,0.55);
-    backdrop-filter: blur(1px);
-    display: none; 
-    justify-content: center;
-    align-items: center;
-    z-index: 10000;
-">
 
-    <div style="
-        background: whitesmoke;
-        color: black;
-        padding: 20px;
-        border-radius: 10px;
-        max-width: 650px;
-        width: 90%;
-        box-shadow: 0 5px 25px rgba(0,0,0,0.25);
-    ">
-        <p style="max-width:800px;text-align:left;margin-bottom:10px; color: black; font-size:13px;">
-            En cliquant sur "Accepter tous les cookies", vous acceptez que des cookies soient stockés sur votre appareil afin d'améliorer la navigation sur le site, d'analyser son utilisation et de contribuer à nos efforts de marketing. Les préférences peuvent être ajustées à tout moment dans les paramètres des cookies. Consultez notre 
-            <a href="">Politique d'utilisation des cookies</a>
-        </p>
-
-        <div style="display:flex;gap:10px;flex-wrap:wrap;justify-content:center;">
-            <button id="reject-all" style="font-size:13px;padding:10px 20px;background:whitesmoke;color:black;border:1px solid black;border-radius:4px;cursor:pointer;">
-                Rejeter tous les cookies
-            </button>
-
-            <button id="accept-all" style="font-size:13px;color:white;padding:10px 20px;background:#43D5B0;border-radius:2px;border:none;cursor:pointer;">
-                Accepter tous les cookies
-            </button>
-
-            <button id="customize" style="font-size:13px;padding:10px 20px;background:#2E2E2E;color:white;border:none;border-radius:2px;cursor:pointer;">
-                Paramètres des cookies
-            </button>
-        </div>
-
-        <div id="custom-options" style="display:none;margin-top:10px;text-align:left;">
-            <label><input type="checkbox" id="functional-cookies" checked disabled> Cookies nécessaires (toujours actifs)</label><br>
-            <label><input type="checkbox" id="analytics-cookies"> Cookies analytiques</label><br>
-            <label><input type="checkbox" id="marketing-cookies"> Cookies marketing / recommandations</label><br>
-
-            <button id="save-preferences" style="margin-top:10px;padding:8px 15px;background:#008CBA;color:white;border:none;border-radius:5px;cursor:pointer;">
-                Enregistrer
-            </button>
-        </div>
-    </div>
-
-</div>
 
 
 
 <script>
 
+// ---------------------- Page produit : tailles, ajout au panier, favori, miniatures ---------------------- //
 document.addEventListener("DOMContentLoaded", () => {
-  let selectedVariant = null;
-
-  // Gestion du clic sur les tailles statiques de ton HTML
-  const sizeButtons = document.querySelectorAll("#size-container .btn:not(.disabled)");
-  
-  sizeButtons.forEach(button => {
-    button.addEventListener("click", () => {
-      // Retire la classe active de tous les boutons cliquables
-      sizeButtons.forEach(btn => {
-        btn.classList.remove("btn-dark", "active", "fw-semibold");
-        btn.classList.add("fw-normal");
-        btn.style.backgroundColor = "#f7f7f7";
-      });
-
-      // Active le bouton cliqué
-      button.classList.add("btn-dark", "active", "fw-semibold");
-      button.classList.remove("fw-normal");
-      button.style.backgroundColor = "";
-      
-      selectedVariant = button.textContent.trim();
-      
-      const cartBtnText = document.getElementById("cart-btn-text");
-      if (cartBtnText) {
-        cartBtnText.textContent = `Ajouter ${selectedVariant}`;
-      }
-    });
-  });
-});
-
-document.addEventListener("DOMContentLoaded", () => {
-  const addToCartBtn = document.getElementById("add-to-cart-btn");
+  const productId = new URLSearchParams(window.location.search).get("id") || "1";
+  const tailles = [...document.querySelectorAll("#size-container .vbp-size")];
   let selectedSize = "S";
 
-  const sizeButtons = document.querySelectorAll("#size-container .btn");
-  sizeButtons.forEach(button => {
-    button.addEventListener("click", () => {
-      if (button.classList.contains("disabled")) return;
-      
-      sizeButtons.forEach(btn => {
-        btn.classList.remove("active", "btn-dark", "fw-semibold");
-        btn.style.backgroundColor = "#f7f7f7";
-      });
+  function choisirTaille(btn) {
+    if (!btn || btn.disabled) return;
+    tailles.forEach(b => b.classList.toggle("selected", b === btn));
+    selectedSize = btn.dataset.size;
+    document.getElementById("vbpSizeLabel").textContent = selectedSize;
+  }
+  tailles.forEach(b => b.addEventListener("click", () => choisirTaille(b)));
+  choisirTaille(tailles.find(b => b.dataset.size === "S"));
+  window.vbpChoisirPremiereTaille = () => { // appelé quand le stock est connu
+    const actuelle = tailles.find(b => b.dataset.size === selectedSize);
+    if (!actuelle || actuelle.disabled) choisirTaille(tailles.find(b => !b.disabled));
+  };
 
-      button.classList.add("active", "btn-dark", "fw-semibold");
-      button.style.backgroundColor = "";
-      selectedSize = button.textContent.trim();
-      console.log("📏 Taille sélectionnée :", selectedSize);
-    });
+  // Ajout au panier (même format qu'avant : la page panier n'a rien à changer)
+  document.getElementById("add-to-cart-btn").addEventListener("click", () => {
+    const btn = tailles.find(b => b.dataset.size === selectedSize);
+    if (!btn || btn.disabled) return;
+    const prix = parseFloat(document.getElementById("product-price").textContent.replace("€", "").replace(",", ".").trim()) || 22.99;
+    const produit = {
+      id: productId + "-" + selectedSize,
+      productId,
+      ref: document.getElementById("product-ref").textContent.trim(),
+      price: prix,
+      quantity: 1,
+      size: selectedSize,
+      color: document.getElementById("product-color-text").textContent.trim() || "Standard",
+      image: document.getElementById("mainImage").getAttribute("src") || "1.png"
+    };
+    const panier = JSON.parse(localStorage.getItem("userCart")) || [];
+    const existant = panier.find(p => p.id === produit.id);
+    if (existant) existant.quantity += 1; else panier.push(produit);
+    localStorage.setItem("userCart", JSON.stringify(panier));
+    const ok = document.getElementById("vbpAdded");
+    ok.hidden = false;
+    clearTimeout(ok._t); ok._t = setTimeout(() => { ok.hidden = true; }, 4000);
   });
 
-  if (addToCartBtn) {
-    addToCartBtn.addEventListener("click", (e) => {
-      e.preventDefault();
+  // Favori (même format que le reste du site)
+  const fav = document.getElementById("vbpFav");
+  const lire = () => { try { return JSON.parse(localStorage.getItem("vigoblue_favorites")) || []; } catch (e) { return []; } };
+  const majFav = () => fav.classList.toggle("active", lire().some(f => String(f.id) === productId));
+  fav.addEventListener("click", () => {
+    const favoris = lire();
+    const i = favoris.findIndex(f => String(f.id) === productId);
+    if (i > -1) favoris.splice(i, 1);
+    else favoris.push({ id: productId, name: document.getElementById("product-ref").textContent.trim(), price: document.getElementById("product-price").textContent.trim(), img: document.getElementById("mainImage").getAttribute("src") || "1.png" });
+    localStorage.setItem("vigoblue_favorites", JSON.stringify(favoris));
+    majFav();
+  });
+  majFav();
 
-      const urlParams = new URLSearchParams(window.location.search);
-      const productId = urlParams.get('id') || '1';
-
-      const ref = document.getElementById("product-ref")?.textContent.trim() || "T-shirt Varenba";
-      const priceText = document.getElementById("product-price")?.textContent || "22,99 €";
-      const price = parseFloat(priceText.replace('€', '').replace(',', '.').trim()) || 22.99;
-      
-      const quantityInput = document.getElementById("quantity");
-      const quantity = quantityInput ? parseInt(quantityInput.value) || 1 : 1;
-      
-      const image = document.getElementById("mainImage")?.src || "vigo1.png";
-
-      const product = {
-        id: productId + "-" + selectedSize,
-        productId: productId,
-        ref: ref,
-        price: price,
-        quantity: quantity,
-        size: selectedSize,
-        color: "Standard",
-        image: image
-      };
-
-      let cart = JSON.parse(localStorage.getItem('userCart')) || [];
-      const existingIndex = cart.findIndex(item => item.id === product.id);
-
-      if (existingIndex > -1) {
-        cart[existingIndex].quantity += product.quantity;
-      } else {
-        cart.push(product);
-      }
-
-      localStorage.setItem('userCart', JSON.stringify(cart));
-
-      // Affichage détaillé dans la console pour vérification
-      console.log("🛒 Produit ajouté au panier avec succès !");
-      console.log("📦 Objet produit :", product);
-      console.log("📂 État actuel du LocalStorage (userCart) :", cart);
-
+  // Miniatures : un clic affiche la photo en grand
+  document.querySelectorAll("#thumbnail-container .thumbnail-item").forEach(item => {
+    item.addEventListener("click", () => {
+      const img = item.querySelector("img");
+      if (!img || !img.getAttribute("src")) return;
+      document.getElementById("mainImage").src = img.getAttribute("src");
+      document.querySelectorAll("#thumbnail-container .thumbnail-item").forEach(t => t.classList.toggle("active", t === item));
     });
-  }
+  });
 });
 
 
@@ -1940,58 +1908,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 });
-const banner = document.getElementById('cookie-banner');
-const customizeBtn = document.getElementById('customize');
-const customOptions = document.getElementById('custom-options');
-const savePreferences = document.getElementById('save-preferences');
-
-
-// Afficher / cacher les options personnalisées
-customizeBtn.addEventListener('click', () => {
-    console.log('Utilisateur a cliqué sur "Paramètres des cookies"');
-    customOptions.style.display = customOptions.style.display === 'none' ? 'block' : 'none';
-});
-
-// Accepter tous les cookies
-document.getElementById('accept-all').addEventListener('click', () => {
-    console.log('Utilisateur a cliqué sur "Accepter tous les cookies"');
-    localStorage.setItem('cookies', JSON.stringify({
-        necessary: true,
-        analytics: true,
-        marketing: true
-    }));
-    banner.style.display = 'none';
-});
-
-// Refuser tous les cookies sauf nécessaires
-document.getElementById('reject-all').addEventListener('click', () => {
-    console.log('Utilisateur a cliqué sur "Rejeter tous les cookies"');
-    localStorage.setItem('cookies', JSON.stringify({
-        necessary: true,
-        analytics: false,
-        marketing: false
-    }));
-    banner.style.display = 'none';
-});
-
-// Sauvegarder les préférences personnalisées
-savePreferences.addEventListener('click', () => {
-    console.log('Utilisateur a cliqué sur "Enregistrer les préférences"');
-    const preferences = {
-        necessary: true,
-        analytics: document.getElementById('analytics-cookies').checked,
-        marketing: document.getElementById('marketing-cookies').checked
-    };
-    localStorage.setItem('cookies', JSON.stringify(preferences));
-    banner.style.display = 'none';
-});
-
-// Afficher le bandeau UNIQUEMENT si l'utilisateur n'a JAMAIS choisi
-window.addEventListener('load', () => {
-    if(!localStorage.getItem('cookies')){
-        banner.style.display = 'flex';
-    }
-});
+// (ancien bandeau cookies retiré : voir cookies.js)
 </script>
 
 
@@ -2241,6 +2158,29 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 });
 
+// Infos du produit depuis la base : nom, description, prix (en centimes), couleur, référence, stock par taille
+function remplirProduit(p, variantes) {
+  const $ = id => document.getElementById(id);
+  if (p.nom) { $("product-ref").textContent = p.nom; document.title = p.nom + " - Varenba"; }
+  if (p.description) { $("product-desc").textContent = p.description; $("vbpDetails").textContent = p.description; }
+  if (p.prix) $("product-price").textContent = (p.prix / 100).toFixed(2).replace(".", ",") + " €";
+  if (p.sku) { $("product-article-sku").textContent = p.sku; $("vbpSkuLine").hidden = false; }
+  const couleurs = [...new Set(variantes.map(v => v.couleur).filter(Boolean))];
+  if (couleurs.length) { $("product-color-text").textContent = couleurs.join(", "); $("vbpColorLine").hidden = false; }
+  if (!variantes.length) return; // pas de stock en base : toutes les tailles restent disponibles
+
+  const peu = [];
+  document.querySelectorAll("#size-container .vbp-size").forEach(btn => {
+    const stock = variantes.filter(v => v.taille === btn.dataset.size).reduce((n, v) => n + Number(v.stock || 0), 0);
+    btn.disabled = stock <= 0;
+    btn.classList.toggle("low", stock > 0 && stock <= 2);
+    btn.title = stock <= 0 ? "Épuisé" : "";
+    if (stock > 0 && stock <= 2) peu.push(btn.dataset.size + " : plus que " + stock);
+  });
+  if (peu.length) { $("vbpHint").textContent = peu.join(" · "); $("vbpHint").hidden = false; }
+  if (window.vbpChoisirPremiereTaille) window.vbpChoisirPremiereTaille();
+}
+
 // Image du produit chargée depuis la base (colonne "image" de la table products).
 // Les <img class="product-db-img"> n'ont pas de src dans le HTML pour éviter d'afficher une autre image avant.
 (async () => {
@@ -2250,6 +2190,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const res = await fetch('/products/' + encodeURIComponent(productId));
     const data = await res.json();
     if (data.success && data.product.image) image = data.product.image;
+    if (data.success) remplirProduit(data.product, data.variants || []);
   } catch (e) {
     console.error("Impossible de charger l'image du produit", e);
   }
@@ -2263,6 +2204,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 <script src="nav-pc.js"></script>
 <script src="footer.js"></script>
+<script src="cookies.js"></script>
 <script src="menu-mobile.js"></script>
 <script src="favoris-badge.js"></script>
 </body>

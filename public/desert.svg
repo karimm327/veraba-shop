@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 200" role="img" aria-label="Désert vide">
+  <!-- Ciel -->
+  <ellipse cx="180" cy="96" rx="176" ry="88" fill="#e8f4fb"/>
+  <!-- Soleil -->
+  <circle cx="276" cy="58" r="26" fill="#ffd23f" stroke="#2b2b2b" stroke-width="2.5"/>
+  <g stroke="#f4a100" stroke-width="3" stroke-linecap="round">
+    <line x1="276" y1="20" x2="276" y2="12"/><line x1="276" y1="96" x2="276" y2="104"/>
+    <line x1="238" y1="58" x2="230" y2="58"/><line x1="314" y1="58" x2="322" y2="58"/>
+    <line x1="249" y1="31" x2="243" y2="25"/><line x1="303" y1="85" x2="309" y2="91"/>
+    <line x1="303" y1="31" x2="309" y2="25"/><line x1="249" y1="85" x2="243" y2="91"/>
+  </g>
+  <!-- Oiseaux au loin -->
+  <path d="M96 52q6-6 12 0q6-6 12 0M132 40q4-4 8 0q4-4 8 0" fill="none" stroke="#2b2b2b" stroke-width="2" stroke-linecap="round"/>
+  <!-- Dunes -->
+  <path d="M0 150 Q70 112 150 140 T300 128 T360 136 V200 H0 Z" fill="#f7d9a8" stroke="#2b2b2b" stroke-width="2.5" stroke-linejoin="round"/>
+  <path d="M0 172 Q90 146 190 168 T360 160 V200 H0 Z" fill="#eebb76" stroke="#2b2b2b" stroke-width="2.5" stroke-linejoin="round"/>
+  <!-- Cactus -->
+  <g fill="#5fa35a" stroke="#2b2b2b" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round">
+    <path d="M78 160 V96 a9 9 0 0 1 18 0 V160"/>
+    <path d="M78 128 H66 a7 7 0 0 1 -7 -7 V108 a6 6 0 0 1 12 0 V116 H78"/>
+    <path d="M96 120 H106 V102 a6 6 0 0 1 12 0 V114 a8 8 0 0 1 -8 8 H96"/>
+  </g>
+  <path d="M84 104v6M90 118v6M84 136v6M90 148v6" stroke="#2f6b2c" stroke-width="1.6" stroke-linecap="round"/>
+  <!-- Petit cactus -->
+  <path d="M232 168 V150 a6 6 0 0 1 12 0 V168" fill="#7cc06d" stroke="#2b2b2b" stroke-width="2.5" stroke-linejoin="round"/>
+  <!-- Boule d'herbe qui roule -->
+  <g>
+    <animateTransform attributeName="transform" type="translate" values="-30 0; 330 0" dur="9s" repeatCount="indefinite"/>
+    <g transform="translate(0 158)">
+      <g>
+        <animateTransform attributeName="transform" type="rotate" values="0; 720" dur="9s" repeatCount="indefinite"/>
+        <circle r="11" fill="#e2b77a" stroke="#8a5a2b" stroke-width="2"/>
+        <path d="M-8 -6 Q0 4 8 -6 M-9 3 Q0 -6 9 3 M-4 -10 Q2 0 -3 10 M4 -10 Q-2 0 3 10" fill="none" stroke="#8a5a2b" stroke-width="1.6" stroke-linecap="round"/>
+      </g>
+    </g>
+  </g>
+</svg>

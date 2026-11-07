@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex">
+<link rel="icon" type="image/png" href="aaa.png">
+<title>Expéditions - Admin Varenba</title>
+<style>
+  * { box-sizing: border-box; }
+  body { margin: 0; background: #f5f5f5; color: #111; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; }
+  a { color: inherit; }
+  .top { display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 16px 24px; background: #111; color: #fff; }
+  .top b { font-size: 17px; letter-spacing: 0.24em; }
+  .top span { font-size: 13px; color: #bbb; }
+  .top a { color: #fff; font-size: 13px; }
+  main { max-width: 1100px; margin: 0 auto; padding: 24px 16px 60px; }
+  h1 { margin: 0 0 4px; font-size: 26px; font-weight: 900; }
+  .sub { margin: 0 0 18px; font-size: 14px; color: #666; }
+  .sub a { font-weight: 600; }
+  .tabs { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 16px; }
+  .tabs button { padding: 8px 16px; border: 1px solid #ccc; border-radius: 20px; background: #fff; font-size: 13px; font-weight: 600; cursor: pointer; }
+  .tabs button.on { background: #111; color: #fff; border-color: #111; }
+  .tabs b { margin-left: 4px; opacity: 0.7; }
+  .warn { padding: 12px 16px; margin-bottom: 16px; border-radius: 8px; background: #fff7e6; border: 1px solid #ffd591; font-size: 14px; }
+  .card { background: #fff; border: 1px solid #ddd; border-radius: 10px; margin-bottom: 14px; overflow: hidden; }
+  .head { display: flex; flex-wrap: wrap; gap: 8px 28px; align-items: center; padding: 12px 18px; background: #f3f3f3; border-bottom: 1px solid #ddd; font-size: 14px; }
+  .head small { display: block; font-size: 11px; color: #666; text-transform: uppercase; letter-spacing: 0.04em; }
+  .pill { margin-left: auto; padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: 800; }
+  .pill.payee, .pill.preparee { background: #fff3e0; color: #b45309; }
+  .pill.expediee { background: #e8efff; color: #1d4ed8; }
+  .pill.livree { background: #e8f3ec; color: #1f7a3d; }
+  .pill.annulee { background: #eee; color: #777; }
+  .body { display: flex; gap: 24px; padding: 16px 18px; }
+  .col { flex: 1; min-width: 0; font-size: 14px; line-height: 1.55; }
+  .col h3 { margin: 0 0 6px; font-size: 11px; font-weight: 800; letter-spacing: 0.08em; color: #777; }
+  .item { display: flex; gap: 10px; align-items: center; margin-bottom: 8px; }
+  .item img { width: 48px; height: 48px; object-fit: cover; border-radius: 4px; background: #f2f2f2; }
+  .actions { width: 260px; flex-shrink: 0; display: flex; flex-direction: column; gap: 8px; }
+  .btn { display: flex; align-items: center; justify-content: center; gap: 6px; padding: 10px; border: 1px solid #ccc; border-radius: 30px; background: #fff; font-size: 13px; font-weight: 700; cursor: pointer; text-decoration: none; color: #111; }
+  .btn:hover { border-color: #111; }
+  .btn.dark { background: #111; border-color: #111; color: #fff; }
+  .ship { display: none; flex-direction: column; gap: 8px; padding: 12px; background: #f7f7f7; border-radius: 8px; }
+  .ship.open { display: flex; }
+  .ship select, .ship input { height: 40px; padding: 0 12px; border: 1px solid #ccc; border-radius: 8px; font-size: 14px; background: #fff; }
+  .tracking { font-size: 13px; }
+  .empty { padding: 50px 20px; text-align: center; background: #fff; border: 1px solid #ddd; border-radius: 10px; color: #666; }
+  .msg { min-height: 18px; font-size: 13px; font-weight: 600; }
+  .msg.err { color: #d43f21; } .msg.ok { color: #1f7a3d; }
+  @media (max-width: 760px) { .body { flex-direction: column; } .actions { width: auto; } .pill { margin-left: 0; } }
+</style>
+</head>
+<body>
+<div class="top"><b>VARENBA</b><span>Admin · Expéditions</span><a href="#" id="logout">Se déconnecter</a></div>
+<main>
+  <h1>Expéditions</h1>
+  <p class="sub">Prépare tes colis, imprime l'étiquette, achète l'affranchissement sur <a href="https://www.boxtal.com/fr/fr/app/" target="_blank" rel="noopener">Boxtal</a>, puis colle le numéro de suivi.</p>
+  <div id="warn"></div>
+  <div class="tabs" id="tabs"></div>
+  <div id="liste"><div class="empty">Chargement…</div></div>
+</main>
+
+<script>
+  const ONGLETS = [
+    { id: "apreparer", nom: "À expédier", test: c => ["payee", "preparee"].includes(c.statut) },
+    { id: "expediees", nom: "Expédiées", test: c => c.statut === "expediee" },
+    { id: "livrees", nom: "Livrées", test: c => c.statut === "livree" },
+    { id: "toutes", nom: "Toutes", test: () => true }
+  ];
+  const STATUTS = { payee: "Payée", preparee: "En préparation", expediee: "Expédiée", livree: "Livrée", annulee: "Annulée" };
+  const TRANSPORTEURS = { mondialrelay: "Mondial Relay", colissimo: "Colissimo", chronopost: "Chronopost", autre: "Autre" };
+  // Lien de suivi public de chaque transporteur (à vérifier si un transporteur change son site)
+  const SUIVI = {
+    mondialrelay: n => "https://www.mondialrelay.fr/suivi-de-colis/?numeroExpedition=" + encodeURIComponent(n),
+    colissimo: n => "https://www.laposte.fr/outils/suivre-vos-envois?code=" + encodeURIComponent(n),
+    chronopost: n => "https://www.chronopost.fr/tracking-no-cms/suivi-page?listeNumerosLT=" + encodeURIComponent(n)
+  };
+
+  let commandes = [], expediteur = null, onglet = "apreparer";
+  const echapper = t => String(t ?? "").replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+  const euros = c => (c / 100).toFixed(2).replace(".", ",") + " €";
+  const dateFr = d => new Date(d).toLocaleDateString("fr-FR", { day: "numeric", month: "short", year: "numeric" });
+  const adresse = L => L ? `${echapper(L.prenom + " " + L.nom)}<br>${echapper(L.adresse)}<br>${echapper(L.code_postal + " " + L.ville)}<br>${echapper(L.pays)}${L.telephone ? "<br>Tél. " + echapper(L.telephone) : ""}` : "<i>Adresse manquante</i>";
+
+  // Mode choisi par le client au paiement (anciennes commandes : pas de mode enregistré)
+  function modeLivraison(L) {
+    if (!L || !L.mode) return "";
+    if (L.mode === "domicile") return `<p style="margin:0 0 6px"><b>🏠 À domicile · Colissimo</b></p>`;
+    return `<p style="margin:0 0 6px"><b>📦 Point relais Mondial Relay</b><br>${L.point_relais ? "Point demandé : " + echapper(L.point_relais) : "<i>Pas de point choisi : prends le plus proche de l'adresse</i>"}</p>`;
+  }
+
+  function afficherOnglets() {
+    document.getElementById("tabs").innerHTML = ONGLETS.map(o =>
+      `<button type="button" class="${o.id === onglet ? "on" : ""}" data-o="${o.id}">${o.nom}<b>${commandes.filter(o.test).length}</b></button>`).join("");
+    document.querySelectorAll("#tabs button").forEach(b => b.addEventListener("click", () => { onglet = b.dataset.o; afficherOnglets(); afficherListe(); }));
+  }
+
+  function carte(c, i) {
+    const nb = c.articles.reduce((n, a) => n + a.quantite, 0);
+    const lien = c.numeroSuivi && SUIVI[c.transporteur] ? SUIVI[c.transporteur](c.numeroSuivi) : null;
+    return `
+      <article class="card">
+        <div class="head">
+          <div><small>Commande</small><b>${echapper(c.numero)}</b></div>
+          <div><small>Passée le</small>${dateFr(c.date)}</div>
+          <div><small>Client</small>${echapper(c.email || "—")}</div>
+          <div><small>Total</small>${euros(c.total)} · ${nb} article${nb > 1 ? "s" : ""}</div>
+          <span class="pill ${echapper(c.statut)}">${STATUTS[c.statut] || echapper(c.statut)}</span>
+        </div>
+        <div class="body">
+          <div class="col"><h3>ARTICLES</h3>${c.articles.map(a => `<div class="item"><img src="${echapper(a.image || "1.png")}" alt=""><div><b>${echapper(a.ref)}</b><br>Taille ${echapper(a.taille || "—")} · Qté ${a.quantite}</div></div>`).join("") || "—"}</div>
+          <div class="col"><h3>LIVRER À</h3>${modeLivraison(c.livraison)}${adresse(c.livraison)}
+            ${c.numeroSuivi ? `<p class="tracking"><b>${TRANSPORTEURS[c.transporteur] || ""}</b> · ${lien ? `<a href="${lien}" target="_blank" rel="noopener">${echapper(c.numeroSuivi)}</a>` : echapper(c.numeroSuivi)}</p>` : ""}</div>
+          <div class="actions">
+            <button type="button" class="btn" data-bon="${i}">Imprimer le bon de préparation</button>
+            <button type="button" class="btn" data-etiquette="${i}">Imprimer l'étiquette d'adresse</button>
+            ${c.statut === "payee" ? `<button type="button" class="btn" data-statut="${i}|preparee">Marquer « en préparation »</button>` : ""}
+            ${["payee", "preparee"].includes(c.statut) ? `<button type="button" class="btn dark" data-ouvrir="${i}">Expédier</button>
+              <div class="ship" id="ship-${i}">
+                <select id="tr-${i}">${Object.entries(TRANSPORTEURS).map(([v, n]) => `<option value="${v}" ${v === (c.livraison && c.livraison.mode === "domicile" ? "colissimo" : "mondialrelay") ? "selected" : ""}>${n}</option>`).join("")}</select>
+                <input id="ns-${i}" placeholder="Numéro de suivi" autocomplete="off">
+                <button type="button" class="btn dark" data-expedier="${i}">Confirmer l'expédition</button>
+              </div>` : ""}
+            ${c.statut === "expediee" ? `<button type="button" class="btn" data-statut="${i}|livree">Marquer « livrée »</button>` : ""}
+            <p class="msg" id="msg-${i}"></p>
+          </div>
+        </div>
+      </article>`;
+  }
+
+  function afficherListe() {
+    const o = ONGLETS.find(x => x.id === onglet);
+    const liste = commandes.map((c, i) => [c, i]).filter(([c]) => o.test(c));
+    const zone = document.getElementById("liste");
+    zone.innerHTML = liste.length ? liste.map(([c, i]) => carte(c, i)).join("") : `<div class="empty">Aucune commande ici.</div>`;
+    zone.querySelectorAll("[data-bon]").forEach(b => b.addEventListener("click", () => imprimerBon(commandes[+b.dataset.bon])));
+    zone.querySelectorAll("[data-etiquette]").forEach(b => b.addEventListener("click", () => imprimerEtiquette(commandes[+b.dataset.etiquette])));
+    zone.querySelectorAll("[data-ouvrir]").forEach(b => b.addEventListener("click", () => document.getElementById("ship-" + b.dataset.ouvrir).classList.toggle("open")));
+    zone.querySelectorAll("[data-statut]").forEach(b => b.addEventListener("click", () => { const [i, s] = b.dataset.statut.split("|"); changer(+i, s); }));
+    zone.querySelectorAll("[data-expedier]").forEach(b => b.addEventListener("click", () => {
+      const i = +b.dataset.expedier;
+      changer(i, "expediee", document.getElementById("tr-" + i).value, document.getElementById("ns-" + i).value);
+    }));
+  }
+
+  async function changer(i, statut, transporteur, numeroSuivi) {
+    const msg = document.getElementById("msg-" + i);
+    try {
+      const res = await fetch("/api/admin/commandes/" + encodeURIComponent(commandes[i].numero) + "/statut", {
+        method: "POST", headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ statut, transporteur, numeroSuivi })
+      });
+      const data = await res.json();
+      if (!data.success) { msg.textContent = data.message || "Erreur"; msg.className = "msg err"; return; }
+      await charger();
+    } catch (e) { msg.textContent = "Serveur injoignable"; msg.className = "msg err"; }
+  }
+
+  /* ---------- Impressions (une page s'ouvre, le navigateur propose d'imprimer) ---------- */
+  function imprimer(titre, corps, css) {
+    const f = window.open("", "_blank");
+    if (!f) { alert("Autorise les fenêtres pop-up pour imprimer."); return; }
+    f.document.write(`<!doctype html><html lang="fr"><head><meta charset="utf-8"><title>${titre}<\/title><style>
+      body{font-family:-apple-system,"Segoe UI",Roboto,Arial,sans-serif;color:#111;margin:0;padding:20px}
+      .p{margin-top:20px;padding:10px 22px;border:none;border-radius:30px;background:#111;color:#fff;font-weight:700;cursor:pointer}
+      @media print{.p{display:none}body{padding:0}} ${css}<\/style><\/head><body>${corps}
+      <button class="p" onclick="window.print()">Imprimer<\/button><script>setTimeout(()=>window.print(),300)<\/script><\/body><\/html>`);
+    f.document.close();
+  }
+
+  function imprimerBon(c) {
+    const lignes = c.articles.map(a => `<tr><td>☐</td><td>${echapper(a.ref)}</td><td>${echapper(a.taille || "—")}</td><td>${a.quantite}</td></tr>`).join("");
+    imprimer("Bon " + c.numero, `
+      <h1 style="letter-spacing:.24em;margin:0">VARENBA</h1><p>Bon de préparation · <b>${echapper(c.numero)}</b> · ${dateFr(c.date)}</p>
+      <table><thead><tr><th></th><th>Article</th><th>Taille</th><th>Qté</th></tr></thead><tbody>${lignes}</tbody></table>
+      <h3>Livrer à</h3><p>${adresse(c.livraison)}</p>`,
+      "table{width:100%;border-collapse:collapse;margin:16px 0}th,td{text-align:left;padding:10px 6px;border-bottom:1px solid #ddd;font-size:15px}th{font-size:12px;color:#666;text-transform:uppercase}");
+  }
+
+  function imprimerEtiquette(c) {
+    const e = expediteur || {};
+    const exp = [e.nom, e.adresse, [e.code_postal, e.ville].filter(Boolean).join(" "), e.pays].filter(Boolean).map(echapper).join("<br>");
+    imprimer("Étiquette " + c.numero, `
+      <div class="lab">
+        <div class="from"><small>EXPÉDITEUR</small>${exp || "<i>Adresse à renseigner dans le fichier .env</i>"}</div>
+        <div class="to"><small>DESTINATAIRE</small><div class="big">${adresse(c.livraison)}</div></div>
+        <div class="ref">Commande <b>${echapper(c.numero)}</b> · ${c.articles.reduce((n, a) => n + a.quantite, 0)} article(s)</div>
+      </div>`,
+      "@page{size:100mm 150mm;margin:0}.lab{width:100mm;height:150mm;border:2px dashed #999;padding:8mm;box-sizing:border-box;display:flex;flex-direction:column;gap:6mm}"
+      + "small{display:block;font-size:9px;font-weight:800;letter-spacing:.1em;color:#666;margin-bottom:2mm}.from{font-size:11px;line-height:1.4}"
+      + ".to{flex:1;border:2px solid #111;border-radius:3mm;padding:5mm}.big{font-size:17px;font-weight:700;line-height:1.45}.ref{font-size:12px;text-align:center}"
+      + "@media print{.lab{border:none}}");
+  }
+
+  async function charger() {
+    const res = await fetch("/api/admin/commandes");
+    if (res.status === 401) { window.location.href = "/admin-login.html"; return; }
+    const data = await res.json();
+    if (!data.success) {
+      document.getElementById("liste").innerHTML = `<div class="empty"><b>${echapper(data.message)}</b></div>`;
+      document.getElementById("tabs").innerHTML = "";
+      return;
+    }
+    commandes = data.commandes;
+    afficherOnglets();
+    afficherListe();
+  }
+
+  document.getElementById("logout").addEventListener("click", async (e) => {
+    e.preventDefault();
+    await fetch("/api/admin/logout", { method: "POST" }).catch(() => {});
+    window.location.href = "/admin-login.html";
+  });
+
+  (async function () {
+    try {
+      const r = await (await fetch("/api/admin/expediteur")).json();
+      if (r.success) {
+        expediteur = r.expediteur;
+        if (!expediteur.adresse) document.getElementById("warn").innerHTML = `<div class="warn">⚠ L'adresse de l'expéditeur est vide : ajoute <code>SHOP_ADRESSE</code>, <code>SHOP_CODE_POSTAL</code> et <code>SHOP_VILLE</code> dans le fichier <code>.env</code>, puis redémarre le serveur.</div>`;
+      }
+      await charger();
+    } catch (e) {
+      document.getElementById("liste").innerHTML = `<div class="empty">Impossible de charger les commandes.</div>`;
+    }
+  })();
+</script>
+</body>
+</html>

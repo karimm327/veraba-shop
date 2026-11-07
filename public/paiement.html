@@ -183,7 +183,15 @@
       .test-ligne > span:last-child { margin-left: auto; }
       .test-res { font-size: .66rem; padding: 2px 6px; }
     }
-  </style>
+      /* ---------- Mode de livraison ---------- */
+    .modes-livraison { display: grid; gap: 8px; }
+    .mode-liv { display: flex; align-items: center; gap: 12px; padding: 14px 16px; border: 1px solid #d6d6d6; border-radius: 10px; cursor: pointer; background: #fff; }
+    .mode-liv:has(input:checked) { border: 2px solid #111; padding: 13px 15px; }
+    .mode-liv input { width: 18px; height: 18px; accent-color: #111; flex-shrink: 0; }
+    .mode-txt { flex: 1; } .mode-txt b { display: block; font-size: .92rem; } .mode-txt small { color: #666; font-size: .8rem; }
+    .mode-prix { font-weight: 800; font-size: .92rem; white-space: nowrap; }
+    .choix-relais { margin-top: 12px; padding: 14px; background: #f6f6f6; border-radius: 10px; }
+</style>
 </head>
 <body>
 
@@ -265,6 +273,29 @@
             </div>
             <div class="col-12">
               <label class="case"><input type="checkbox" id="enregistrerAdresse" checked> Enregistrer comme adresse principale</label>
+            </div>
+            <div class="col-12">
+              <span class="form-label d-block">Mode de livraison</span>
+              <div class="modes-livraison" role="radiogroup" aria-label="Mode de livraison">
+                <label class="mode-liv">
+                  <input type="radio" name="modeLivraison" value="relais" checked>
+                  <span class="mode-txt"><b>Point relais Mondial Relay</b><small>Retrait dans un point relais près de chez toi</small></span>
+                  <span class="mode-prix" id="prixRelais"></span>
+                </label>
+                <label class="mode-liv">
+                  <input type="radio" name="modeLivraison" value="domicile">
+                  <span class="mode-txt"><b>À domicile · Colissimo</b><small>Livré directement à ton adresse</small></span>
+                  <span class="mode-prix" id="prixDomicile"></span>
+                </label>
+              </div>
+              <div class="choix-relais" id="choixRelais">
+                <label for="pointRelais" class="form-label">Ton point relais <span class="text-muted fw-normal">(facultatif)</span></label>
+                <input type="text" id="pointRelais" class="form-control" placeholder="Nom et adresse du point relais" maxlength="200">
+                <p class="small text-muted mt-2 mb-0">
+                  <a href="https://www.mondialrelay.fr/trouver-le-point-relais-le-plus-proche-de-chez-moi/" target="_blank" rel="noopener" class="fw-bold text-dark">Trouver un point relais</a>
+                  · Si tu laisses vide, on choisit le point relais le plus proche de ton adresse.
+                </p>
+              </div>
             </div>
             <div class="col-12">
               <button type="button" class="btn-suivant" id="versPaiement">Continuer vers le paiement →</button>
@@ -461,10 +492,14 @@
     const promo = Number(localStorage.getItem("vigoblue_promo")) || 0;
     const remise = Math.min(sousTotal * 0.05 + promo, sousTotal);
     const apresRemise = sousTotal - remise;
-    const livraison = sousTotal > 0 ? (apresRemise >= 25 ? 0 : 5) : 0;
-    const total = sousTotal > 0 ? apresRemise + livraison : 0;
-    amountInput.value = total.toFixed(2);
-    document.getElementById("displayAmount").textContent = euros(total);
+    // Tarifs de livraison : prix et montant à partir duquel elle est offerte (à ajuster ici)
+    const TARIFS_LIVRAISON = {
+      relais: { prix: 5, offerteDes: 25 },    // même règle que le panier
+      domicile: { prix: 6.9, offerteDes: 50 }
+    };
+    const modeChoisi = () => (document.querySelector('input[name="modeLivraison"]:checked') || {}).value || "relais";
+    const fraisPour = mode => sousTotal > 0 && apresRemise < TARIFS_LIVRAISON[mode].offerteDes ? TARIFS_LIVRAISON[mode].prix : 0;
+    let fraisLivraison = 0, total = 0;
 
     document.getElementById("recapArticles").innerHTML = panier.length
       ? panier.map(p => `
@@ -475,14 +510,25 @@
         </div>`).join("")
       : `<p class="text-muted small mb-0">Ton panier est vide. <a href="/site.html" class="fw-bold text-dark">Découvrir la boutique</a></p>`;
 
-    document.getElementById("recapTotaux").innerHTML = panier.length ? `
-      <div class="ligne-total"><span>Sous-total</span><span>${euros(sousTotal)}</span></div>
-      <div class="ligne-total remise"><span>Réduction${promo ? " (dont VB10)" : " (-5 %)"}</span><span>-${euros(remise)}</span></div>
-      <div class="ligne-total"><span>Livraison</span><span>${livraison === 0 ? "Gratuite" : euros(livraison)}</span></div>
-      <div class="ligne-total grand"><span>Total</span><span>${euros(total)}</span></div>` : "";
-
     const bouton = document.getElementById("checkout-btn");
-    if (total <= 0) bouton.disabled = true;
+    function majTotaux() {
+      const mode = modeChoisi();
+      fraisLivraison = fraisPour(mode);
+      total = sousTotal > 0 ? apresRemise + fraisLivraison : 0;
+      amountInput.value = total.toFixed(2);
+      document.getElementById("displayAmount").textContent = euros(total);
+      document.getElementById("prixRelais").textContent = fraisPour("relais") ? euros(fraisPour("relais")) : "Gratuit";
+      document.getElementById("prixDomicile").textContent = fraisPour("domicile") ? euros(fraisPour("domicile")) : "Gratuit";
+      document.getElementById("choixRelais").hidden = mode !== "relais";
+      document.getElementById("recapTotaux").innerHTML = panier.length ? `
+        <div class="ligne-total"><span>Sous-total</span><span>${euros(sousTotal)}</span></div>
+        <div class="ligne-total remise"><span>Réduction${promo ? " (dont VB10)" : " (-5 %)"}</span><span>-${euros(remise)}</span></div>
+        <div class="ligne-total"><span>Livraison · ${mode === "relais" ? "point relais" : "à domicile"}</span><span>${fraisLivraison === 0 ? "Gratuite" : euros(fraisLivraison)}</span></div>
+        <div class="ligne-total grand"><span>Total</span><span>${euros(total)}</span></div>` : "";
+      bouton.disabled = total <= 0;
+    }
+    document.querySelectorAll('input[name="modeLivraison"]').forEach(r => r.addEventListener("change", majTotaux));
+    majTotaux();
 
     /* ---------- Utilisateur connecté ---------- */
     try {
@@ -583,7 +629,10 @@
     function lireLivraison() {
       const v = id => document.getElementById(id).value.trim();
       return { prenom: v("prenom"), nom: v("nom"), adresse: v("adresse"), code_postal: v("codePostal"),
-        ville: v("ville"), pays: v("pays"), telephone: v("telephone"), enregistrer: document.getElementById("enregistrerAdresse").checked };
+        ville: v("ville"), pays: v("pays"), telephone: v("telephone"), enregistrer: document.getElementById("enregistrerAdresse").checked,
+        // lu directement ici : cette fonction est en dehors du bloc où modeChoisi() est défini
+        mode: (document.querySelector('input[name="modeLivraison"]:checked') || {}).value || "relais",
+        point_relais: (document.querySelector('input[name="modeLivraison"]:checked') || {}).value === "domicile" ? "" : v("pointRelais") };
     }
 
     // Vérifie l'adresse et entoure en rouge les champs à corriger
@@ -661,10 +710,11 @@
         document.getElementById("main-container").innerHTML = `
           <div class="etapes-achat mb-4"><span>Panier</span><i>—</i><span>Paiement</span><i>—</i><span class="actif">Confirmation</span></div>
           <div class="bloc text-center mx-auto" style="max-width: 520px; padding: 44px 28px;">
+            <svg width="96" height="110" viewBox="0 0 120 140" class="d-block mx-auto mb-2" aria-hidden="true" style="overflow:visible"><g><animateTransform attributeName="transform" type="rotate" values="-6 60 136; 6 60 136; -6 60 136" dur="3.2s" repeatCount="indefinite" calcMode="spline" keySplines=".45 0 .55 1; .45 0 .55 1"/><path d="M60 136 Q41 101 35 66" fill="none" stroke="#2b2b2b" stroke-width="1.6"/><ellipse cx="34" cy="38" rx="24" ry="28" fill="#ff5a5f" stroke="#2b2b2b" stroke-width="2.5"/><path d="M31 66 l4 -3 l4 3z" fill="#ff5a5f" stroke="#2b2b2b" stroke-width="2"/><path d="M22 26 q4 -8 12 -8" fill="none" stroke="#fff" stroke-width="4" stroke-linecap="round" opacity=".7"/></g><g><animateTransform attributeName="transform" type="rotate" values="-7 60 136; 7 60 136; -7 60 136" dur="2.6s" repeatCount="indefinite" calcMode="spline" keySplines=".45 0 .55 1; .45 0 .55 1"/><path d="M60 136 Q68 99 89 62" fill="none" stroke="#2b2b2b" stroke-width="1.6"/><ellipse cx="88" cy="34" rx="24" ry="28" fill="#ffd23f" stroke="#2b2b2b" stroke-width="2.5"/><path d="M85 62 l4 -3 l4 3z" fill="#ffd23f" stroke="#2b2b2b" stroke-width="2"/><path d="M76 22 q4 -8 12 -8" fill="none" stroke="#fff" stroke-width="4" stroke-linecap="round" opacity=".7"/></g></svg>
             <svg width="64" height="64" viewBox="0 0 34 34" class="mb-3"><circle cx="17" cy="17" r="16" fill="#e3f4ee"/><path d="M10 17.5l4.5 4.5L24 12.5" fill="none" stroke="#1f9d74" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
             <h3 class="fw-bold text-uppercase mb-2" style="letter-spacing:1px; font-size:1.2rem;">Merci pour ta commande !</h3>
             ${result.numero ? `<p class="mb-1">Commande <strong>#${echapper(result.numero)}</strong></p>` : ""}
-            <p class="text-muted small mb-3">Ton paiement de <strong>${euros(currentAmount)}</strong> a été validé. Nous préparons ta commande VigoBlue avec soin.</p>
+            <p class="text-muted small mb-3">Ton paiement de <strong>${euros(currentAmount)}</strong> a été validé. Nous préparons ta commande Varenba avec soin.</p>
             <div class="text-start small mb-4 p-3" style="background:#f6f6f6;">
               <div class="fw-bold text-uppercase mb-1" style="font-size:.7rem; letter-spacing:1px;">Livraison à</div>
               ${echapper(livraison.prenom + " " + livraison.nom)}<br>${echapper(livraison.adresse)}<br>${echapper(livraison.code_postal + " " + livraison.ville + ", " + livraison.pays)}

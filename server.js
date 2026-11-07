@@ -86,6 +86,13 @@ db.getConnection((err, conn) => {
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
   )`, e => { if (e) console.error("❌ Table messages_support :", e.message); });
 
+  // Expédition des commandes : transporteur, numéro de suivi, date d'envoi
+  [
+    "ALTER TABLE commandes ADD COLUMN transporteur VARCHAR(30) NULL",
+    "ALTER TABLE commandes ADD COLUMN numero_suivi VARCHAR(80) NULL",
+    "ALTER TABLE commandes ADD COLUMN expediee_le DATETIME NULL"
+  ].forEach(sql => db.query(sql, e => { if (e && e.errno !== 1060) console.error("❌ Colonne expédition :", e.message); }));
+
   // Inscriptions à la newsletter (formulaire du bas de page)
   db.query(`CREATE TABLE IF NOT EXISTS newsletter (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
@@ -101,7 +108,10 @@ function nettoyerLivraison(l) {
   const t = (v, max) => String(v ?? "").trim().slice(0, max);
   const a = {
     prenom: t(l.prenom, 100), nom: t(l.nom, 100), adresse: t(l.adresse, 255),
-    code_postal: t(l.code_postal, 10), ville: t(l.ville, 100), pays: t(l.pays, 100) || "France", telephone: t(l.telephone, 30)
+    code_postal: t(l.code_postal, 10), ville: t(l.ville, 100), pays: t(l.pays, 100) || "France", telephone: t(l.telephone, 30),
+    // Mode de livraison choisi au paiement : point relais Mondial Relay ou domicile (Colissimo)
+    mode: l.mode === "domicile" ? "domicile" : "relais",
+    point_relais: l.mode === "domicile" ? "" : t(l.point_relais, 200)
   };
   if (!a.prenom || !a.nom || a.adresse.length < 5 || !a.code_postal || !a.ville || !a.telephone) return null;
   if (a.pays === "France" && !/^\d{5}$/.test(a.code_postal)) return null;
@@ -185,6 +195,8 @@ app.use((req, res, next) => {
   const connecte = Boolean(req.session.userId);
  
   if (PAGES_MEMBRES.includes(page) && !connecte) return res.redirect("/login.html");
+  // Page admin : connexion admin à part (mot de passe du .env), sans rapport avec les comptes clients
+  if (page === "admin" && !req.session.admin) return res.redirect("/admin-login.html");
   if (PAGES_VISITEURS.includes(page) && connecte) return res.redirect("/site.html");
   next();
 });
@@ -792,6 +804,91 @@ app.post("/pay", async (req, res) => {
  
 // ---------------------- Formulaire de contact (page Aide) ---------------------- //
 const envoisContact = new Map(); // limite anti-spam : 5 messages / 10 min par adresse IP
+// ---------------------- Admin : préparation et expédition des commandes ---------------------- //
+// Connexion admin séparée des comptes clients : mot de passe ADMIN_PASSWORD du fichier .env
+const STATUTS_COMMANDE = ["payee", "preparee", "expediee", "livree", "annulee"];
+const TRANSPORTEURS = ["mondialrelay", "colissimo", "chronopost", "autre"];
+const essaisAdmin = new Map(); // ip -> { n, jusqua } : blocage 15 min après 5 essais ratés
+
+function exigerAdmin(req, res, next) {
+  if (!req.session.admin) return res.status(401).json({ success: false, message: "Connexion admin requise" });
+  next();
+}
+
+app.post("/api/admin/login", (req, res) => {
+  const attendu = String(process.env.ADMIN_PASSWORD || "");
+  if (attendu.length < 8) return res.status(500).json({ success: false, message: "Définis ADMIN_PASSWORD (8 caractères minimum) dans le fichier .env." });
+  const ip = req.ip;
+  const e = essaisAdmin.get(ip) || { n: 0, jusqua: 0 };
+  if (e.jusqua > Date.now()) return res.status(429).json({ success: false, message: "Trop d'essais. Réessaie dans quelques minutes." });
+
+  // Comparaison à temps constant (on compare les empreintes pour avoir la même longueur)
+  const h = v => crypto.createHash("sha256").update(String(v)).digest();
+  if (!crypto.timingSafeEqual(h(req.body.password || ""), h(attendu))) {
+    e.n += 1;
+    if (e.n >= 5) { e.n = 0; e.jusqua = Date.now() + 15 * 60 * 1000; }
+    essaisAdmin.set(ip, e);
+    return res.status(401).json({ success: false, message: "Mot de passe incorrect" });
+  }
+  essaisAdmin.delete(ip);
+  req.session.admin = true;
+  res.json({ success: true });
+});
+
+app.post("/api/admin/logout", (req, res) => {
+  req.session.admin = false;
+  res.json({ success: true });
+});
+
+// Adresse de l'expéditeur imprimée sur les étiquettes (à remplir dans .env)
+app.get("/api/admin/expediteur", exigerAdmin, (req, res) => {
+  res.json({ success: true, expediteur: {
+    nom: process.env.SHOP_NOM || "Varenba",
+    adresse: process.env.SHOP_ADRESSE || "",
+    code_postal: process.env.SHOP_CODE_POSTAL || "",
+    ville: process.env.SHOP_VILLE || "",
+    pays: process.env.SHOP_PAYS || "France",
+    telephone: process.env.SHOP_TELEPHONE || ""
+  } });
+});
+
+app.get("/api/admin/commandes", exigerAdmin, (req, res) => {
+  db.query(
+    `SELECT c.numero, c.total, c.statut, c.articles, c.livraison, c.created_at, c.transporteur, c.numero_suivi, c.expediee_le, u.email
+     FROM commandes c LEFT JOIN users u ON u.id = c.user_id ORDER BY c.created_at DESC, c.id DESC`,
+    (err, rows) => {
+      if (err) return res.status(500).json({ success: false, message: "Erreur MySQL" });
+      res.json({ success: true, commandes: rows.map(c => {
+        let articles = [], livraison = null;
+        try { articles = JSON.parse(c.articles || "[]"); } catch (e) {}
+        try { livraison = c.livraison ? JSON.parse(c.livraison) : null; } catch (e) {}
+        return { numero: c.numero, total: c.total, statut: c.statut, date: c.created_at, articles, livraison, email: c.email,
+                 transporteur: c.transporteur, numeroSuivi: c.numero_suivi, expedieeLe: c.expediee_le };
+      }) });
+    }
+  );
+});
+
+// Changer le statut d'une commande ; pour « expédiée » : transporteur + numéro de suivi
+app.post("/api/admin/commandes/:numero/statut", exigerAdmin, (req, res) => {
+  const statut = String(req.body.statut || "");
+  if (!STATUTS_COMMANDE.includes(statut)) return res.status(400).json({ success: false, message: "Statut invalide" });
+  const transporteur = TRANSPORTEURS.includes(req.body.transporteur) ? req.body.transporteur : null;
+  const suivi = String(req.body.numeroSuivi || "").trim().slice(0, 80) || null;
+  if (statut === "expediee" && (!transporteur || !suivi)) {
+    return res.status(400).json({ success: false, message: "Indique le transporteur et le numéro de suivi." });
+  }
+  const sql = statut === "expediee"
+    ? "UPDATE commandes SET statut = ?, transporteur = ?, numero_suivi = ?, expediee_le = NOW() WHERE numero = ?"
+    : "UPDATE commandes SET statut = ? WHERE numero = ?";
+  const params = statut === "expediee" ? [statut, transporteur, suivi, req.params.numero] : [statut, req.params.numero];
+  db.query(sql, params, (err, r) => {
+    if (err) return res.status(500).json({ success: false, message: "Erreur MySQL" });
+    if (!r.affectedRows) return res.status(404).json({ success: false, message: "Commande introuvable" });
+    res.json({ success: true });
+  });
+});
+
 // ---------------------- Newsletter ---------------------- //
 app.post("/newsletter", (req, res) => {
   const email = String(req.body.email || "").trim().toLowerCase().slice(0, 255);
@@ -838,7 +935,7 @@ app.get("/api/commandes", (req, res) => {
   if (!userId) return res.status(401).json({ success: false, message: "Non connecté" });
  
   db.query(
-    "SELECT numero, total, statut, articles, livraison, created_at FROM commandes WHERE user_id = ? ORDER BY created_at DESC, id DESC",
+    "SELECT numero, total, statut, articles, livraison, created_at, transporteur, numero_suivi, expediee_le FROM commandes WHERE user_id = ? ORDER BY created_at DESC, id DESC",
     [userId],
     (err, rows) => {
       if (err) return res.status(500).json({ success: false, message: err.message });
@@ -847,7 +944,7 @@ app.get("/api/commandes", (req, res) => {
         let livraison = null;
         try { articles = JSON.parse(c.articles || "[]"); } catch (e) {}
         try { livraison = c.livraison ? JSON.parse(c.livraison) : null; } catch (e) {}
-        return { numero: c.numero, total: c.total, statut: c.statut, date: c.created_at, articles, livraison };
+        return { numero: c.numero, total: c.total, statut: c.statut, date: c.created_at, articles, livraison, transporteur: c.transporteur, numeroSuivi: c.numero_suivi, expedieeLe: c.expediee_le };
       });
       res.json({ success: true, commandes });
     }
